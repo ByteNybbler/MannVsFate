@@ -126,7 +126,6 @@
     <ClCompile Include="random_name_generator.cpp" />
     <ClCompile Include="rand_util.cpp" />
     <ClCompile Include="tfbot_meta.cpp" />
-    <ClCompile Include="tfbot_meta.h" />
     <ClCompile Include="wave_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +136,7 @@
     <ClInclude Include="rand_util.h" />
     <ClInclude Include="tank.h" />
     <ClInclude Include="tfbot.h" />
+    <ClInclude Include="tfbot_meta.h" />
     <ClInclude Include="wavespawn.h" />
     <ClInclude Include="wave_generator.h" />
   </ItemGroup>

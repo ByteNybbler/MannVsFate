@@ -36,9 +36,6 @@
     <ClCompile Include="bot_generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tfbot_meta.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="tfbot_meta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bot_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tfbot_meta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

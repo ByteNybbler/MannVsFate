@@ -13,7 +13,7 @@ public:
 	// A higher multiplier means the bot is harder to deal with.
 	float pressure = 1.0f;
 
-	// Get a reference to the bot.
+	// Access the bot.
 	tfbot& get_bot();
 
 	// Make this bot into a giant.
