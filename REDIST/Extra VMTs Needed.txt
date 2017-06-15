@@ -1,0 +1,10 @@
+engineer_giant
+spy_giant
+sniper_giant
+heavy_steelfist_giant
+heavy_mittens_giant
+sniper_bow_giant
+sniper_jarate_giant
+sniper_sydneysleeper_giant
+scout_bat_giant
+scout_shortstop_giant

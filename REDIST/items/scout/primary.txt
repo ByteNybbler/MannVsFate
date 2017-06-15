@@ -1,0 +1,14 @@
+TF_WEAPON_SCATTERGUN
+The Force-a-Nature
+The Soda Popper
+Festive Scattergun 2011
+Festive Force-a-Nature
+The Back Scatter
+Silver Botkiller Scattergun Mk.I
+Gold Botkiller Scattergun Mk.I
+Rust Botkiller Scattergun Mk.I
+Blood Botkiller Scattergun Mk.I
+Carbonado Botkiller Scattergun Mk.I
+Diamond Botkiller Scattergun Mk.I
+Silver Botkiller Scattergun Mk.II
+Gold Botkiller Scattergun Mk.II

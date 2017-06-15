@@ -1,0 +1,16 @@
+TF_WEAPON_FLAMETHROWER
+The Backburner
+The Degreaser
+The Phlogistinator
+The Rainblower
+The Nostromo Napalmer
+Festive Flamethrower 2011
+Festive Backburner 2014
+Silver Botkiller Flame Thrower Mk.I
+Gold Botkiller Flame Thrower Mk.I
+Rust Botkiller Flame Thrower Mk.I
+Blood Botkiller Flame Thrower Mk.I
+Carbonado Botkiller Flame Thrower Mk.I
+Diamond Botkiller Flame Thrower Mk.I
+Silver Botkiller Flame Thrower Mk.II
+Gold Botkiller Flame Thrower Mk.II

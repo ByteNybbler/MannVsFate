@@ -1,0 +1,5 @@
+TF_WEAPON_SYRINGEGUN_MEDIC
+The Crusader's Crossbow
+The Blutsauger
+The Overdose
+Festive Crusader's Crossbow

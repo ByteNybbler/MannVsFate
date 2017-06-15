@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name engiemedic -startingcurrency 4000 -waves 4 -fixedrespawnwavetime -players 4 -wavecurrency 4000 -time 444 -tankchance 0 -wavespawns 44 -classes 32

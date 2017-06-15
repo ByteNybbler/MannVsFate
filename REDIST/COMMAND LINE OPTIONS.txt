@@ -1,0 +1,19 @@
+Open the example.bat file in a text editor to see how command line arguments are supplied.
+
+-map [name of the map the mission is intended for]
+-name [name of the popfile that comes after the map name and underscore]
+-startingcurrency [how many credits the mission begins with]
+-waves [how many waves will be in the mission]
+-halloween <no arguments; enables halloween mode for the mission>
+-fixedrespawnwavetime <no arguments; makes it so that the respawn time doesn't change over the course of the mission>
+-busterdamagethreshold [how much damage an engineer can deal before a sentry buster spawns]
+-busterkillthreshold [how many kills an engineer can get before a sentry buster spawns]
+-botspawnattack <no arguments; allows bots to attack within the spawn area>
+-bustercooldown [how many seconds must occur between each sentry buster spawn per engineer]
+-players [how many players the mission is intended for; this directly affects the mission difficulty]
+-wavecurrency [how much currency is given in each wave]
+-time [the maximum number of seconds that each wave should last]
+-tankchance [the chance a wave has of adding one tank]
+-icons [the maximum number of unique bot icons on the top bar per wave]
+-wavespawns [the maximum number of wavespawns that can happen per wave]
+-classes [bitfield of possible classes that can be spawned during the mission; 1 = scout, 2 = soldier, 4 = pyro, 8 = demoman, 16 = heavyweapons, 32 = engineer, 64 = medic, 128 = sniper, 256 = spy; sum them up for the classes you desire]

@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name duwang -startingcurrency 4000 -waves 4 -fixedrespawnwavetime -players 4 -wavecurrency 4000 -time 444 -tankchance 0.4 -wavespawns 44

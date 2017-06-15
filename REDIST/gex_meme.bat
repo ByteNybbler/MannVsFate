@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name gex_meme -startingcurrency 5000 -waves 4 -fixedrespawnwavetime -players 5 -wavecurrency 5000 -time 444 -tankchance 0.4 -wavespawns 44

@@ -1,0 +1,13 @@
+TF_WEAPON_MEDIGUN
+The Kritzkrieg
+The Quick-Fix
+The Vaccinator
+Festive Medigun 2011
+Silver Botkiller Medi Gun Mk.I
+Gold Botkiller Medi Gun Mk.I
+Rust Botkiller Medi Gun Mk.I
+Blood Botkiller Medi Gun Mk.I
+Carbonado Botkiller Medi Gun Mk.I
+Diamond Botkiller Medi Gun Mk.I
+Silver Botkiller Medi Gun Mk.II
+Gold Botkiller Medi Gun Mk.II

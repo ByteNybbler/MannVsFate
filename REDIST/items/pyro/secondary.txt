@@ -1,0 +1,9 @@
+TF_WEAPON_SHOTGUN_PRIMARY
+The Flare Gun
+The Detonator
+The Reserve Shooter
+The Manmelter
+The Scorch Shot
+Festive Flare Gun
+Festive Shotgun 2014
+Panic Attack Shotgun

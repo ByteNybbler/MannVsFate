@@ -1,0 +1,6 @@
+TF_WEAPON_GRENADELAUNCHER
+The Loch-n-Load
+The Bootlegger
+The Loose Cannon
+The Iron Bomber
+Festive Grenade Launcher

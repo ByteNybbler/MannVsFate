@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name crisis_corps -startingcurrency 10000 -waves 5 -fixedrespawnwavetime -players 3 -wavecurrency 10000 -time 360 -tankchance 0.7 -wavespawns 8000

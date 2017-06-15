@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name threesome -startingcurrency 20000 -waves 1 -fixedrespawnwavetime -players 3 -wavecurrency 1000000 -time 1000 -tankchance 0.9 -wavespawns 8000

@@ -1,0 +1,19 @@
+TF_WEAPON_ROCKETLAUNCHER
+The Black Box
+The Direct Hit
+Rocket Jumper
+The Liberty Launcher
+The Cow Mangler 5000
+The Original
+The Beggar's Bazooka
+The Air Strike
+Festive Rocket Launcher 2011
+Festive Black Box
+Silver Botkiller Rocket Launcher Mk.I
+Gold Botkiller Rocket Launcher Mk.I
+Rust Botkiller Rocket Launcher Mk.I
+Blood Botkiller Rocket Launcher Mk.I
+Carbonado Botkiller Rocket Launcher Mk.I
+Diamond Botkiller Rocket Launcher Mk.I
+Silver Botkiller Rocket Launcher Mk.II
+Gold Botkiller Rocket Launcher Mk.II

@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name dual_doozy -startingcurrency 10000 -waves 2 -fixedrespawnwavetime -players 6 -wavecurrency 10000 -time 1800 -tankchance 0.7 -wavespawns 8000
