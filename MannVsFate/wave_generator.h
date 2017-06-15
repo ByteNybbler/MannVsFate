@@ -3,6 +3,7 @@
 
 #include "tfbot.h"
 #include "wavespawn.h"
+#include "bot_generator.h"
 #include <string>
 #include <fstream>
 
@@ -44,6 +45,8 @@ private:
 	int indent = 0;
 	// The current wave being generated.
 	int current_wave = 0;
+	// The bot generator to use.
+	bot_generator botgen;
 
 	// A bunch of settings that end up at the top of the mission file.
 
@@ -76,18 +79,6 @@ private:
 	float currency_pressure_multiplier = 0.8f;
 	// The chance that a tank will exist in the wave.
 	float tank_chance = 0.4f;
-	// The possible classes that the wave generator can choose from.
-	std::vector<player_class> possible_classes = {
-		player_class::scout,
-		player_class::soldier,
-		player_class::pyro,
-		player_class::demoman,
-		player_class::heavyweapons,
-		player_class::engineer,
-		player_class::medic,
-		player_class::sniper,
-		player_class::spy
-	};
 
 	// Write a number of indents based on the indentation level.
 	void write_indents();
@@ -105,10 +96,8 @@ private:
 	void block_start(const std::string& str);
 	// Ends a block with } and unindents.
 	void block_end();
-	// Make a bot into a giant.
-	void make_bot_into_giant(tfbot& bot, bool& isGiant, float& move_speed_bonus, float& chanceMult, float& bot_pressure, bool& isBoss, bool& isAlwaysCrit);
 	// Calculate the effective pressure decay rate.
-	void wave_generator::calculate_effective_pressure_decay_rate
+	void calculate_effective_pressure_decay_rate
 	(const float& pressure_decay_rate, float& effective_pressure_decay_rate, const std::vector<wavespawn>& wavespawns, const int& t);
 };
 

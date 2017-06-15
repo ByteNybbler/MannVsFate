@@ -119,15 +119,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bot_generator.cpp" />
     <ClCompile Include="list_reader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player_class.cpp" />
     <ClCompile Include="random_name_generator.cpp" />
     <ClCompile Include="rand_util.cpp" />
-    <ClCompile Include="tfbot.cpp" />
+    <ClCompile Include="tfbot_meta.cpp" />
+    <ClCompile Include="tfbot_meta.h" />
     <ClCompile Include="wave_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bot_generator.h" />
     <ClInclude Include="list_reader.h" />
     <ClInclude Include="player_class.h" />
     <ClInclude Include="random_name_generator.h" />

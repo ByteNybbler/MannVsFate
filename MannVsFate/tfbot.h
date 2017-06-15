@@ -20,9 +20,6 @@ struct tfbot
 	float auto_jump_min = 0.0f;
 	float auto_jump_max = 0.0f;
 	std::vector<std::string> items;
-
-	// Make this bot into a giant.
-	void make_giant();
 };
 
 #endif
