@@ -35,12 +35,10 @@ King
 Emperor
 Squire
 Queen
-Duke
-Monach
+Monarch
 Your
 My
 Our
-and
 You and
 Mom and Dad and
 The Black

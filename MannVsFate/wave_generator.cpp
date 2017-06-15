@@ -215,6 +215,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 		std::cout << "The pressure decay rate is " << pressure_decay_rate << '.' << std::endl;
 
+		/*
 		int tanks = 0;
 		while (rand_chance(tank_chance) && tanks < 137)
 		{
@@ -253,7 +254,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 		}
 
 		std::cout << "Generated " << tanks << " tank(s)." << std::endl;
+		*/
 
+		/*
 		// Make sure that all Heavy deflectors in the wave are either giant or not giant.
 		bool is_deflector_giant;
 		if (rand_chance(0.5f))
@@ -264,6 +267,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 		{
 			is_deflector_giant = false;
 		}
+		*/
 
 		// This loop generates all of the TFBot WaveSpawns.
 		while (t < max_time && wavespawns.size() < max_wavespawns && class_icons.size() < max_icons)
@@ -300,7 +304,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 			//{
 			if (rand_chance(0.3f))
 			{
-				std::vector<std::string> restrictions({ "PrimaryOnly", "SecondaryOnly", "MeleeOnly" });
+				std::vector<std::string> restrictions;
+				if (bot.cl != player_class::spy)
+				{
+					restrictions.emplace_back("PrimaryOnly");
+				}
+				restrictions.emplace_back("SecondaryOnly");
+				restrictions.emplace_back("MeleeOnly");
 				bot.weapon_restrictions = restrictions.at(rand_int(0, restrictions.size()));
 			}
 			//}
@@ -382,10 +392,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 			// Whether the bot has the AlwaysFireWeapon attribute.
 			bool isAlwaysFireWeapon = false;
 
-			if (rand_chance(0.1f))
+			if (!isAlwaysCrit && rand_chance(0.1f))
 			{
 				bot.attributes.emplace_back("AlwaysCrit");
-				bot_pressure *= 3.0f;
+				bot_pressure *= 4.5f;
 				isAlwaysCrit = true;
 			}
 
@@ -395,6 +405,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				if (rand_chance(0.1f))
 				{
 					bot.character_attributes.emplace_back("attack projectiles", 1);
+					/*
 					if (is_deflector_giant)
 					{
 						make_bot_into_giant(bot, isGiant, move_speed_bonus, chanceMult, bot_pressure, isBoss, isAlwaysCrit);
@@ -403,6 +414,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 					{
 						permaSmall = true;
 					}
+					*/
 					bot.class_icon = "heavy_deflector";
 					bot_pressure *= 2.5f;
 				}
@@ -496,9 +508,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 						bot.class_icon = "scout_stun";
 					}
 				}
-				else if (bot.weapon_restrictions == "SecondaryOnly")
+				else
 				{
-					if (secondary == "The Shortstop")
+					if (primary == "The Shortstop")
 					{
 						bot.class_icon = "scout_shortstop";
 					}
@@ -600,15 +612,17 @@ void wave_generator::generate_mission(int argc, char** argv)
 			{
 				bot.attributes.emplace_back("Aggressive");
 			}
-			if (item_class == player_class::medic || rand_chance(0.1f * chanceMult))
+			if (item_class == player_class::medic && rand_chance(0.5f * chanceMult))
 			{
 				bot.attributes.emplace_back("SpawnWithFullCharge");
+				bot_pressure *= 2.0f;
 			}
 			if (rand_chance(0.1f * chanceMult) && !isAlwaysFireWeapon)
 			{
 				if (rand_chance(0.4f))
 				{
 					bot.attributes.emplace_back("HoldFireUntilFullReload");
+					bot_pressure *= 1.1f;
 				}
 				else
 				{
@@ -647,7 +661,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			if (item_class == player_class::medic)
 			{
-				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
 				{
 					/*
 					if (rand_chance(0.2f * chanceMult))
@@ -660,17 +674,19 @@ void wave_generator::generate_mission(int argc, char** argv)
 					{
 						if (rand_chance(0.5f * chanceMult))
 						{
-							bot.attributes.emplace_back("VaccinatorBullets");
-							bot_pressure *= 1.1f;
-						}
-						if (rand_chance(0.5f * chanceMult))
-						{
-							bot.attributes.emplace_back("VaccinatorBlast");
-							bot_pressure *= 1.1f;
-						}
-						if (rand_chance(0.5f * chanceMult))
-						{
-							bot.attributes.emplace_back("VaccinatorFire");
+							const int type = rand_int(0, 3);
+							switch (type)
+							{
+							case 0:
+								bot.attributes.emplace_back("VaccinatorBullets");
+								break;
+							case 1:
+								bot.attributes.emplace_back("VaccinatorBlast");
+								break;
+							case 2:
+								bot.attributes.emplace_back("VaccinatorFire");
+								break;
+							}
 							bot_pressure *= 1.1f;
 						}
 					}
@@ -1111,6 +1127,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			bot.character_attributes.emplace_back("damage bonus", damage_bonus);
 			if (damage_bonus > 0.0f)
 			{
+				/*
 				if (damage_bonus < 1.0f)
 				{
 					bot_pressure *= ((damage_bonus - 1.0f) * 0.3f) + 1.0f;
@@ -1119,6 +1136,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 				{
 					bot_pressure *= damage_bonus;
 				}
+				*/
+				bot_pressure *= damage_bonus * 2.0f;
 			}
 
 			std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;
@@ -1273,7 +1292,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			// To prevent boredom, this amount of time is capped.
 			int empty_seconds = 0;
 			while (pressure > 0
-				&& empty_seconds < 3
+				//&& empty_seconds < 3
 				)
 			{
 				// Increment time.
@@ -1487,13 +1506,6 @@ void wave_generator::make_bot_into_giant(tfbot& bot, bool& isGiant, float& move_
 	bot.class_icon += "_giant";
 	switch (bot.cl)
 	{
-	case player_class::heavyweapons:
-		if (bot.class_icon == "heavy_deflector_giant")
-		{
-			bot.class_icon = "heavy_deflector";
-		}
-		break;
-
 	case player_class::scout:
 		if (bot.class_icon != "scout_bonk_giant" && move_speed_bonus > 1.0f)
 		{
