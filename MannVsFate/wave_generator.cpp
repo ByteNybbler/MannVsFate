@@ -421,11 +421,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 					{
 						if (rand_chance(0.9f))
 						{
-							if (bot_meta.isGiant)
+							if (bot_meta.is_giant)
 							{
 								bot.health *= 2;
 							}
-							else if (!bot_meta.permaSmall)
+							else if (!bot_meta.perma_small)
 							{
 								botgen.make_bot_into_giant(bot_meta);
 							}
@@ -436,10 +436,16 @@ void wave_generator::generate_mission(int argc, char** argv)
 							max_count = 0;
 						}
 					}
-					else if (bot_meta.isBoss || bot.health <= 25)
+					else if (bot_meta.is_boss || bot.health <= 25)
 					{
 						max_count = 1;
 					}
+				}
+
+				// Formerly small bots with high health should potentially be made into giants without the additional bonuses.
+				if (!bot_meta.is_giant && !bot_meta.perma_small && bot.health >= 1000 && rand_chance(0.7f))
+				{
+					botgen.make_bot_into_giant_pure(bot_meta);
 				}
 
 				//max_count = ceil(static_cast<float>(max_count) * 0.7f);
@@ -447,7 +453,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::cout << "TotalCount calculation complete." << std::endl;
 				std::cout << "Post-TotalCount loop bot health: " << bot.health << std::endl;
 				std::cout << "The bot's effective pressure (with health): " << effective_pressure << std::endl;
-				std::cout << "TotalCount: " << max_count << std::endl;
+				std::cout << "TotalCount (pre-write): " << max_count << std::endl;
 				std::cout << "WaitBetweenSpawns: " << wait_between_spawns << std::endl;
 
 				class_icons.emplace(bot.class_icon);
@@ -460,8 +466,17 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::stringstream wsname;
 				wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
 				ws.name = wsname.str();
-				ws.total_count = rand_int(1, max_count + 1);
-				ws.max_active = std::min(22, ws.total_count);
+				if (bot.cl == player_class::engineer)
+				{
+					max_count = static_cast<int>(std::ceil(static_cast<float>(max_count) * 0.2f));
+					ws.total_count = rand_int(1, max_count + 1);
+					ws.max_active = std::min(3, ws.total_count);
+				}
+				else
+				{
+					ws.total_count = rand_int(1, max_count + 1);
+					ws.max_active = std::min(22, ws.total_count);
+				}
 				ws.wait_before_starting = static_cast<float>(t);
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.bot = bot;

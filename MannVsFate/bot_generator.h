@@ -20,6 +20,9 @@ public:
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
 
+	// Make a bot into a giant without modifying any stats unnecessarily.
+	void make_bot_into_giant_pure(tfbot_meta& bot_meta);
+
 	// Make a bot into a giant.
 	void make_bot_into_giant(tfbot_meta& bot_meta);
 

@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name omg -startingcurrency 25000 -waves 1 -fixedrespawnwavetime -players 3 -wavecurrency 100000 -time 1200 -tankchance 0.01 -wavespawns 8000 -icons 900

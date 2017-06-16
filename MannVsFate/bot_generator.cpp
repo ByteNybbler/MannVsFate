@@ -107,11 +107,11 @@ tfbot_meta bot_generator::generate_bot()
 		bot.items.emplace_back(primary);
 	}
 
-	if (!bot_meta.isAlwaysCrit && rand_chance(0.05f))
+	if (!bot_meta.is_always_crit && rand_chance(0.05f))
 	{
 		bot.attributes.emplace_back("AlwaysCrit");
 		bot_meta.pressure *= 4.5f;
-		bot_meta.isAlwaysCrit = true;
+		bot_meta.is_always_crit = true;
 	}
 
 	// If the bot is a Heavy, possibly set deflector properties.
@@ -123,7 +123,7 @@ tfbot_meta bot_generator::generate_bot()
 			/*
 			if (is_deflector_giant)
 			{
-			make_bot_into_giant(bot, isGiant, move_speed_bonus, chanceMult, bot.pressure, isBoss, isAlwaysCrit);
+			make_bot_into_giant(bot, is_giant, move_speed_bonus, chanceMult, bot.pressure, isBoss, isAlwaysCrit);
 			}
 			else
 			{
@@ -170,7 +170,7 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				bot.class_icon = "heavy_mittens";
 				bot.attributes.emplace_back("AlwaysCrit");
-				bot_meta.isAlwaysCrit = true;
+				bot_meta.is_always_crit = true;
 			}
 			else if (melee == "Fists of Steel")
 			{
@@ -235,6 +235,8 @@ tfbot_meta bot_generator::generate_bot()
 			bot.class_icon = "scout_bonk";
 			bot.items.emplace_back("Bonk Helm");
 			bot_meta.pressure *= 2.5f;
+			// Make sure that we can never have giant Bonk Scouts...
+			bot_meta.perma_small = true;
 		}
 		break;
 
@@ -333,11 +335,11 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	if (item_class == player_class::sniper)
 	{
-		if ((bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly") && !bot_meta.isAlwaysFireWeapon &&
+		if ((bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly") && !bot_meta.is_always_fire_weapon &&
 			bot.class_icon != "sniper_bow" && primary != "The Classic")
 		{
 			bot.attributes.emplace_back("AlwaysFireWeapon");
-			bot_meta.isAlwaysFireWeapon = true;
+			bot_meta.is_always_fire_weapon = true;
 		}
 	}
 
@@ -350,12 +352,12 @@ tfbot_meta bot_generator::generate_bot()
 	*/
 
 	// A bot has a chance to be a giant.
-	if (!bot_meta.isGiant && !bot_meta.permaSmall && rand_chance(0.1f))
+	if (!bot_meta.is_giant && !bot_meta.perma_small && rand_chance(0.1f))
 	{
 		make_bot_into_giant(bot_meta);
 	}
 	// Have a chance to tweak the health value.
-	if ((bot_meta.isGiant && rand_chance(0.8f)) || rand_chance(0.5f))
+	if ((bot_meta.is_giant && rand_chance(0.8f)) || rand_chance(0.5f))
 	{
 		float upper_bound = pressure_decay_rate * 0.007f; // 0.002f;
 		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, upper_bound));
@@ -369,9 +371,13 @@ tfbot_meta bot_generator::generate_bot()
 		bot.attributes.emplace_back("SpawnWithFullCharge");
 		bot_meta.pressure *= 2.5f;
 	}
-	if (rand_chance(0.1f * chanceMult) && !bot_meta.isAlwaysFireWeapon)
+	if (rand_chance(0.1f * chanceMult) && !bot_meta.is_always_fire_weapon)
 	{
-		if (rand_chance(0.4f))
+		if (rand_chance(0.4f) ||
+			(secondary == "The Buff Banner" ||
+				secondary == "Festive Buff Banner" ||
+				secondary == "The Battalion's Backup" ||
+				secondary == "The Concheror"))
 		{
 			bot.attributes.emplace_back("HoldFireUntilFullReload");
 			bot_meta.pressure *= 1.1f;
@@ -380,7 +386,7 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.attributes.emplace_back("AlwaysFireWeapon");
 			bot_meta.pressure *= 1.5f;
-			bot_meta.isAlwaysFireWeapon = true;
+			bot_meta.is_always_fire_weapon = true;
 		}
 	}
 	/*
@@ -575,7 +581,7 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 	if (
-		//!isGiant &&
+		//!is_giant &&
 		rand_chance(0.15f * chanceMult))
 	{
 		bot.scale *= rand_float(0.3f, 1.6f);
@@ -618,7 +624,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (rand_chance(0.1f * chanceMult))
 	{
 		float damage_bonus_mod;
-		if (bot_meta.isGiant)
+		if (bot_meta.is_giant)
 		{
 			damage_bonus_mod = rand_float(0.1f, 3.0f);
 		}
@@ -631,7 +637,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (rand_chance(0.1f * chanceMult))
 	{
 		float rad;
-		if (bot_meta.isGiant)
+		if (bot_meta.is_giant)
 		{
 			rad = rand_float(0.1f, 3.0f);
 		}
@@ -880,14 +886,13 @@ tfbot_meta bot_generator::generate_bot()
 	return bot_meta;
 }
 
-void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
+void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 {
 	tfbot& bot = bot_meta.get_bot();
+
 	bot_meta.make_giant();
-	bot_meta.isGiant = true;
+	bot_meta.is_giant = true;
 	bot.scale = -1.0f;
-	// Being a giant multiplies the TFBot's health by 15.
-	bot.health *= 15;
 	// Add some giant-related attributes.
 	bot.character_attributes.emplace_back("airblast vulnerability multiplier", rand_float(0.3f, 0.7f));
 	bot.character_attributes.emplace_back("damage force reduction", rand_float(0.3f, 0.7f));
@@ -910,16 +915,26 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		break;
 
 	case player_class::soldier:
-		if (bot_meta.isAlwaysCrit && bot.class_icon == "soldier_giant")
+		if (bot_meta.is_always_crit && bot.class_icon == "soldier_giant")
 		{
 			bot.class_icon = "soldier_crit";
 		}
 	}
+}
+
+void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
+{
+	tfbot& bot = bot_meta.get_bot();
+
+	// Being a giant multiplies the TFBot's health by 15.
+	bot.health *= 15;
+
+	make_bot_into_giant_pure(bot_meta);
 
 	// A giant has a chance to be a BOSS!!!
 	if (rand_chance(0.1f))
 	{
-		bot_meta.isBoss = true;
+		bot_meta.is_boss = true;
 		bot.health *= 5;
 		bot_meta.move_speed_bonus *= 0.5;
 		bot_meta.pressure *= 0.5;
