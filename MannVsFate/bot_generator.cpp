@@ -638,7 +638,7 @@ tfbot_meta bot_generator::generate_bot()
 			rad = rand_float(0.1f, 1.0f);
 		}
 		bot.character_attributes.emplace_back("bullets per shot bonus", rad);
-		bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
+		bot_meta.pressure *= ((rad - 1.0f) * 0.8f) + 1.0f;
 	}
 	if (rand_chance(0.1f * chanceMult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
 	{
