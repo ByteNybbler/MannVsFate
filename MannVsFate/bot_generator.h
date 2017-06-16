@@ -15,6 +15,7 @@ public:
 
 	// Accessors.
 	void set_possible_classes(const std::vector<player_class>& classes);
+	void set_pressure_decay_rate(float in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -41,6 +42,9 @@ private:
 
 	// The multiplier on most random chance calls. A higher value here means more of the random chances will likely return true.
 	float chanceMult;
+
+	// The pressure decay rate.
+	float pressure_decay_rate;
 };
 
 #endif

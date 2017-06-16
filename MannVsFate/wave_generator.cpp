@@ -96,6 +96,11 @@ void wave_generator::set_possible_classes(const std::vector<player_class>& class
 	botgen.set_possible_classes(classes);
 }
 
+void wave_generator::set_max_tfbot_wavespawn_time(int in)
+{
+	max_tfbot_wavespawn_time = in;
+}
+
 void wave_generator::generate_mission(int argc, char** argv)
 {
 	std::stringstream filename;
@@ -282,7 +287,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				float speed = rand_float(10, 100);
 				int health = rand_int(1, 100) * 1000;
 
-				float speed_pressure = ((speed - 10.0f) * 0.2f) + 1.0f;
+				float speed_pressure = ((speed - 10.0f) * 0.1f) + 1.0f;
 
 				// How long it should take to kill the theoretical bot.
 				float challenge_to_kill;
@@ -296,13 +301,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				while (max_count == 0)
 				{
-					effective_pressure = speed_pressure * health;
+					effective_pressure = health * speed_pressure;
 					challenge_to_kill = effective_pressure * recip_pressure_decay_rate;
 					wait_between_spawns = challenge_to_kill * rand_float(1.0f, 5.0f);
 					max_count = static_cast<int>(floor((max_time - t) / wait_between_spawns));
 
 					// If the max count is too low, it means the bot may be too strong.
-					if (max_count == 0 && health > 25)
+					if (max_count == 0 && health > 1000)
 					{
 						health = static_cast<int>(health * 0.9f);
 					}
@@ -337,6 +342,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			{
 				// Generate a new TFBot WaveSpawn.
 
+				botgen.set_pressure_decay_rate(pressure_decay_rate);
 				tfbot_meta bot_meta = botgen.generate_bot();
 				tfbot& bot = bot_meta.get_bot();
 
@@ -367,6 +373,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 				}
 				*/
 
+				const float time_left = std::min(max_time - t, max_tfbot_wavespawn_time);
+
 				float effective_pressure;
 				float wait_between_spawns;
 				int max_count = 0;
@@ -376,7 +384,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 					effective_pressure = bot_meta.pressure * bot.health;
 					challenge_to_kill = effective_pressure * recip_pressure_decay_rate;
 					wait_between_spawns = challenge_to_kill * rand_float(1.0f, 5.0f); // * pressure_compensation;
-					max_count = static_cast<int>(floor((max_time - t) / wait_between_spawns));
+					max_count = static_cast<int>(floor(time_left / wait_between_spawns));
 
 					//effective_challenge_to_kill = effective_pressure / effective_pressure_decay_rate;
 
@@ -386,12 +394,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 					if (max_count == 0 && bot.health > 25)
 					{
 						//max_count = 0;
-						bot.health = static_cast<int>(bot.health * 0.9f);
-						/*
 						// If the wave isn't almost over, keep dwindling the bot's health down.
 						if (max_time - t > 20)
 						{
-							bot.health *= 0.9f;
+							bot.health = static_cast<int>(bot.health * 0.9f);
 						}
 						// If the wave is almost over...
 						else
@@ -403,7 +409,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 								max_count = 1;
 							}
 						}
-						*/
 					}
 					else if (max_count > 100)
 					{

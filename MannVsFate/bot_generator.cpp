@@ -11,6 +11,11 @@ void bot_generator::set_possible_classes(const std::vector<player_class>& classe
 	possible_classes = classes;
 }
 
+void bot_generator::set_pressure_decay_rate(float in)
+{
+	pressure_decay_rate = in;
+}
+
 tfbot_meta bot_generator::generate_bot()
 {
 	// Let's generate a random TFBot.
@@ -352,13 +357,14 @@ tfbot_meta bot_generator::generate_bot()
 	// Have a chance to tweak the health value.
 	if ((bot_meta.isGiant && rand_chance(0.8f)) || rand_chance(0.5f))
 	{
-		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, 5.0f));
+		float upper_bound = pressure_decay_rate * 0.002f;
+		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, upper_bound));
 	}
 	if (rand_chance(0.1f * chanceMult))
 	{
 		bot.attributes.emplace_back("Aggressive");
 	}
-	if (item_class == player_class::medic && rand_chance(0.5f * chanceMult))
+	if ((item_class == player_class::medic || item_class == player_class::soldier) && rand_chance(0.5f * chanceMult))
 	{
 		bot.attributes.emplace_back("SpawnWithFullCharge");
 		bot_meta.pressure *= 2.0f;

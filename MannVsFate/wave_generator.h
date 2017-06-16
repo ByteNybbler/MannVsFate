@@ -9,7 +9,7 @@
 
 class wave_generator
 {
-	const std::string version = "0.2.0";
+	const std::string version = "0.2.1";
 
 public:
 	// Accessors.
@@ -31,6 +31,7 @@ public:
 	void set_max_icons(int in);
 	void set_max_wavespawns(int in);
 	void set_possible_classes(const std::vector<player_class>& classes);
+	void set_max_tfbot_wavespawn_time(int in);
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
 
@@ -79,6 +80,8 @@ private:
 	float currency_pressure_multiplier = 0.8f;
 	// The chance that a WaveSpawn will be a tank WaveSpawn.
 	float tank_chance = 0.02f;
+	// The maximum number of seconds that a TFBot WaveSpawn can last.
+	int max_tfbot_wavespawn_time = 120;
 
 	// Write a number of indents based on the indentation level.
 	void write_indents();

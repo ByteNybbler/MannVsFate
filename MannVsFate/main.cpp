@@ -170,6 +170,12 @@ int main(int argc, char** argv)
 
 					continue;
 				}
+				if (std::strcmp(argv[i], "-botmaxtime") == 0)
+				{
+					++i;
+					gen.set_max_tfbot_wavespawn_time(toint(argv[i]));
+					continue;
+				}
 			}
 		}
 
