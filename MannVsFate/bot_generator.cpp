@@ -383,10 +383,12 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.isAlwaysFireWeapon = true;
 		}
 	}
+	/*
 	if (rand_chance(0.02f))
 	{
 		bot.attributes.emplace_back("IgnoreFlag");
 	}
+	*/
 	/*
 	if (rand_chance(0.05f * chanceMult))
 	{
