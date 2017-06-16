@@ -9,7 +9,7 @@
 
 class wave_generator
 {
-	const std::string version = "0.2.1";
+	const std::string version = "0.2.2";
 
 public:
 	// Accessors.

@@ -1,1 +1,1 @@
-MannVsFate.exe -map mvm_bigrock -name unlucky_penguin_of_doom -startingcurrency 1000 -waves 13 -fixedrespawnwavetime -players 5 -wavecurrency 1000 -time 250 -tankchance 0.4 -wavespawns 80
+MannVsFate.exe -map mvm_bigrock -name unlucky_penguin_of_doom -startingcurrency 1000 -waves 13 -fixedrespawnwavetime -players 5 -wavecurrency 1000 -time 250 -tankchance 0.05 -wavespawns 80

@@ -301,7 +301,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				while (max_count == 0)
 				{
-					effective_pressure = health * speed_pressure * 0.25f;
+					effective_pressure = health * speed_pressure;
 					time_to_kill = effective_pressure * recip_pressure_decay_rate;
 					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f);
 					max_count = static_cast<int>(floor((max_time - t) / wait_between_spawns));
@@ -317,7 +317,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 					}
 				}
 
-				health = static_cast<int>(static_cast<float>(health) * 2.5f);
+				//health = static_cast<int>(static_cast<float>(health) * 2.5f);
+
 				// Round the tank health to the nearest 1000.
 				health = static_cast<int>(std::ceil(static_cast<float>(health) / 1000) * 1000);
 
@@ -330,7 +331,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.wait_before_starting = static_cast<float>(t);
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.spawns_remaining = ws.total_count - 1;
-				ws.effective_pressure = effective_pressure;
+				ws.effective_pressure = effective_pressure * 0.25f;
 				ws.time_to_kill = time_to_kill;
 				ws.type_of_spawned = wavespawn::type::tank;
 				ws.tnk.speed = speed;
