@@ -367,7 +367,7 @@ tfbot_meta bot_generator::generate_bot()
 	if ((item_class == player_class::medic || item_class == player_class::soldier) && rand_chance(0.5f * chanceMult))
 	{
 		bot.attributes.emplace_back("SpawnWithFullCharge");
-		bot_meta.pressure *= 2.0f;
+		bot_meta.pressure *= 2.5f;
 	}
 	if (rand_chance(0.1f * chanceMult) && !bot_meta.isAlwaysFireWeapon)
 	{
@@ -626,6 +626,20 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot_meta.damage_bonus *= damage_bonus_mod;
 	}
+	if (rand_chance(0.1f * chanceMult))
+	{
+		float rad;
+		if (bot_meta.isGiant)
+		{
+			rad = rand_float(0.1f, 3.0f);
+		}
+		else
+		{
+			rad = rand_float(0.1f, 1.0f);
+		}
+		bot.character_attributes.emplace_back("bullets per shot bonus", rad);
+		bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
+	}
 	if (rand_chance(0.1f * chanceMult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
 	{
 		const float change = rand_float(0.01f, 2.0f);
@@ -800,12 +814,6 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.character_attributes.emplace_back("use large smoke explosion", 1);
 		}
-	}
-	if (rand_chance(0.1f * chanceMult))
-	{
-		float rad = rand_float(0.1f, 5.0f);
-		bot.character_attributes.emplace_back("bullets per shot bonus", rad);
-		bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
 	}
 	if (item_class == player_class::soldier || item_class == player_class::sniper || item_class == player_class::pyro)
 	{
