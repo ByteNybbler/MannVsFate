@@ -69,7 +69,7 @@ private:
 	// The pressure decay rate multiplier.
 	float pressure_decay_rate_multiplier = 0.03f; // 0.1f;
 	// The amount by which the pressure decay rate is multiplied when stepping through time.
-	float pressure_decay_rate_multiplier_in_time = 3.5f;
+	float pressure_decay_rate_multiplier_in_time = 3.0f;
 	// The maximum number of wavespawns per wave.
 	unsigned int max_wavespawns = 30;
 	// The maximum amount of time that a wave can last.
