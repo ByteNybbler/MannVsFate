@@ -26,10 +26,14 @@ struct wavespawn
 	// Variables for assistance with calculating pressure.
 
 	float effective_pressure;
-	float challenge_to_kill;
+
+	// How long the bot should theoretically take to kill, in seconds.
+	float time_to_kill;
 	
 	float time_until_next_spawn = 0.0f;
 	int spawns_remaining = 0;
+	// How long until the time to kill expires.
+	float time_to_kill_expires = 0.0f;
 };
 
 #endif

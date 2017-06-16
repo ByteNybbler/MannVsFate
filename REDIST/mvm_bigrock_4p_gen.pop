@@ -39,28 +39,26 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_1"
-			TotalCount 16
+			TotalCount 5
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 1.52681
-			TotalCurrency 100
+			WaitBetweenSpawns 1.53873
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 16
+			MaxActive 5
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "Sergeant Bouncy Clicker Skeleton"
-				ClassIcon Soldier
-				Health 154
-				Skill Hard
-				WeaponRestrictions PrimaryOnly
-				Item "Festive Shotgun 2014"
-				Item "The Market Gardener"
-				Item "Rust Botkiller Rocket Launcher Mk.I"
+				Class Heavyweapons
+				Name "Commander Bean Max"
+				ClassIcon heavy
+				Health 184
+				Skill Easy
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "Gloves of Running Urgently"
+				Item "Festive Minigun 2011"
 				CharacterAttributes
 				{
-					"weapon spread bonus" 9
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -69,30 +67,40 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_2"
-			TotalCount 1
+			TotalCount 18
 			WaitBeforeStarting 1
-			WaitBetweenSpawns 4.20719
-			TotalCurrency 100
+			WaitBetweenSpawns 5.21911
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 1
+			MaxActive 18
 			Where spawnbot
 
 			TFBot
 			{
-				Class Medic
-				Name "Chief Keyboard"
-				ClassIcon Medic_giant
-				Health 2250
+				Class Spy
+				Name "Locking Sam and Hot Mother Sock"
+				ClassIcon Spy_giant
+				Health 960
 				Skill Easy
+				WeaponRestrictions MeleeOnly
+				Attributes AutoJump
 				Attributes MiniBoss
-				Item "Gold Botkiller Medi Gun Mk.I"
-				Item "Festive Bonesaw 2014"
-				Item "The Overdose"
+				AutoJumpMin 1.04972
+				AutoJumpMax 5.74244
+				Item "TF_WEAPON_REVOLVER"
+				Item "Silver Botkiller Knife Mk.I"
+				Item "The Cloak and Dagger"
+				Item "Festive Sapper"
 				CharacterAttributes
 				{
+					"increased jump height" 8.42171
+					"cancel falling damage" 1
+					"bot custom jump particle" 1
+					"no self blast dmg" 1
 					"damage bonus" 1
-					"airblast vulnerability multiplier" 0.506389
-					"damage force reduction" 0.630217
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.362489
+					"damage force reduction" 0.572879
 					"move speed bonus" 0.5
 				}
 			}
@@ -100,30 +108,46 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_3"
-			TotalCount 6
-			WaitBeforeStarting 15
-			WaitBetweenSpawns 5.88295
-			TotalCurrency 100
+			TotalCount 1
+			WaitBeforeStarting 3
+			WaitBetweenSpawns 88.7862
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 6
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Kicking Overlord Mega Ghost Truck"
-				ClassIcon Pyro
-				Health 125
-				Skill Normal
-				Item "The Flare Gun"
-				Item "Saxxy"
-				Item "Rust Botkiller Flame Thrower Mk.I"
+				Class Engineer
+				Name "Song"
+				ClassIcon Engineer_giant
+				Health 1481
+				Scale 0.776229
+				Skill Hard
+				MaxVisionRange 30000
+				TeleportWhere spawnbot
+				Attributes MiniBoss
+				Attributes UseBossHealthBar
+				Attributes Aggressive
+				Item "TF_WEAPON_PISTOL"
+				Item "Gold Botkiller Wrench Mk.I"
+				Item "Festive Shotgun 2014"
 				CharacterAttributes
 				{
-					"bullets per shot bonus" 1.42774
-					"increase buff duration" 11.2637
-					"damage bonus" 1
-					"move speed bonus" 1
+					"cannot pick up intelligence" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.516751
+					"damage force reduction" 0.430593
+					"attach particle effect static" 40
+					"engy sentry fire rate increased" 2.54099
+					"faster reload rate" -1
+					"effect bar recharge rate increased" 1.01106
+					"override projectile type" 5
+					"no self blast dmg" 1
+					"Blast radius increased" 2.85408
+					"bullets per shot bonus" 3.21451
+					"damage bonus" 2.22684
+					"move speed bonus" 0.25
 				}
 			}
 		}
@@ -131,29 +155,29 @@ WaveSchedule
 		{
 			Name "wave1_4"
 			TotalCount 1
-			WaitBeforeStarting 30
-			WaitBetweenSpawns 21.9036
-			TotalCurrency 100
+			WaitBeforeStarting 53
+			WaitBetweenSpawns 3.01044
+			TotalCurrency 93
 			SpawnCount 1
 			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "Sucking the Epicord"
-				ClassIcon Soldier
-				Health 200
+				Class Scout
+				Name "Computer"
+				ClassIcon Scout
+				Health 102
 				Skill Normal
-				Attributes SpawnWithFullCharge
-				Item "Panic Attack Shotgun"
-				Item "Prinny Machete"
-				Item "The Air Strike"
+				WeaponRestrictions MeleeOnly
+				Attributes Aggressive
+				Item "Crit-a-Cola"
+				Item "The Atomizer"
+				Item "TF_WEAPON_SCATTERGUN"
 				CharacterAttributes
 				{
-					"faster reload rate" -1
-					"projectile speed increased" 6.48808
-					"override projectile type" 13
+					"effect bar recharge rate increased" 0.997818
+					"head scale" 1.401
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -162,60 +186,30 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_5"
-			TotalCount 4
+			TotalCount 3
 			WaitBeforeStarting 53
-			WaitBetweenSpawns 11.0573
-			TotalCurrency 100
+			WaitBetweenSpawns 5.41196
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 4
+			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "The Black Disgusting Music"
-				ClassIcon heavy_giant
-				Health 5775
-				Skill Easy
-				Attributes MiniBoss
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
-				Item "TF_WEAPON_FISTS"
-				Item "Rust Botkiller Minigun Mk.I"
-				CharacterAttributes
-				{
-					"projectile speed increased" 3.18216
-					"damage bonus" 1
-					"override footstep sound set" 2
-					"airblast vulnerability multiplier" 0.407297
-					"damage force reduction" 0.509589
-					"move speed bonus" 0.5
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave1_6"
-			TotalCount 51
-			WaitBeforeStarting 100
-			WaitBetweenSpawns 2.06204
-			TotalCurrency 100
-			SpawnCount 1
-			MaxActive 22
-			Where spawnbot
-
-			TFBot
-			{
-				Class Demoman
-				Name "Demoting the Keyboard Cancer"
-				ClassIcon demo
-				Health 175
+				Class Engineer
+				Name "Mistress Locked Dog Button"
+				ClassIcon Engineer
+				Health 125
 				Skill Normal
-				Item "Stickybomb Jumper"
-				Item "Prinny Machete"
-				Item "The Loose Cannon"
+				MaxVisionRange 30000
+				TeleportWhere spawnbot
+				Item "TTG Max Pistol"
+				Item "Blood Botkiller Wrench Mk.I"
+				Item "The Pomson 6000"
 				CharacterAttributes
 				{
-					"charge time increased" 6.46045
+					"cannot pick up intelligence" 1
+					"engy sentry fire rate increased" 0.903464
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -223,30 +217,58 @@ WaveSchedule
 		}
 		WaveSpawn
 		{
-			Name "wave1_7"
-			TotalCount 91
-			WaitBeforeStarting 101
-			WaitBetweenSpawns 1.31417
-			TotalCurrency 100
+			Name "wave1_6"
+			TotalCount 8
+			WaitBeforeStarting 56
+			WaitBetweenSpawns 2.26916
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 8
 			Where spawnbot
 
 			TFBot
 			{
-				Class Scout
-				Name "Custom Twin"
-				ClassIcon Scout
-				Health 137
-				Skill Hard
-				Item "The Winger"
-				Item "Frying Pan"
-				Item "Rust Botkiller Scattergun Mk.I"
+				Class Heavyweapons
+				Name "Your Imp Mouth"
+				ClassIcon heavy
+				Health 300
+				Skill Normal
+				Attributes Aggressive
+				Item "Festive Shotgun 2014"
+				Item "The Bread Bite"
+				Item "Gold Botkiller Minigun Mk.I"
 				CharacterAttributes
 				{
-					"fire rate bonus" 0.753763
-					"clip size bonus" 100000
 					"damage bonus" 1
+					"move speed bonus" 0.921932
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave1_7"
+			TotalCount 14
+			WaitBeforeStarting 58
+			WaitBetweenSpawns 7.5081
+			TotalCurrency 93
+			SpawnCount 1
+			MaxActive 14
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Count Dangerous Mother"
+				ClassIcon Pyro
+				Health 175
+				Skill Hard
+				Attributes AlwaysFireWeapon
+				Item "Festive Flare Gun"
+				Item "The Homewrecker"
+				Item "The Nostromo Napalmer"
+				CharacterAttributes
+				{
+					"damage bonus" 0.90877
 					"move speed bonus" 1
 				}
 			}
@@ -255,28 +277,60 @@ WaveSchedule
 		{
 			Name "wave1_8"
 			TotalCount 1
-			WaitBeforeStarting 102
-			WaitBetweenSpawns 1.19159
-			TotalCurrency 100
+			WaitBeforeStarting 58
+			WaitBetweenSpawns 179.327
+			TotalCurrency 93
+
+			FirstSpawnOutput
+			{
+				Target boss_spawn_relay
+				Action Trigger
+			}
+
+			Tank
+			{
+				Health 3000
+				Speed 98.2193
+				Name "tankboss"
+				StartingPathTrackNode "boss_path_a1"
+				OnKilledOutput
+				{
+					Target boss_dead_relay
+					Action Trigger
+				}
+				OnBombDroppedOutput
+				{
+					Target boss_deploy_relay
+					Action Trigger
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave1_9"
+			TotalCount 14
+			WaitBeforeStarting 188
+			WaitBetweenSpawns 5.92708
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 1
+			MaxActive 14
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Contemptible My Dad"
-				ClassIcon Pyro
-				Health 228
-				Skill Hard
-				Item "The Manmelter"
-				Item "The Maul"
-				Item "Gold Botkiller Flame Thrower Mk.II"
+				Class Medic
+				Name "Chairman Bronze"
+				ClassIcon Medic
+				Health 163
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
+				Attributes SpawnWithFullCharge
+				Item "Silver Botkiller Medi Gun Mk.I"
+				Item "The Memory Maker"
+				Item "The Crusader's Crossbow"
 				CharacterAttributes
 				{
-					"airblast pushback scale" 3.61559
-					"airblast vertical pushback scale" -2.23377
-					"override projectile type" 2
+					"Blast radius increased" 2.70287
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -284,62 +338,29 @@ WaveSchedule
 		}
 		WaveSpawn
 		{
-			Name "wave1_9"
-			TotalCount 5
-			WaitBeforeStarting 238
-			WaitBetweenSpawns 4.59682
-			TotalCurrency 100
+			Name "wave1_10"
+			TotalCount 3
+			WaitBeforeStarting 190
+			WaitBetweenSpawns 22.9284
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 5
+			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Nuking Private Predator Rick"
-				ClassIcon Sniper_giant
-				Health 1875
+				Class Heavyweapons
+				Name "YOU ARE A Jerk"
+				ClassIcon heavy_gru
+				Health 300
 				Skill Hard
 				WeaponRestrictions MeleeOnly
-				Attributes MiniBoss
-				Item "The Cozy Camper"
-				Item "Frying Pan"
-				Item "The Bazaar Bargain"
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "Gloves of Running Urgently"
+				Item "Festive Minigun 2011"
 				CharacterAttributes
 				{
-					"override projectile type" 6
-					"damage bonus" 0.332865
-					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.520103
-					"damage force reduction" 0.499591
-					"move speed bonus" 0.5
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave1_10"
-			TotalCount 15
-			WaitBeforeStarting 240
-			WaitBetweenSpawns 1.16932
-			TotalCurrency 100
-			SpawnCount 1
-			MaxActive 15
-			Where spawnbot
-
-			TFBot
-			{
-				Class Scout
-				Name "Attacking the Mouth Bullet"
-				ClassIcon Scout
-				Health 125
-				Skill Hard
-				Item "TF_WEAPON_PISTOL_SCOUT"
-				Item "The Holy Mackerel"
-				Item "Gold Botkiller Scattergun Mk.II"
-				CharacterAttributes
-				{
-					"weapon spread bonus" 3
+					"bleeding duration" 5
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -348,56 +369,65 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_11"
-			TotalCount 5
-			WaitBeforeStarting 269
-			WaitBetweenSpawns 2.92557
-			TotalCurrency 100
+			TotalCount 10
+			WaitBeforeStarting 198
+			WaitBetweenSpawns 7.75704
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 5
+			MaxActive 10
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Commander Tornado Robot"
-				ClassIcon heavy
-				Health 300
-				Skill Hard
-				Item "Panic Attack Shotgun"
-				Item "Warrior's Spirit"
-				Item "Blood Botkiller Minigun Mk.I"
+				Class Medic
+				Name "Sauce Stinker"
+				ClassIcon Medic
+				Health 150
+				Skill Expert
+				Attributes SpawnWithFullCharge
+				Item "Silver Botkiller Medi Gun Mk.II"
+				Item "The Memory Maker"
+				Item "The Blutsauger"
 				CharacterAttributes
 				{
-					"projectile speed increased" 2.45684
-					"damage bonus" 1
-					"move speed bonus" 1
+					"override projectile type" 18
+					"Set DamageType Ignite" 1
+					"attach particle effect static" 13
+					"weapon burn dmg increased" 1.46648
+					"melee bounds multiplier" 360
+					"melee range multiplier" 30000
+					"Blast radius increased" 30000
+					"damage bonus" 0.01
+					"move speed bonus" 1.90676
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave1_12"
-			TotalCount 9
-			WaitBeforeStarting 271
-			WaitBetweenSpawns 2.14542
-			TotalCurrency 100
+			TotalCount 1
+			WaitBeforeStarting 293
+			WaitBetweenSpawns 24.7944
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 9
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Spy
-				Name "Spitting on Mistress Mother"
-				ClassIcon Spy
-				Health 136
+				Class Heavyweapons
+				Name "Vice President Inflated Destruction"
+				ClassIcon heavy
+				Health 369
 				Skill Expert
-				Item "The Diamondback"
-				Item "Gold Frying Pan"
-				Item "The Cloak and Dagger"
-				Item "TF_WEAPON_BUILDER_SPY"
+				WeaponRestrictions PrimaryOnly
+				Item "Festive Shotgun 2014"
+				Item "The Holiday Punch"
+				Item "Iron Curtain"
 				CharacterAttributes
 				{
+					"faster reload rate" -1
+					"head scale" 2.501
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -407,35 +437,29 @@ WaveSchedule
 		{
 			Name "wave1_13"
 			TotalCount 1
-			WaitBeforeStarting 291
-			WaitBetweenSpawns 15.9552
-			TotalCurrency 100
+			WaitBeforeStarting 295
+			WaitBetweenSpawns 8.05307
+			TotalCurrency 93
 			SpawnCount 1
 			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Spy
-				Name "Religious Fence Train"
-				ClassIcon Spy
+				Class Engineer
+				Name "Kicking the Opposite Clicker Fusion"
+				ClassIcon Engineer
 				Health 125
 				Skill Expert
-				Attributes AlwaysCrit
-				Attributes AutoJump
-				AutoJumpMin 4.83553
-				AutoJumpMax 4.83553
-				Item "Festive Ambassador"
-				Item "Festive Knife 2011"
-				Item "TF_WEAPON_INVIS"
-				Item "Festive Sapper"
-				Item "The B.A.S.E. Jumper"
+				WeaponRestrictions PrimaryOnly
+				TeleportWhere spawnbot
+				Item "The Short Circuit"
+				Item "The Jag"
+				Item "The Pomson 6000"
 				CharacterAttributes
 				{
-					"increased jump height" 9.53316
-					"cancel falling damage" 1
-					"bot custom jump particle" 1
-					"damage bonus" 1
+					"cannot pick up intelligence" 1
+					"damage bonus" 0.387302
 					"move speed bonus" 1
 				}
 			}
@@ -443,27 +467,30 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave1_14"
-			TotalCount 5
-			WaitBeforeStarting 299
-			WaitBetweenSpawns 0.0840894
-			TotalCurrency 100
+			TotalCount 1
+			WaitBeforeStarting 296
+			WaitBetweenSpawns 2.10244
+			TotalCurrency 93
 			SpawnCount 1
-			MaxActive 5
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Monarch Racist Groove"
-				ClassIcon Sniper
-				Health 36
-				Skill Easy
-				Attributes AlwaysFireWeapon
-				Item "The Cozy Camper"
-				Item "The Ham Shank"
-				Item "Festive Sniper Rifle 2011"
+				Class Engineer
+				Name "Adventures of Father Torso Story"
+				ClassIcon Engineer
+				Health 125
+				Skill Hard
+				TeleportWhere spawnbot
+				Item "The Short Circuit"
+				Item "Blood Botkiller Wrench Mk.I"
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
 				CharacterAttributes
 				{
+					"cannot pick up intelligence" 1
+					"engineer teleporter build rate multiplier" 1.49874
+					"head scale" 0.301
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -473,32 +500,60 @@ WaveSchedule
 		{
 			Name "wave1_15"
 			TotalCount 1
-			WaitBeforeStarting 299
-			WaitBetweenSpawns 2.03132
-			TotalCurrency 100
+			WaitBeforeStarting 297
+			WaitBetweenSpawns 2.47007
+			TotalCurrency 93
 			SpawnCount 1
 			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Master Severed Theory Clarinet"
-				ClassIcon pyro_flare
-				Health 93
-				Skill Easy
-				WeaponRestrictions SecondaryOnly
-				MaxVisionRange 30000
-				Attributes AlwaysFireWeapon
-				Item "The Detonator"
-				Item "The Ham Shank"
-				Item "Festive Backburner 2014"
+				Class Demoman
+				Name "Pushing Vice President Dangerous Button"
+				ClassIcon demo
+				Health 205
+				Skill Normal
+				Item "The Chargin' Targe"
+				Item "Nessie's Nine Iron"
+				Item "The Loose Cannon"
 				CharacterAttributes
 				{
-					"projectile speed increased" 1.68455
-					"override projectile type" 12
-					"damage bonus" 0.971928
+					"charge time increased" 7.86142
+					"damage bonus" 1
 					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave1_16"
+			TotalCount 1
+			WaitBeforeStarting 299
+			WaitBetweenSpawns 26.4803
+			TotalCurrency 93
+
+			FirstSpawnOutput
+			{
+				Target boss_spawn_relay
+				Action Trigger
+			}
+
+			Tank
+			{
+				Health 1000
+				Speed 22.6605
+				Name "tankboss"
+				StartingPathTrackNode "boss_path_a1"
+				OnKilledOutput
+				{
+					Target boss_dead_relay
+					Action Trigger
+				}
+				OnBombDroppedOutput
+				{
+					Target boss_deploy_relay
+					Action Trigger
 				}
 			}
 		}
@@ -519,32 +574,34 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave2_1"
-			TotalCount 31
+			TotalCount 3
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 1.3007
-			TotalCurrency 375
+			WaitBetweenSpawns 14.2462
+			TotalCurrency 65
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
-				Class Spy
-				Name "Squishing the Cancerous Hurricane Ghost"
-				ClassIcon Spy
-				Health 63
-				Skill Easy
+				Class Pyro
+				Name "Eternal George Button"
+				ClassIcon Pyro
+				Health 392
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
 				Attributes AutoJump
-				AutoJumpMin 1.02965
-				AutoJumpMax 4.17052
-				Item "L'Etranger"
-				Item "Blood Botkiller Knife Mk.I"
-				Item "The Cloak and Dagger"
-				Item "The Snack Attack"
+				AutoJumpMin 3.37947
+				AutoJumpMax 3.37947
+				Item "The Manmelter"
+				Item "The Axtinguisher"
+				Item "Gold Botkiller Flame Thrower Mk.II"
+				Item "The B.A.S.E. Jumper"
 				CharacterAttributes
 				{
+					"increased jump height" 12.0635
+					"cancel falling damage" 1
 					"bot custom jump particle" 1
-					"slow enemy on hit major" 1
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -553,68 +610,57 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave2_2"
-			TotalCount 1
-			WaitBeforeStarting 5
-			WaitBetweenSpawns 90.7589
-			TotalCurrency 375
+			TotalCount 21
+			WaitBeforeStarting 4
+			WaitBetweenSpawns 2.61594
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 21
+			Where spawnbot
 
-			FirstSpawnOutput
+			TFBot
 			{
-				Target boss_spawn_relay
-				Action Trigger
-			}
-
-			Tank
-			{
-				Health 48000
-				Speed 13.6637
-				Name "tankboss"
-				StartingPathTrackNode "boss_path_a1"
-				OnKilledOutput
+				Class Heavyweapons
+				Name "Your Polished Fence"
+				ClassIcon heavy
+				Health 300
+				Skill Easy
+				WeaponRestrictions MeleeOnly
+				Item "Festive Shotgun 2014"
+				Item "The Ham Shank"
+				Item "Silver Botkiller Minigun Mk.I"
+				CharacterAttributes
 				{
-					Target boss_dead_relay
-					Action Trigger
-				}
-				OnBombDroppedOutput
-				{
-					Target boss_deploy_relay
-					Action Trigger
+					"damage bonus" 1
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave2_3"
-			TotalCount 25
-			WaitBeforeStarting 130
-			WaitBetweenSpawns 3.38265
-			TotalCurrency 375
+			TotalCount 12
+			WaitBeforeStarting 4
+			WaitBetweenSpawns 4.44629
+			TotalCurrency 65
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 12
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "Kissing Admiral Wimp"
-				ClassIcon Soldier
-				Health 271
-				Skill Easy
-				WeaponRestrictions SecondaryOnly
-				MaxVisionRange 30000
-				Attributes SpawnWithFullCharge
-				Attributes AutoJump
-				AutoJumpMin 2.56339
-				AutoJumpMax 4.03409
-				Item "Panic Attack Shotgun"
-				Item "Prinny Machete"
-				Item "Diamond Botkiller Rocket Launcher Mk.I"
+				Class Spy
+				Name "Private Biased Wonderland"
+				ClassIcon Spy
+				Health 255
+				Skill Hard
+				Item "Festive Revolver 2014"
+				Item "Gold Frying Pan"
+				Item "The Cloak and Dagger"
+				Item "The Red-Tape Recorder"
 				CharacterAttributes
 				{
-					"increased jump height" 4.11476
-					"cancel falling damage" 1
-					"bot custom jump particle" 1
-					"Blast radius increased" 2.95645
+					"projectile spread angle penalty" 9
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -623,29 +669,645 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave2_4"
-			TotalCount 49
-			WaitBeforeStarting 226
-			WaitBetweenSpawns 1.46952
-			TotalCurrency 375
+			TotalCount 23
+			WaitBeforeStarting 5
+			WaitBetweenSpawns 2.09054
+			TotalCurrency 65
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Talking to Professor Father"
-				ClassIcon heavy
-				Health 300
-				Skill Expert
-				WeaponRestrictions PrimaryOnly
-				Item "Panic Attack Shotgun"
-				Item "The Freedom Staff"
-				Item "Festive Minigun 2011"
+				Class Sniper
+				Name "Poking the Capitalist Capitalist Magic"
+				ClassIcon Sniper
+				Health 79
+				Skill Hard
+				WeaponRestrictions MeleeOnly
+				Attributes AutoJump
+				AutoJumpMin 1.81306
+				AutoJumpMax 3.08866
+				Item "The Cleaner's Carbine"
+				Item "Gold Frying Pan"
+				Item "TF_WEAPON_SNIPERRIFLE"
+				Item "The B.A.S.E. Jumper"
 				CharacterAttributes
 				{
-					"projectile speed increased" 3.7589
-					"damage bonus" 0.972787
+					"increased jump height" 9.52199
+					"cancel falling damage" 1
+					"bot custom jump particle" 1
+					"bullets per shot bonus" 2.70205
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_5"
+			TotalCount 13
+			WaitBeforeStarting 6
+			WaitBetweenSpawns 5.43272
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 13
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Distributing the Curvy Fire Wefight"
+				ClassIcon Spy
+				Health 224
+				Skill Hard
+				WeaponRestrictions MeleeOnly
+				Item "TF_WEAPON_REVOLVER"
+				Item "Your Eternal Reward"
+				Item "TTG Watch"
+				Item "The Red-Tape Recorder"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1.22848
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_6"
+			TotalCount 38
+			WaitBeforeStarting 8
+			WaitBetweenSpawns 2.77357
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Captain Bomb"
+				ClassIcon Pyro
+				Health 175
+				Skill Hard
+				Item "The Reserve Shooter"
+				Item "Saxxy"
+				Item "The Rainblower"
+				CharacterAttributes
+				{
+					"projectile speed increased" 4.67564
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_7"
+			TotalCount 4
+			WaitBeforeStarting 102
+			WaitBetweenSpawns 9.30774
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 4
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Slicing Sam and Dry Father Chromosome"
+				ClassIcon heavy_shotgun
+				Health 649
+				Skill Normal
+				WeaponRestrictions SecondaryOnly
+				Item "Panic Attack Shotgun"
+				Item "The Bat Outta Hell"
+				Item "Iron Curtain"
+				CharacterAttributes
+				{
+					"faster reload rate" 1.80303
+					"projectile spread angle penalty" 3
+					"override projectile type" 11
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_8"
+			TotalCount 20
+			WaitBeforeStarting 105
+			WaitBetweenSpawns 2.55088
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 20
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "Final Planet"
+				ClassIcon Soldier
+				Health 99
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
+				Item "The Righteous Bison"
+				Item "The Market Gardener"
+				Item "The Cow Mangler 5000"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_9"
+			TotalCount 20
+			WaitBeforeStarting 105
+			WaitBetweenSpawns 1.71296
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 20
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Renting the Xylophone Woman"
+				ClassIcon demo
+				Health 288
+				Skill Hard
+				Item "Carbonado Botkiller Stickybomb Launcher Mk.I"
+				Item "The Ham Shank"
+				Item "Festive Grenade Launcher"
+				CharacterAttributes
+				{
+					"override projectile type" 6
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_10"
+			TotalCount 10
+			WaitBeforeStarting 105
+			WaitBetweenSpawns 8.88896
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 10
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Sliding Down My Wonderland"
+				ClassIcon Engineer_giant
+				Health 1875
+				Skill Hard
+				TeleportWhere spawnbot
+				Attributes MiniBoss
+				Item "The Short Circuit"
+				Item "Festive Wrench 2011"
+				Item "The Widowmaker"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.558692
+					"damage force reduction" 0.438935
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_11"
+			TotalCount 6
+			WaitBeforeStarting 158
+			WaitBetweenSpawns 19.0777
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 6
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Sauce"
+				ClassIcon sniper_jarate
+				Health 127
+				Skill Hard
+				WeaponRestrictions SecondaryOnly
+				Item "Festive SMG 2014"
+				Item "Gold Frying Pan"
+				Item "Gold Botkiller Sniper Rifle Mk.I"
+				CharacterAttributes
+				{
+					"override projectile type" 11
+					"increase buff duration" 17.6687
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_12"
+			TotalCount 47
+			WaitBeforeStarting 164
+			WaitBetweenSpawns 1.09502
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Embarrassing the Father"
+				ClassIcon demo
+				Health 175
+				Skill Hard
+				Item "The Quickiebomb Launcher"
+				Item "Saxxy"
+				Item "The Loch-n-Load"
+				CharacterAttributes
+				{
+					"fire rate bonus" 0.627375
+					"clip size bonus" 100000
+					"head scale" -0.801
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_13"
+			TotalCount 66
+			WaitBeforeStarting 165
+			WaitBetweenSpawns 1.08375
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Judge Wang House"
+				ClassIcon Engineer
+				Health 125
+				Skill Expert
+				TeleportWhere spawnbot
+				Item "The Wrangler"
+				Item "Necro Smasher"
+				Item "The Widowmaker"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_14"
+			TotalCount 13
+			WaitBeforeStarting 165
+			WaitBetweenSpawns 5.03617
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 13
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Vice President Dark Head Platinum"
+				ClassIcon Engineer
+				Health 125
+				Skill Expert
+				WeaponRestrictions MeleeOnly
+				TeleportWhere spawnbot
+				Attributes AutoJump
+				AutoJumpMin 0.57955
+				AutoJumpMax 1.33042
+				Item "TTG Max Pistol"
+				Item "Diamond Botkiller Wrench Mk.I"
+				Item "The Frontier Justice"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"engy sentry fire rate increased" 0.633031
+					"increased jump height" 12.8044
+					"cancel falling damage" 1
+					"bot custom jump particle" 1
+					"override projectile type" 13
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_15"
+			TotalCount 6
+			WaitBeforeStarting 264
+			WaitBetweenSpawns 2.49229
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 6
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Queen Sexy Destruction"
+				ClassIcon Engineer
+				Health 46
+				Skill Easy
+				TeleportWhere spawnbot
+				Attributes AutoJump
+				AutoJumpMin 2.61656
+				AutoJumpMax 2.61656
+				Item "The Wrangler"
+				Item "The Eureka Effect"
+				Item "Festive Shotgun 2014"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"increased jump height" 12.2309
+					"cancel falling damage" 1
+					"bot custom jump particle" 1
+					"damage causes airblast" 1
+					"Blast radius increased" 1.84007
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_16"
+			TotalCount 1
+			WaitBeforeStarting 264
+			WaitBetweenSpawns 15.5783
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Hating My Body"
+				ClassIcon heavy
+				Health 300
+				Skill Hard
+				WeaponRestrictions PrimaryOnly
+				Attributes AlwaysCrit
+				Item "Festive Shotgun 2014"
+				Item "The Holiday Punch"
+				Item "Diamond Botkiller Minigun Mk.I"
+				CharacterAttributes
+				{
+					"Blast radius increased" 0.708283
+					"damage bonus" 0.604217
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_17"
+			TotalCount 1
+			WaitBeforeStarting 266
+			WaitBetweenSpawns 24.4763
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Stealing Mr. Hurricane"
+				ClassIcon Scout_giant
+				Health 1198
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Attributes MiniBoss
+				Item "Mutated Milk"
+				Item "Gold Frying Pan"
+				Item "The Back Scatter"
+				CharacterAttributes
+				{
+					"override footstep sound set" 5
+					"airblast vulnerability multiplier" 0.611732
+					"damage force reduction" 0.328088
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_18"
+			TotalCount 1
+			WaitBeforeStarting 279
+			WaitBetweenSpawns 10.6915
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Gross Toaster"
+				ClassIcon heavy
+				Health 660
+				Skill Easy
+				Item "The Family Business"
+				Item "The Bat Outta Hell"
+				Item "The Brass Beast"
+				CharacterAttributes
+				{
+					"projectile speed increased" 9.3556
+					"projectile spread angle penalty" 729
+					"override projectile type" 2
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_19"
+			TotalCount 1
+			WaitBeforeStarting 284
+			WaitBetweenSpawns 25.6457
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Monarch Ghost Duckoid"
+				ClassIcon Medic_giant
+				Health 1889
+				Skill Normal
+				Attributes MiniBoss
+				Attributes SpawnWithFullCharge
+				Item "Rust Botkiller Medi Gun Mk.I"
+				Item "Saxxy"
+				Item "The Crusader's Crossbow"
+				CharacterAttributes
+				{
+					"airblast vulnerability multiplier" 0.452917
+					"damage force reduction" 0.627779
+					"projectile speed increased" 7.04302
+					"no self blast dmg" 1
+					"damage bonus" 1
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_20"
+			TotalCount 1
+			WaitBeforeStarting 295
+			WaitBetweenSpawns 2.63918
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Overlord Communist Socialist"
+				ClassIcon Pyro
+				Health 175
+				Skill Normal
+				Item "The Detonator"
+				Item "Gold Frying Pan"
+				Item "The Degreaser"
+				CharacterAttributes
+				{
+					"fire rate bonus" 1.61733
+					"clip size bonus" 100000
+					"override projectile type" 8
+					"increase buff duration" 0.906391
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_21"
+			TotalCount 1
+			WaitBeforeStarting 295
+			WaitBetweenSpawns 4.35007
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Truck Pants"
+				ClassIcon sniper_bow
+				Health 125
+				Skill Easy
+				Item "Festive SMG 2014"
+				Item "The Conscientious Objector"
+				Item "Festive Huntsman"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"override projectile type" 11
+					"damage bonus" 1
+					"move speed bonus" 2.04162
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_22"
+			TotalCount 1
+			WaitBeforeStarting 296
+			WaitBetweenSpawns 6.22176
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Munching the Gnome Hand"
+				ClassIcon Pyro_giant
+				Health 855
+				Skill Normal
+				Attributes MiniBoss
+				Item "The Detonator"
+				Item "Saxxy"
+				Item "Blood Botkiller Flame Thrower Mk.I"
+				CharacterAttributes
+				{
+					"override projectile type" 18
+					"increase buff duration" 1.15429
+					"damage bonus" 1
+					"override footstep sound set" 6
+					"airblast vulnerability multiplier" 0.639122
+					"damage force reduction" 0.506727
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave2_23"
+			TotalCount 1
+			WaitBeforeStarting 297
+			WaitBetweenSpawns 57.1338
+			TotalCurrency 65
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Squishing the Trumpet"
+				ClassIcon Medic
+				Health 244
+				Skill Normal
+				Attributes SpawnWithFullCharge
+				Attributes AlwaysFireWeapon
+				Item "Blood Botkiller Medi Gun Mk.I"
+				Item "The Bat Outta Hell"
+				Item "The Overdose"
+				CharacterAttributes
+				{
+					"apply look velocity on damage" 4.59223
+					"damage bonus" 1
 					"move speed bonus" 1
 				}
 			}
@@ -667,62 +1329,64 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_1"
-			TotalCount 46
+			TotalCount 8
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 1.42482
-			TotalCurrency 150
+			WaitBetweenSpawns 6.81574
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 8
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Burning Mother Magical Underpants"
-				ClassIcon Engineer
-				Health 125
-				Skill Expert
-				WeaponRestrictions SecondaryOnly
-				TeleportWhere spawnbot
-				Item "TTG Max Pistol"
-				Item "Silver Botkiller Wrench Mk.I"
-				Item "The Pomson 6000"
+				Class Heavyweapons
+				Name "Promoting Lieutenant Deranged Robot Silver"
+				ClassIcon heavy_deflector
+				Health 300
+				Skill Easy
+				MaxVisionRange 30000
+				Item "Panic Attack Shotgun"
+				Item "TF_WEAPON_FISTS"
+				Item "Blood Botkiller Minigun Mk.I"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"engy sentry damage bonus" 4.77616
-					"engineer teleporter build rate multiplier" 3.67568
+					"attack projectiles" 1
+					"override projectile type" 8
 					"bleeding duration" 5
 					"damage bonus" 1
-					"move speed bonus" 1
+					"move speed bonus" 0.80095
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave3_2"
-			TotalCount 76
-			WaitBeforeStarting 1
-			WaitBetweenSpawns 1.38322
-			TotalCurrency 150
+			TotalCount 3
+			WaitBeforeStarting 3
+			WaitBetweenSpawns 17.4759
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
 				Class Scout
-				Name "Queen Baked Groove"
-				ClassIcon Scout
-				Health 125
-				Skill Normal
-				WeaponRestrictions MeleeOnly
-				Item "The Winger"
-				Item "Unarmed Combat"
-				Item "Blood Botkiller Scattergun Mk.I"
+				Name "Following Your Hole"
+				ClassIcon scout_shortstop_giant
+				Health 3083
+				Skill Hard
+				Attributes MiniBoss
+				Attributes AlwaysFireWeapon
+				Item "Mad Milk"
+				Item "Prinny Machete"
+				Item "The Shortstop"
 				CharacterAttributes
 				{
-					"no self blast dmg" 1
+					"override footstep sound set" 5
+					"airblast vulnerability multiplier" 0.39708
+					"damage force reduction" 0.363971
+					"projectile spread angle penalty" 3
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -731,96 +1395,92 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_3"
-			TotalCount 8
-			WaitBeforeStarting 107
-			WaitBetweenSpawns 12.1439
-			TotalCurrency 150
+			TotalCount 4
+			WaitBeforeStarting 60
+			WaitBetweenSpawns 9.57002
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 8
+			MaxActive 4
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "President Curvy Silver"
-				ClassIcon soldier_backup
-				Health 200
-				Skill Normal
-				Attributes SpawnWithFullCharge
-				Item "The Battalion's Backup"
-				Item "The Pain Train"
-				Item "Carbonado Botkiller Rocket Launcher Mk.I"
+				Class Demoman
+				Name "Stealing the Eternal Rick"
+				ClassIcon demo
+				Health 175
+				Skill Easy
+				MaxVisionRange 30000
+				Attributes IgnoreFlag
+				Item "Festive Stickybomb Launcher 2011"
+				Item "The Crossing Guard"
+				Item "The Loch-n-Load"
 				CharacterAttributes
 				{
-					"projectile speed increased" 6.9434
-					"bullets per shot bonus" 3.08471
-					"apply z velocity on damage" 5810.5
+					"faster reload rate" 1.95737
+					"bullets per shot bonus" 2.77591
 					"damage bonus" 1
-					"move speed bonus" 1
+					"move speed bonus" 2.55826
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave3_4"
-			TotalCount 6
-			WaitBeforeStarting 112
-			WaitBetweenSpawns 5.50698
-			TotalCurrency 150
+			TotalCount 8
+			WaitBeforeStarting 61
+			WaitBetweenSpawns 10.6182
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 6
+			MaxActive 8
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Attacking the Chat Sock"
-				ClassIcon Sniper
-				Health 347
-				Skill Expert
-				Attributes AlwaysFireWeapon
-				Attributes AutoJump
-				AutoJumpMin 3.02338
-				AutoJumpMax 5.36247
-				Item "Festive SMG 2014"
-				Item "Prinny Machete"
-				Item "Diamond Botkiller Sniper Rifle Mk.I"
+				Class Medic
+				Name "Laughter"
+				ClassIcon Medic
+				Health 128
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Attributes HoldFireUntilFullReload
+				Item "Silver Botkiller Medi Gun Mk.II"
+				Item "The Ham Shank"
+				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
 				CharacterAttributes
 				{
-					"bot custom jump particle" 1
-					"fire rate bonus" 1.21592
-					"clip size bonus" 100000
-					"projectile speed increased" 1.94775
-					"use large smoke explosion" 1
+					"weapon spread bonus" 3
 					"damage bonus" 1
-					"move speed bonus" 1
+					"move speed bonus" 2.14615
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave3_5"
-			TotalCount 3
-			WaitBeforeStarting 115
-			WaitBetweenSpawns 2.91376
-			TotalCurrency 150
+			TotalCount 30
+			WaitBeforeStarting 62
+			WaitBetweenSpawns 3.64829
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 3
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Medic
-				Name "My Apex"
-				ClassIcon Medic
-				Health 465
+				Class Demoman
+				Name "Reading to the Robot"
+				ClassIcon demo
+				Health 159
 				Skill Normal
-				Attributes SpawnWithFullCharge
-				Item "TF_WEAPON_MEDIGUN"
-				Item "Necro Smasher"
-				Item "Festive Crusader's Crossbow"
+				WeaponRestrictions MeleeOnly
+				Item "The Chargin' Targe"
+				Item "The Ham Shank"
+				Item "TF_WEAPON_GRENADELAUNCHER"
 				CharacterAttributes
 				{
+					"projectile speed increased" 3.57247
+					"bleeding duration" 5
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -829,28 +1489,29 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_6"
-			TotalCount 17
-			WaitBeforeStarting 165
-			WaitBetweenSpawns 3.83902
-			TotalCurrency 150
+			TotalCount 52
+			WaitBeforeStarting 64
+			WaitBetweenSpawns 1.4385
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 17
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Erasing Our Rick"
-				ClassIcon heavy_heater
-				Health 339
+				Class Demoman
+				Name "King Father"
+				ClassIcon demo
+				Health 175
 				Skill Expert
-				Item "Panic Attack Shotgun"
-				Item "The Eviction Notice"
-				Item "The Huo Long Heatmaker"
+				Item "Silver Botkiller Stickybomb Launcher Mk.I"
+				Item "Frying Pan"
+				Item "The Bootlegger"
 				CharacterAttributes
 				{
+					"projectile speed increased" 0.272815
+					"head scale" 0.501
 					"override projectile type" 2
-					"bullets per shot bonus" 4.32314
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -859,31 +1520,29 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_7"
-			TotalCount 40
-			WaitBeforeStarting 235
-			WaitBetweenSpawns 1.00418
-			TotalCurrency 150
+			TotalCount 3
+			WaitBeforeStarting 64
+			WaitBetweenSpawns 24.9081
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Supplying Chief Fabulous Silver"
-				ClassIcon Engineer
-				Health 311
+				Class Demoman
+				Name "Woman Max"
+				ClassIcon demoknight
+				Health 473
 				Skill Hard
 				WeaponRestrictions MeleeOnly
-				TeleportWhere spawnbot
-				Item "The Short Circuit"
-				Item "The Eureka Effect"
-				Item "Festive Frontier Justice"
+				Item "Carbonado Botkiller Stickybomb Launcher Mk.I"
+				Item "The Half-Zatoichi"
+				Item "The Iron Bomber"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"faster reload rate" 1.81247
-					"effect bar recharge rate increased" 0.459727
+					"charge time increased" 5.9183
+					"projectile speed increased" 2.17904
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -892,29 +1551,30 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_8"
-			TotalCount 8
-			WaitBeforeStarting 235
-			WaitBetweenSpawns 2.99074
-			TotalCurrency 150
+			TotalCount 6
+			WaitBeforeStarting 160
+			WaitBetweenSpawns 18.7069
+			TotalCurrency 68
 			SpawnCount 1
-			MaxActive 8
+			MaxActive 6
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Smelly Government"
-				ClassIcon heavy
-				Health 492
+				Class Sniper
+				Name "Platinum The Best"
+				ClassIcon Sniper
+				Health 361
 				Skill Expert
-				WeaponRestrictions MeleeOnly
-				Item "Panic Attack Shotgun"
-				Item "Warrior's Spirit"
-				Item "Tomislav"
+				Attributes AlwaysFireWeapon
+				Item "The Razorback"
+				Item "Gold Frying Pan"
+				Item "Festive Sniper Rifle 2011"
 				CharacterAttributes
 				{
-					"override projectile type" 2
-					"no self blast dmg" 1
+					"faster reload rate" -1
+					"bullets per shot bonus" 1.17036
+					"increase buff duration" 6.18855
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -923,28 +1583,63 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave3_9"
-			TotalCount 43
-			WaitBeforeStarting 280
-			WaitBetweenSpawns 0.380794
-			TotalCurrency 150
+			TotalCount 1
+			WaitBeforeStarting 164
+			WaitBetweenSpawns 13.5013
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Touching the Bullet"
+				ClassIcon sniper_bow_giant
+				Health 1875
+				Skill Normal
+				WeaponRestrictions PrimaryOnly
+				Attributes MiniBoss
+				Item "The Self-Aware Beauty Mark"
+				Item "The Conscientious Objector"
+				Item "The Huntsman"
+				CharacterAttributes
+				{
+					"override projectile type" 1
+					"Blast radius increased" 1.10079
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.568711
+					"damage force reduction" 0.533734
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_10"
+			TotalCount 44
+			WaitBeforeStarting 167
+			WaitBetweenSpawns 1.8884
+			TotalCurrency 68
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Questioning the Autistic Father"
-				ClassIcon Pyro
-				Health 201
-				Skill Hard
-				Attributes HoldFireUntilFullReload
-				Item "The Flare Gun"
-				Item "TF_WEAPON_FIREAXE"
-				Item "Carbonado Botkiller Flame Thrower Mk.I"
+				Class Spy
+				Name "Tripping Over Father Curvy Marble Blast Sock"
+				ClassIcon Spy
+				Health 192
+				Skill Easy
+				Item "The Ambassador"
+				Item "The Wanga Prick"
+				Item "TF_WEAPON_INVIS"
+				Item "The Ap-Sap"
 				CharacterAttributes
 				{
-					"airblast vertical pushback scale" 0.619038
+					"slow enemy on hit" 0.342467
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -952,11 +1647,259 @@ WaveSchedule
 		}
 		WaveSpawn
 		{
-			Name "wave3_10"
+			Name "wave3_11"
+			TotalCount 3
+			WaitBeforeStarting 167
+			WaitBetweenSpawns 3.5743
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 3
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Dancing With the Train"
+				ClassIcon Engineer
+				Health 125
+				Skill Expert
+				TeleportWhere spawnbot
+				Attributes AlwaysCrit
+				Item "Festive Wrangler"
+				Item "Necro Smasher"
+				Item "Festive Frontier Justice"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"engy sentry damage bonus" 3.87754
+					"damage bonus" 0.450343
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_12"
+			TotalCount 12
+			WaitBeforeStarting 170
+			WaitBetweenSpawns 4.90309
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 12
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Captain"
+				ClassIcon Medic
+				Health 480
+				Skill Easy
+				WeaponRestrictions PrimaryOnly
+				Item "The Quick-Fix"
+				Item "Prinny Machete"
+				Item "The Blutsauger"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_13"
+			TotalCount 19
+			WaitBeforeStarting 174
+			WaitBetweenSpawns 1.47879
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 19
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Sergeant Bad Gnome"
+				ClassIcon Spy
+				Health 125
+				Skill Easy
+				WeaponRestrictions SecondaryOnly
+				Item "TF_WEAPON_REVOLVER"
+				Item "Silver Botkiller Knife Mk.I"
+				Item "TF_WEAPON_INVIS"
+				Item "The Snack Attack"
+				CharacterAttributes
+				{
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_14"
+			TotalCount 16
+			WaitBeforeStarting 174
+			WaitBetweenSpawns 2.6172
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 16
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Monarch Boring Music"
+				ClassIcon Sniper
+				Health 229
+				Skill Normal
+				Attributes AlwaysFireWeapon
+				Item "Festive Jarate"
+				Item "Saxxy"
+				Item "Silver Botkiller Sniper Rifle Mk.II"
+				CharacterAttributes
+				{
+					"projectile spread angle penalty" 3
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_15"
+			TotalCount 14
+			WaitBeforeStarting 174
+			WaitBetweenSpawns 5.48446
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 14
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Hero"
+				ClassIcon scout_bat
+				Health 231
+				Skill Expert
+				WeaponRestrictions MeleeOnly
+				Item "The Winger"
+				Item "Festive Bat 2011"
+				Item "The Soda Popper"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_16"
+			TotalCount 4
+			WaitBeforeStarting 174
+			WaitBetweenSpawns 24.8964
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 4
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Teleporting the Marble Blast Socialist"
+				ClassIcon Pyro_giant
+				Health 5083
+				Skill Easy
+				Attributes MiniBoss
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "The Lollichop"
+				Item "The Nostromo Napalmer"
+				CharacterAttributes
+				{
+					"override footstep sound set" 6
+					"airblast vulnerability multiplier" 0.36192
+					"damage force reduction" 0.355066
+					"override projectile type" 8
+					"damage bonus" 1
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_17"
+			TotalCount 7
+			WaitBeforeStarting 270
+			WaitBetweenSpawns 2.63445
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 7
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Closing Judge Dry Death Cat"
+				ClassIcon Sniper
+				Health 125
+				Skill Normal
+				Attributes AlwaysFireWeapon
+				Item "Festive SMG 2014"
+				Item "The Tribalman's Shiv"
+				Item "Diamond Botkiller Sniper Rifle Mk.I"
+				CharacterAttributes
+				{
+					"damage causes airblast" 1
+					"damage bonus" 0.660516
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_18"
+			TotalCount 2
+			WaitBeforeStarting 271
+			WaitBetweenSpawns 4.12584
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Startling YOU ARE A Magic"
+				ClassIcon heavy
+				Health 566
+				Skill Normal
+				Attributes AutoJump
+				AutoJumpMin 2.57454
+				AutoJumpMax 4.09821
+				Item "Panic Attack Shotgun"
+				Item "TF_WEAPON_FISTS"
+				Item "TF_WEAPON_MINIGUN"
+				CharacterAttributes
+				{
+					"no self blast dmg" 1
+					"attach particle effect static" 4
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_19"
 			TotalCount 1
-			WaitBeforeStarting 280
-			WaitBetweenSpawns 2.55427
-			TotalCurrency 150
+			WaitBeforeStarting 271
+			WaitBetweenSpawns 14.8945
+			TotalCurrency 68
 			SpawnCount 1
 			MaxActive 1
 			Where spawnbot
@@ -964,19 +1907,114 @@ WaveSchedule
 			TFBot
 			{
 				Class Heavyweapons
-				Name "Arousing Officer Computer Reactor"
-				ClassIcon heavy
-				Health 300
+				Name "Murdering the Cat"
+				ClassIcon heavy_shotgun
+				Health 133
 				Skill Normal
-				Item "Festive Shotgun 2014"
-				Item "Warrior's Spirit"
-				Item "Tomislav"
+				WeaponRestrictions SecondaryOnly
+				Attributes AlwaysCrit
+				Item "The Family Business"
+				Item "The Bread Bite"
+				Item "Iron Curtain"
 				CharacterAttributes
 				{
-					"fire rate bonus" 1.29292
+					"bleeding duration" 5
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_20"
+			TotalCount 24
+			WaitBeforeStarting 274
+			WaitBetweenSpawns 1.00637
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Mom and Dad and World Giant"
+				ClassIcon Sniper
+				Health 109
+				Skill Expert
+				Attributes AlwaysFireWeapon
+				Item "The Self-Aware Beauty Mark"
+				Item "TF_WEAPON_CLUB"
+				Item "The Machina"
+				CharacterAttributes
+				{
+					"weapon spread bonus" 3
+					"override projectile type" 19
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_21"
+			TotalCount 5
+			WaitBeforeStarting 274
+			WaitBetweenSpawns 2.91373
+			TotalCurrency 68
+			SpawnCount 1
+			MaxActive 5
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Teasing Vice President Fat Adventure Missile"
+				ClassIcon heavy
+				Health 300
+				Skill Expert
+				WeaponRestrictions MeleeOnly
+				Item "The Family Business"
+				Item "Warrior's Spirit"
+				Item "Gold Botkiller Minigun Mk.II"
+				CharacterAttributes
+				{
+					"fire rate bonus" 1.21906
 					"clip size bonus" 100000
 					"damage bonus" 1
-					"move speed bonus" 2.70852
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave3_22"
+			TotalCount 1
+			WaitBeforeStarting 275
+			WaitBetweenSpawns 24.5219
+			TotalCurrency 68
+
+			FirstSpawnOutput
+			{
+				Target boss_spawn_relay
+				Action Trigger
+			}
+
+			Tank
+			{
+				Health 1000
+				Speed 76.2326
+				Name "tankboss"
+				StartingPathTrackNode "boss_path_a1"
+				OnKilledOutput
+				{
+					Target boss_dead_relay
+					Action Trigger
+				}
+				OnBombDroppedOutput
+				{
+					Target boss_deploy_relay
+					Action Trigger
 				}
 			}
 		}
@@ -997,69 +2035,68 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave4_1"
-			TotalCount 1
+			TotalCount 14
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 9.69498
-			TotalCurrency 214
+			WaitBetweenSpawns 2.85178
+			TotalCurrency 115
 			SpawnCount 1
-			MaxActive 1
+			MaxActive 14
 			Where spawnbot
 
 			TFBot
 			{
 				Class Pyro
-				Name "Burning Private Horrifying Fission"
-				ClassIcon Pyro_giant
-				Health 14625
-				Scale 1.9
-				Skill Expert
-				Attributes MiniBoss
-				Attributes UseBossHealthBar
-				Item "Panic Attack Shotgun"
-				Item "The Third Degree"
-				Item "The Nostromo Napalmer"
+				Name "King Kitchen Cancer"
+				ClassIcon pyro_flare
+				Health 284
+				Skill Hard
+				WeaponRestrictions SecondaryOnly
+				Item "The Flare Gun"
+				Item "Saxxy"
+				Item "TF_WEAPON_FLAMETHROWER"
 				CharacterAttributes
 				{
+					"bleeding duration" 5
 					"damage bonus" 1
-					"override footstep sound set" 6
-					"airblast vulnerability multiplier" 0.584069
-					"damage force reduction" 0.670577
-					"attach particle effect static" 33
-					"move speed bonus" 0.25
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave4_2"
-			TotalCount 1
-			WaitBeforeStarting 8
-			WaitBetweenSpawns 16.2921
-			TotalCurrency 214
+			TotalCount 2
+			WaitBeforeStarting 1
+			WaitBetweenSpawns 54.1354
+			TotalCurrency 115
 			SpawnCount 1
-			MaxActive 1
+			MaxActive 2
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Searching For Mr. Universe"
-				ClassIcon heavy_shotgun_giant
-				Health 13485
+				Class Soldier
+				Name "My Wimp"
+				ClassIcon soldier_buff_giant
+				Health 7420
 				Skill Hard
 				WeaponRestrictions SecondaryOnly
-				Attributes HoldFireUntilFullReload
+				MaxVisionRange 30000
 				Attributes MiniBoss
-				Item "Festive Shotgun 2014"
-				Item "The Bread Bite"
-				Item "Diamond Botkiller Minigun Mk.I"
+				Attributes SpawnWithFullCharge
+				Item "Festive Buff Banner"
+				Item "Gold Frying Pan"
+				Item "The Air Strike"
 				CharacterAttributes
 				{
-					"faster reload rate" 1.1511
+					"override footstep sound set" 3
+					"airblast vulnerability multiplier" 0.537629
+					"damage force reduction" 0.669006
+					"effect bar recharge rate increased" 0.677296
+					"projectile spread angle penalty" 729
+					"no self blast dmg" 1
+					"Blast radius increased" 0.755856
 					"damage bonus" 1
-					"override footstep sound set" 2
-					"airblast vulnerability multiplier" 0.656967
-					"damage force reduction" 0.428071
 					"move speed bonus" 0.5
 				}
 			}
@@ -1067,109 +2104,10 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave4_3"
-			TotalCount 4
-			WaitBeforeStarting 21
-			WaitBetweenSpawns 28.2671
-			TotalCurrency 214
-			SpawnCount 1
-			MaxActive 4
-			Where spawnbot
-
-			TFBot
-			{
-				Class Scout
-				Name "Arch Nemesis Bean"
-				ClassIcon Scout_giant
-				Health 4155
-				Skill Expert
-				Attributes AlwaysFireWeapon
-				Attributes MiniBoss
-				Item "TF_WEAPON_PISTOL_SCOUT"
-				Item "The Conscientious Objector"
-				Item "Blood Botkiller Scattergun Mk.I"
-				CharacterAttributes
-				{
-					"damage bonus" 1
-					"override footstep sound set" 5
-					"airblast vulnerability multiplier" 0.347654
-					"damage force reduction" 0.321634
-					"move speed bonus" 1
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave4_4"
-			TotalCount 21
-			WaitBeforeStarting 45
-			WaitBetweenSpawns 4.51876
-			TotalCurrency 214
-			SpawnCount 1
-			MaxActive 21
-			Where spawnbot
-
-			TFBot
-			{
-				Class Heavyweapons
-				Name "Demoting the Missile Witch"
-				ClassIcon heavy_giant
-				Health 5475
-				Skill Normal
-				WeaponRestrictions MeleeOnly
-				Attributes MiniBoss
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
-				Item "Apoco-Fists"
-				Item "Blood Botkiller Minigun Mk.I"
-				CharacterAttributes
-				{
-					"projectile spread angle penalty" 9
-					"weapon spread bonus" 3
-					"damage bonus" 1
-					"override footstep sound set" 2
-					"airblast vulnerability multiplier" 0.644335
-					"damage force reduction" 0.639553
-					"move speed bonus" 0.5
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave4_5"
-			TotalCount 11
-			WaitBeforeStarting 183
-			WaitBetweenSpawns 2.91095
-			TotalCurrency 214
-			SpawnCount 1
-			MaxActive 11
-			Where spawnbot
-
-			TFBot
-			{
-				Class Pyro
-				Name "Discovering the Speedy Duck Doggo"
-				ClassIcon Pyro
-				Health 376
-				Skill Normal
-				WeaponRestrictions PrimaryOnly
-				Item "The Manmelter"
-				Item "Necro Smasher"
-				Item "TF_WEAPON_FLAMETHROWER"
-				CharacterAttributes
-				{
-					"slow enemy on hit major" 1
-					"bullets per shot bonus" 1.65287
-					"damage bonus" 0.423865
-					"move speed bonus" 1
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave4_6"
-			TotalCount 22
-			WaitBeforeStarting 183
-			WaitBetweenSpawns 1.37382
-			TotalCurrency 214
+			TotalCount 99
+			WaitBeforeStarting 46
+			WaitBetweenSpawns 1.11779
+			TotalCurrency 115
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
@@ -1177,56 +2115,335 @@ WaveSchedule
 			TFBot
 			{
 				Class Engineer
-				Name "Arch Nemesis Joestar Beer"
-				ClassIcon Engineer_giant
-				Health 1545
-				Skill Easy
-				WeaponRestrictions PrimaryOnly
+				Name "Fake Socialist Twin"
+				ClassIcon Engineer
+				Health 125
+				Skill Hard
 				TeleportWhere spawnbot
-				Attributes MiniBoss
-				Item "The Short Circuit"
-				Item "Silver Botkiller Wrench Mk.I"
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "Festive Wrangler"
+				Item "Gold Frying Pan"
+				Item "Festive Shotgun 2014"
 				CharacterAttributes
 				{
 					"cannot pick up intelligence" 1
-					"engineer teleporter build rate multiplier" 2.10481
-					"projectile speed increased" 1.10346
-					"override projectile type" 13
-					"damage bonus" 1
-					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.44233
-					"damage force reduction" 0.66013
-					"move speed bonus" 0.5
+					"damage bonus" 0.76624
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
-			Name "wave4_7"
-			TotalCount 38
-			WaitBeforeStarting 184
-			WaitBetweenSpawns 2.27511
-			TotalCurrency 214
+			Name "wave4_4"
+			TotalCount 32
+			WaitBeforeStarting 46
+			WaitBetweenSpawns 3.35471
+			TotalCurrency 115
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Demoman
-				Name "Sucking the Hurricane World"
-				ClassIcon demo
-				Health 453
+				Class Heavyweapons
+				Name "Arch Nemesis Omega 9gag"
+				ClassIcon heavy
+				Health 300
 				Skill Normal
-				Attributes AlwaysCrit
-				Item "Stickybomb Jumper"
-				Item "The Horseless Headless Horseman's Headtaker"
-				Item "The Loch-n-Load"
+				WeaponRestrictions MeleeOnly
+				MaxVisionRange 30000
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "The Memory Maker"
+				Item "The Brass Beast"
+				CharacterAttributes
+				{
+					"bullets per shot bonus" 4.97713
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_5"
+			TotalCount 5
+			WaitBeforeStarting 46
+			WaitBetweenSpawns 19.871
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 5
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Sergeant Heroic Monster Blast"
+				ClassIcon heavy
+				Health 249
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
+				MaxVisionRange 30000
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "The Bread Bite"
+				Item "Blood Botkiller Minigun Mk.I"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"Blast radius increased" 3.19092
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_6"
+			TotalCount 8
+			WaitBeforeStarting 52
+			WaitBetweenSpawns 3.8655
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 8
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Trolling King Satan"
+				ClassIcon Sniper
+				Health 495
+				Skill Hard
+				Attributes AlwaysFireWeapon
+				Item "The Self-Aware Beauty Mark"
+				Item "Prinny Machete"
+				Item "Festive Sniper Rifle 2011"
+				CharacterAttributes
+				{
+					"no self blast dmg" 1
+					"Blast radius increased" 2.12322
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_7"
+			TotalCount 1
+			WaitBeforeStarting 55
+			WaitBetweenSpawns 82.3795
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "Stabbing Mr. Omega Blast"
+				ClassIcon Soldier_giant
+				Health 3622
+				Skill Expert
+				Attributes MiniBoss
+				Attributes SpawnWithFullCharge
+				Item "The Reserve Shooter"
+				Item "The Memory Maker"
+				Item "Rust Botkiller Rocket Launcher Mk.I"
+				CharacterAttributes
+				{
+					"override footstep sound set" 3
+					"airblast vulnerability multiplier" 0.53556
+					"damage force reduction" 0.599987
+					"projectile spread angle penalty" 9
+					"override projectile type" 1
+					"damage bonus" 1
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_8"
+			TotalCount 37
+			WaitBeforeStarting 172
+			WaitBetweenSpawns 2.55463
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "Burning Ms. Heroic Internet Bronze"
+				ClassIcon Soldier
+				Health 800
+				Skill Normal
+				Item "The Righteous Bison"
+				Item "Frying Pan"
+				Item "Silver Botkiller Rocket Launcher Mk.II"
+				CharacterAttributes
+				{
+					"override projectile type" 2
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_9"
+			TotalCount 1
+			WaitBeforeStarting 173
+			WaitBetweenSpawns 53.8014
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "Admiral Beta Body Bomb"
+				ClassIcon Soldier
+				Health 606
+				Skill Expert
+				Item "The Reserve Shooter"
+				Item "Frying Pan"
+				Item "Silver Botkiller Rocket Launcher Mk.II"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"weapon spread bonus" 9
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_10"
+			TotalCount 10
+			WaitBeforeStarting 192
+			WaitBetweenSpawns 9.03784
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 10
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "The Black Giant Toaster"
+				ClassIcon Medic
+				Health 505
+				Skill Normal
+				Attributes SpawnWithFullCharge
+				Item "Rust Botkiller Medi Gun Mk.I"
+				Item "The Memory Maker"
+				Item "The Crusader's Crossbow"
+				CharacterAttributes
+				{
+					"bleeding duration" 5
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_11"
+			TotalCount 1
+			WaitBeforeStarting 197
+			WaitBetweenSpawns 1.70816
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Stealing the Alpha Duck"
+				ClassIcon demo
+				Health 621
+				Skill Easy
+				Item "The Scottish Resistance"
+				Item "Nessie's Nine Iron"
+				Item "The Iron Bomber"
+				CharacterAttributes
+				{
+					"charge time increased" 7.2908
+					"override projectile type" 18
+					"damage bonus" 0.995803
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_12"
+			TotalCount 35
+			WaitBeforeStarting 197
+			WaitBetweenSpawns 2.77181
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Train"
+				ClassIcon Pyro
+				Health 430
+				Skill Hard
+				Item "Festive Shotgun 2014"
+				Item "The Ham Shank"
+				Item "Rust Botkiller Flame Thrower Mk.I"
 				CharacterAttributes
 				{
 					"damage bonus" 1
 					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave4_13"
+			TotalCount 1
+			WaitBeforeStarting 197
+			WaitBetweenSpawns 91.3111
+			TotalCurrency 115
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Autism Snow"
+				ClassIcon heavy
+				Health 300
+				Skill Easy
+				MaxVisionRange 30000
+				Attributes AutoJump
+				AutoJumpMin 2.03812
+				AutoJumpMax 2.03812
+				Item "The Family Business"
+				Item "TF_WEAPON_FISTS"
+				Item "Gold Botkiller Minigun Mk.II"
+				Item "The B.A.S.E. Jumper"
+				CharacterAttributes
+				{
+					"increased jump height" 9.27667
+					"cancel falling damage" 1
+					"projectile speed increased" 9.70371
+					"bleeding duration" 5
+					"bullets per shot bonus" 2.99592
+					"damage bonus" 1
+					"move speed bonus" 1.60058
 				}
 			}
 		}
@@ -1247,34 +2464,32 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave5_1"
-			TotalCount 16
+			TotalCount 1
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 5.07927
-			TotalCurrency 250
+			WaitBetweenSpawns 7.14819
+			TotalCurrency 60
 			SpawnCount 1
-			MaxActive 16
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Pushing Deputy Gnome"
-				ClassIcon Engineer_giant
-				Health 5268
-				Skill Easy
-				WeaponRestrictions MeleeOnly
-				TeleportWhere spawnbot
+				Class Demoman
+				Name "Sitting on the Destructive Wang Zombie"
+				ClassIcon demo_giant
+				Health 2625
+				Skill Hard
+				WeaponRestrictions SecondaryOnly
 				Attributes MiniBoss
-				Item "TF_WEAPON_PISTOL"
-				Item "Rust Botkiller Wrench Mk.I"
-				Item "The Widowmaker"
+				Item "Stickybomb Jumper"
+				Item "The Memory Maker"
+				Item "TF_WEAPON_GRENADELAUNCHER"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.686463
-					"damage force reduction" 0.638547
 					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.56767
+					"damage force reduction" 0.413176
 					"move speed bonus" 0.5
 				}
 			}
@@ -1282,59 +2497,61 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave5_2"
-			TotalCount 4
-			WaitBeforeStarting 3
-			WaitBetweenSpawns 6.81238
-			TotalCurrency 250
+			TotalCount 1
+			WaitBeforeStarting 2
+			WaitBetweenSpawns 71.1656
+			TotalCurrency 60
 			SpawnCount 1
-			MaxActive 4
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "Loving the Anime"
-				ClassIcon soldier_buff
-				Health 735
-				Skill Easy
+				Class Medic
+				Name "Locked Fetish"
+				ClassIcon Medic_giant
+				Health 9575
+				Skill Expert
+				Attributes MiniBoss
 				Attributes SpawnWithFullCharge
-				Item "The Buff Banner"
-				Item "The Bat Outta Hell"
-				Item "Silver Botkiller Rocket Launcher Mk.I"
+				Item "Festive Medigun 2011"
+				Item "Gold Frying Pan"
+				Item "The Blutsauger"
 				CharacterAttributes
 				{
-					"projectile speed increased" 8.38114
+					"airblast vulnerability multiplier" 0.528061
+					"damage force reduction" 0.455691
 					"damage bonus" 1
-					"move speed bonus" 1
+					"move speed bonus" 0.5
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave5_3"
-			TotalCount 37
-			WaitBeforeStarting 9
-			WaitBetweenSpawns 2.97232
-			TotalCurrency 250
+			TotalCount 38
+			WaitBeforeStarting 18
+			WaitBetweenSpawns 2.70788
+			TotalCurrency 60
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Medic
-				Name "Crushing Earl Mountain Bronze"
-				ClassIcon Medic
-				Health 581
+				Class Sniper
+				Name "Mrs. Death Weeaboo"
+				ClassIcon sniper_jarate
+				Health 486
 				Skill Normal
-				Attributes SpawnWithFullCharge
-				Item "Blood Botkiller Medi Gun Mk.I"
-				Item "The Ham Shank"
-				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
+				WeaponRestrictions SecondaryOnly
+				Item "Jarate"
+				Item "The Conscientious Objector"
+				Item "TF_WEAPON_SNIPERRIFLE"
 				CharacterAttributes
 				{
-					"projectile spread angle penalty" 81
-					"damage bonus" 1
+					"faster reload rate" 0.797482
+					"damage bonus" 0.999171
 					"move speed bonus" 1
 				}
 			}
@@ -1342,66 +2559,63 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave5_4"
-			TotalCount 72
-			WaitBeforeStarting 120
-			WaitBetweenSpawns 1.41863
-			TotalCurrency 250
+			TotalCount 2
+			WaitBeforeStarting 19
+			WaitBetweenSpawns 8.98662
+			TotalCurrency 60
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 2
 			Where spawnbot
 
 			TFBot
 			{
-				Class Scout
-				Name "Discovering Squire Voracious Rick Adventure"
-				ClassIcon scout_bonk
-				Health 556
+				Class Medic
+				Name "Trolling the Delicious Water Beer"
+				ClassIcon Medic
+				Health 150
 				Skill Normal
-				WeaponRestrictions MeleeOnly
-				Item "Festive Bonk 2014"
-				Item "The Sandman"
-				Item "The Soda Popper"
-				Item "Bonk Helm"
+				Attributes AlwaysCrit
+				Item "TF_WEAPON_MEDIGUN"
+				Item "The Vita-Saw"
+				Item "Festive Crusader's Crossbow"
 				CharacterAttributes
 				{
-					"Blast radius increased" 2.77896
-					"bullets per shot bonus" 1.68047
+					"weapon spread bonus" 9
+					"bullets per shot bonus" 0.998587
 					"damage bonus" 1
-					"move speed bonus" 1
+					"move speed bonus" 1.8015
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave5_5"
-			TotalCount 9
-			WaitBeforeStarting 121
-			WaitBetweenSpawns 5.97512
-			TotalCurrency 250
+			TotalCount 14
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 7.84995
+			TotalCurrency 60
 			SpawnCount 1
-			MaxActive 9
+			MaxActive 14
 			Where spawnbot
 
 			TFBot
 			{
 				Class Sniper
-				Name "Doggo"
-				ClassIcon Sniper_giant
-				Health 2700
-				Skill Normal
-				MaxVisionRange 30000
+				Name "Spooking the Mountain Mixtape"
+				ClassIcon sniper_sydneysleeper_giant
+				Health 1875
+				Skill Expert
 				Attributes AlwaysFireWeapon
 				Attributes MiniBoss
-				Item "Festive SMG 2014"
+				Item "Festive Jarate"
 				Item "The Shahanshah"
-				Item "TF_WEAPON_SNIPERRIFLE"
+				Item "The Sydney Sleeper"
 				CharacterAttributes
 				{
-					"override projectile type" 2
 					"damage bonus" 1
 					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.310677
-					"damage force reduction" 0.623573
+					"airblast vulnerability multiplier" 0.678598
+					"damage force reduction" 0.338369
 					"move speed bonus" 0.5
 				}
 			}
@@ -1409,30 +2623,655 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave5_6"
+			TotalCount 18
+			WaitBeforeStarting 23
+			WaitBetweenSpawns 4.90581
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 18
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Breaking You and Dry Saxophone Xylophone"
+				ClassIcon Engineer_giant
+				Health 1875
+				Skill Normal
+				TeleportWhere spawnbot
+				Attributes MiniBoss
+				Item "The Wrangler"
+				Item "Prinny Machete"
+				Item "Festive Frontier Justice"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"engy sentry damage bonus" 2.57465
+					"fire rate bonus" 0.949249
+					"clip size bonus" 100000
+					"no self blast dmg" 1
+					"damage bonus" 0.753193
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.351699
+					"damage force reduction" 0.38307
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_7"
+			TotalCount 3
+			WaitBeforeStarting 25
+			WaitBetweenSpawns 16.4148
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 3
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Bombing Your Hot Manga Government"
+				ClassIcon Scout_giant
+				Health 2400
+				Skill Easy
+				Attributes MiniBoss
+				Item "TF_WEAPON_PISTOL_SCOUT"
+				Item "Sun-on-a-Stick"
+				Item "Silver Botkiller Scattergun Mk.I"
+				CharacterAttributes
+				{
+					"effect bar recharge rate increased" 0.433672
+					"damage bonus" 1
+					"override footstep sound set" 5
+					"airblast vulnerability multiplier" 0.50244
+					"damage force reduction" 0.418121
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_8"
+			TotalCount 20
+			WaitBeforeStarting 41
+			WaitBetweenSpawns 1.67503
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 20
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Interrogating Lieutenant Religious Gem Burp"
+				ClassIcon Engineer
+				Health 151
+				Skill Hard
+				TeleportWhere spawnbot
+				Attributes Aggressive
+				Item "The Short Circuit"
+				Item "Saxxy"
+				Item "The Pomson 6000"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"effect bar recharge rate increased" 0.870094
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_9"
+			TotalCount 23
+			WaitBeforeStarting 41
+			WaitBetweenSpawns 4.24276
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Tracking the Uncomfortable Internet"
+				ClassIcon scout_bonk
+				Health 125
+				Skill Hard
+				MaxVisionRange 30000
+				Item "Festive Bonk 2014"
+				Item "Three-Rune Blade"
+				Item "TF_WEAPON_SCATTERGUN"
+				Item "Bonk Helm"
+				CharacterAttributes
+				{
+					"no self blast dmg" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_10"
+			TotalCount 3
+			WaitBeforeStarting 41
+			WaitBetweenSpawns 5.31213
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 3
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Falling on Officer Game Morty"
+				ClassIcon heavy
+				Health 226
+				Skill Expert
+				Attributes Aggressive
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "Warrior's Spirit"
+				Item "Gold Botkiller Minigun Mk.II"
+				CharacterAttributes
+				{
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1.74263
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_11"
+			TotalCount 50
+			WaitBeforeStarting 128
+			WaitBetweenSpawns 1.4552
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Room"
+				ClassIcon Engineer
+				Health 322
+				Skill Easy
+				WeaponRestrictions MeleeOnly
+				TeleportWhere spawnbot
+				Item "Festive Wrangler"
+				Item "TF_WEAPON_WRENCH"
+				Item "The Widowmaker"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"attach particle effect static" 35
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_12"
+			TotalCount 105
+			WaitBeforeStarting 128
+			WaitBetweenSpawns 0.937024
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Our Hell Cat"
+				ClassIcon Sniper
+				Health 125
+				Skill Hard
+				Attributes AlwaysFireWeapon
+				Item "The Cleaner's Carbine"
+				Item "Necro Smasher"
+				Item "Festive Sniper Rifle 2011"
+				CharacterAttributes
+				{
+					"effect bar recharge rate increased" 0.961753
+					"weapon spread bonus" 243
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_13"
+			TotalCount 12
+			WaitBeforeStarting 128
+			WaitBetweenSpawns 5.8846
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 12
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Teleporting Dr. Bouncy Platinum"
+				ClassIcon Medic
+				Health 388
+				Skill Normal
+				Attributes SpawnWithFullCharge
+				Item "Carbonado Botkiller Medi Gun Mk.I"
+				Item "The Conscientious Objector"
+				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"head scale" 2.501
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_14"
 			TotalCount 1
-			WaitBeforeStarting 299
-			WaitBetweenSpawns 1.82668
-			TotalCurrency 250
+			WaitBeforeStarting 150
+			WaitBetweenSpawns 8.42312
+			TotalCurrency 60
 			SpawnCount 1
 			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Agent Duwang Mouse"
-				ClassIcon heavy
-				Health 1116
+				Class Demoman
+				Name "Scary Socialist Gold"
+				ClassIcon demo_giant
+				Health 13125
+				Scale 1.9
 				Skill Easy
-				Item "Festive Shotgun 2014"
-				Item "Warrior's Spirit"
-				Item "Iron Curtain"
+				Attributes MiniBoss
+				Attributes UseBossHealthBar
+				Item "The Scottish Resistance"
+				Item "The Half-Zatoichi"
+				Item "The Loose Cannon"
 				CharacterAttributes
 				{
+					"fire rate bonus" 1.5599
+					"clip size bonus" 100000
+					"weapon spread bonus" 27
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.559637
+					"damage force reduction" 0.680819
+					"attach particle effect static" 5
+					"move speed bonus" 0.25
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_15"
+			TotalCount 21
+			WaitBeforeStarting 175
+			WaitBetweenSpawns 4.66401
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 21
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Captain Amazing Bronze"
+				ClassIcon Engineer
+				Health 311
+				Skill Easy
+				MaxVisionRange 30000
+				TeleportWhere spawnbot
+				Item "TTG Max Pistol"
+				Item "Silver Botkiller Wrench Mk.I"
+				Item "The Widowmaker"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
 					"faster reload rate" -1
-					"projectile spread angle penalty" 27
+					"weapon spread bonus" 9
+					"slow enemy on hit" 0.214386
+					"Blast radius increased" 3.00617
+					"use large smoke explosion" 1
 					"damage bonus" 1
 					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_16"
+			TotalCount 30
+			WaitBeforeStarting 226
+			WaitBetweenSpawns 1.02266
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Questioning Chairman Shiny The Third"
+				ClassIcon Pyro
+				Health 175
+				Skill Expert
+				Item "Festive Shotgun 2014"
+				Item "The Conscientious Objector"
+				Item "Diamond Botkiller Flame Thrower Mk.I"
+				CharacterAttributes
+				{
+					"projectile speed increased" 0.905354
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_17"
+			TotalCount 1
+			WaitBeforeStarting 229
+			WaitBetweenSpawns 8.61073
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Overpowered Cat"
+				ClassIcon Spy_giant
+				Health 9375
+				Scale 1.9
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Attributes MiniBoss
+				Attributes UseBossHealthBar
+				Item "Festive Ambassador"
+				Item "Your Eternal Reward"
+				Item "The Dead Ringer"
+				Item "The Snack Attack"
+				CharacterAttributes
+				{
+					"bullets per shot bonus" 2.20375
+					"damage bonus" 0.159386
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.3543
+					"damage force reduction" 0.422136
+					"attach particle effect static" 16
+					"move speed bonus" 0.25
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_18"
+			TotalCount 15
+			WaitBeforeStarting 235
+			WaitBetweenSpawns 2.0968
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 15
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "General House"
+				ClassIcon Engineer
+				Health 339
+				Skill Easy
+				WeaponRestrictions PrimaryOnly
+				TeleportWhere spawnbot
+				Item "Festive Wrangler"
+				Item "The Eureka Effect"
+				Item "Panic Attack Shotgun"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"projectile speed increased" 1.76705
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_19"
+			TotalCount 8
+			WaitBeforeStarting 235
+			WaitBetweenSpawns 4.61951
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 8
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Woman"
+				ClassIcon Scout_giant
+				Health 1875
+				Skill Normal
+				WeaponRestrictions PrimaryOnly
+				Attributes MiniBoss
+				Item "The Winger"
+				Item "The Ham Shank"
+				Item "Diamond Botkiller Scattergun Mk.I"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"override footstep sound set" 5
+					"airblast vulnerability multiplier" 0.601554
+					"damage force reduction" 0.60638
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_20"
+			TotalCount 8
+			WaitBeforeStarting 278
+			WaitBetweenSpawns 1.99624
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 8
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Sauce 9gag"
+				ClassIcon Sniper
+				Health 612
+				Skill Easy
+				MaxVisionRange 30000
+				Attributes Aggressive
+				Item "The Cleaner's Carbine"
+				Item "Prinny Machete"
+				Item "The Classic"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_21"
+			TotalCount 10
+			WaitBeforeStarting 278
+			WaitBetweenSpawns 1.35547
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 10
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Game"
+				ClassIcon Medic
+				Health 150
+				Skill Easy
+				WeaponRestrictions SecondaryOnly
+				Attributes SpawnWithFullCharge
+				Item "TF_WEAPON_MEDIGUN"
+				Item "The Ubersaw"
+				Item "Festive Crusader's Crossbow"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_22"
+			TotalCount 9
+			WaitBeforeStarting 278
+			WaitBetweenSpawns 1.62617
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 9
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Stealing From Countess Sister Toast"
+				ClassIcon demo
+				Health 175
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
+				Item "The Chargin' Targe"
+				Item "The Memory Maker"
+				Item "TF_WEAPON_GRENADELAUNCHER"
+				CharacterAttributes
+				{
+					"head scale" 0.601
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_23"
+			TotalCount 4
+			WaitBeforeStarting 279
+			WaitBetweenSpawns 1.54927
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 4
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Satan Gnome"
+				ClassIcon demo
+				Health 175
+				Skill Expert
+				WeaponRestrictions SecondaryOnly
+				Item "The Splendid Screen"
+				Item "The Scotsman's Skullcutter"
+				Item "TF_WEAPON_GRENADELAUNCHER"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_24"
+			TotalCount 2
+			WaitBeforeStarting 279
+			WaitBetweenSpawns 5.05206
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Racist Death"
+				ClassIcon Spy_giant
+				Health 1875
+				Skill Easy
+				Attributes Aggressive
+				Attributes MiniBoss
+				Item "L'Etranger"
+				Item "Blood Botkiller Knife Mk.I"
+				Item "The Quackenbirdt"
+				Item "The Red-Tape Recorder"
+				CharacterAttributes
+				{
+					"projectile speed increased" 2.01219
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.492099
+					"damage force reduction" 0.351672
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave5_25"
+			TotalCount 1
+			WaitBeforeStarting 299
+			WaitBetweenSpawns 15.2851
+			TotalCurrency 60
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Monster"
+				ClassIcon demo_giant
+				Health 2625
+				Skill Hard
+				MaxVisionRange 30000
+				Attributes MiniBoss
+				Item "Silver Botkiller Stickybomb Launcher Mk.I"
+				Item "Necro Smasher"
+				Item "The Iron Bomber"
+				CharacterAttributes
+				{
+					"charge time increased" 8.77453
+					"melee bounds multiplier" 360
+					"melee range multiplier" 30000
+					"Blast radius increased" 30000
+					"damage bonus" 0.01
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.351642
+					"damage force reduction" 0.439623
+					"move speed bonus" 0.5
 				}
 			}
 		}
@@ -1453,29 +3292,34 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave6_1"
-			TotalCount 40
+			TotalCount 45
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 1.35749
-			TotalCurrency 166
+			WaitBetweenSpawns 1.35502
+			TotalCurrency 55
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Heavyweapons
-				Name "Editing Captain Mediocre Xylophone Marching Band"
-				ClassIcon heavy
-				Health 394
-				Skill Hard
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
-				Item "The Crossing Guard"
-				Item "Diamond Botkiller Minigun Mk.I"
+				Class Scout
+				Name "Adventures of the Keyboard Gnome"
+				ClassIcon Scout_giant
+				Health 1110
+				Skill Easy
+				WeaponRestrictions PrimaryOnly
+				Attributes MiniBoss
+				Item "Mad Milk"
+				Item "The Fan O'War"
+				Item "The Soda Popper"
 				CharacterAttributes
 				{
-					"fire rate bonus" 0.504384
-					"clip size bonus" 100000
-					"damage bonus" 1
+					"projectile speed increased" 0.487012
+					"projectile spread angle penalty" 9
+					"damage bonus" 0.172818
+					"override footstep sound set" 5
+					"airblast vulnerability multiplier" 0.522465
+					"damage force reduction" 0.476255
 					"move speed bonus" 1
 				}
 			}
@@ -1483,67 +3327,71 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave6_2"
-			TotalCount 7
+			TotalCount 8
 			WaitBeforeStarting 1
-			WaitBetweenSpawns 11.389
-			TotalCurrency 166
+			WaitBetweenSpawns 12.5199
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 7
+			MaxActive 8
 			Where spawnbot
 
 			TFBot
 			{
 				Class Heavyweapons
-				Name "Chromosome Theorem"
-				ClassIcon heavy_shotgun_giant
-				Health 24273
-				Skill Expert
-				WeaponRestrictions SecondaryOnly
-				Attributes MiniBoss
-				Attributes IgnoreFlag
-				Item "Festive Shotgun 2014"
-				Item "The Killing Gloves of Boxing"
-				Item "Rust Botkiller Minigun Mk.I"
+				Name "Kissing the Vaccine"
+				ClassIcon heavy_deflector
+				Health 300
+				Skill Hard
+				Attributes AutoJump
+				AutoJumpMin 2.59412
+				AutoJumpMax 5.21051
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				Item "Necro Smasher"
+				Item "Iron Curtain"
 				CharacterAttributes
 				{
-					"override footstep sound set" 2
-					"airblast vulnerability multiplier" 0.65072
-					"damage force reduction" 0.616547
+					"attack projectiles" 1
+					"bot custom jump particle" 1
+					"effect bar recharge rate increased" 0.635212
+					"projectile spread angle penalty" 3
+					"bleeding duration" 5
+					"Blast radius increased" 2.22561
 					"damage bonus" 1
-					"move speed bonus" 0.5
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave6_3"
-			TotalCount 20
-			WaitBeforeStarting 121
-			WaitBetweenSpawns 3.98887
-			TotalCurrency 166
+			TotalCount 7
+			WaitBeforeStarting 4
+			WaitBetweenSpawns 6.96055
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 20
+			MaxActive 7
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Hunting the Gnome Textbook"
-				ClassIcon Sniper_giant
-				Health 1875
-				Skill Hard
-				MaxVisionRange 30000
-				Attributes HoldFireUntilFullReload
+				Class Spy
+				Name "Sitting on Mistress Captain Adventure"
+				ClassIcon Spy_giant
+				Health 3510
+				Skill Expert
 				Attributes MiniBoss
-				Item "Jarate"
-				Item "Gold Frying Pan"
-				Item "The Classic"
+				Item "TF_WEAPON_REVOLVER"
+				Item "Gold Botkiller Knife Mk.II"
+				Item "TTG Watch"
+				Item "The Snack Attack"
 				CharacterAttributes
 				{
-					"damage bonus" 0.827182
+					"no self blast dmg" 1
+					"bullets per shot bonus" 4.27426
+					"damage bonus" 0.258828
 					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.662118
-					"damage force reduction" 0.45762
+					"airblast vulnerability multiplier" 0.466267
+					"damage force reduction" 0.371673
 					"move speed bonus" 0.5
 				}
 			}
@@ -1551,137 +3399,126 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave6_4"
-			TotalCount 17
-			WaitBeforeStarting 123
-			WaitBetweenSpawns 3.76328
-			TotalCurrency 166
+			TotalCount 52
+			WaitBeforeStarting 6
+			WaitBetweenSpawns 1.40118
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 17
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
 				Class Medic
-				Name "Communist Stinker"
-				ClassIcon Medic_giant
-				Health 2250
-				Skill Easy
-				WeaponRestrictions SecondaryOnly
+				Name "Distributing Mom and Dad and Groove"
+				ClassIcon Medic
+				Health 150
+				Skill Normal
 				Attributes SpawnWithFullCharge
-				Attributes MiniBoss
-				Item "The Kritzkrieg"
-				Item "Frying Pan"
-				Item "The Overdose"
+				Attributes AutoJump
+				AutoJumpMin 2.54967
+				AutoJumpMax 2.54967
+				Item "Festive Medigun 2011"
+				Item "The Solemn Vow"
+				Item "Festive Crusader's Crossbow"
+				Item "The B.A.S.E. Jumper"
 				CharacterAttributes
 				{
-					"effect bar recharge rate increased" 0.294439
-					"bullets per shot bonus" 2.81997
+					"increased jump height" 8.81627
+					"cancel falling damage" 1
+					"bot custom jump particle" 1
+					"use large smoke explosion" 1
 					"damage bonus" 1
-					"airblast vulnerability multiplier" 0.657185
-					"damage force reduction" 0.692894
-					"move speed bonus" 0.5
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave6_5"
-			TotalCount 2
-			WaitBeforeStarting 216
-			WaitBetweenSpawns 15.9355
-			TotalCurrency 166
+			TotalCount 6
+			WaitBeforeStarting 8
+			WaitBetweenSpawns 13.7812
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 2
+			MaxActive 6
 			Where spawnbot
 
 			TFBot
 			{
-				Class Medic
-				Name "Laughing at the Chocolate Plane"
-				ClassIcon Medic_giant
-				Health 2250
-				Skill Easy
-				WeaponRestrictions SecondaryOnly
-				Attributes SpawnWithFullCharge
-				Attributes MiniBoss
-				Item "Carbonado Botkiller Medi Gun Mk.I"
+				Class Scout
+				Name "Stabbing Mrs. Bouncy Keyboard"
+				ClassIcon scout_bonk
+				Health 776
+				Skill Normal
+				Item "Festive Bonk 2014"
 				Item "The Ham Shank"
-				Item "Festive Crusader's Crossbow"
+				Item "The Force-a-Nature"
+				Item "Bonk Helm"
 				CharacterAttributes
 				{
-					"slow enemy on hit" 0.884839
 					"damage bonus" 1
-					"airblast vulnerability multiplier" 0.400787
-					"damage force reduction" 0.513398
-					"move speed bonus" 0.5
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave6_6"
-			TotalCount 13
-			WaitBeforeStarting 222
-			WaitBetweenSpawns 5.92721
-			TotalCurrency 166
+			TotalCount 10
+			WaitBeforeStarting 102
+			WaitBetweenSpawns 10.9823
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 13
+			MaxActive 10
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "The White Duck Kitchen"
-				ClassIcon Pyro_giant
-				Health 6990
+				Class Heavyweapons
+				Name "Spy"
+				ClassIcon heavy_deflector
+				Health 300
 				Skill Hard
-				Attributes MiniBoss
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
-				Item "The Crossing Guard"
-				Item "Festive Flamethrower 2011"
+				Attributes AlwaysFireWeapon
+				Item "Panic Attack Shotgun"
+				Item "The Bat Outta Hell"
+				Item "Diamond Botkiller Minigun Mk.I"
 				CharacterAttributes
 				{
-					"airblast pushback scale" 5.70943
-					"projectile spread angle penalty" 3
-					"attach particle effect static" 21
+					"attack projectiles" 1
+					"projectile spread angle penalty" 27
+					"head scale" 1.301
+					"bullets per shot bonus" 0.257178
 					"damage bonus" 1
-					"override footstep sound set" 6
-					"airblast vulnerability multiplier" 0.627558
-					"damage force reduction" 0.663589
-					"move speed bonus" 0.5
+					"move speed bonus" 2.48926
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave6_7"
-			TotalCount 3
-			WaitBeforeStarting 275
-			WaitBetweenSpawns 1.84419
-			TotalCurrency 166
+			TotalCount 59
+			WaitBeforeStarting 105
+			WaitBetweenSpawns 1.34395
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 3
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Racist You"
-				ClassIcon Sniper
-				Health 449
+				Class Heavyweapons
+				Name "Eat Your the Pants Sock"
+				ClassIcon heavy
+				Health 300
 				Skill Easy
-				Attributes AlwaysFireWeapon
-				Item "The Self-Aware Beauty Mark"
-				Item "Prinny Machete"
-				Item "Rust Botkiller Sniper Rifle Mk.I"
+				Item "Panic Attack Shotgun"
+				Item "Fists of Steel"
+				Item "Iron Curtain"
 				CharacterAttributes
 				{
-					"Set DamageType Ignite" 1
-					"attach particle effect static" 13
-					"weapon burn dmg increased" 2.21605
-					"Blast radius increased" 2.25504
-					"use large smoke explosion" 1
-					"damage bonus" 0.631618
+					"damage bonus" 1
 					"move speed bonus" 1
 				}
 			}
@@ -1689,42 +3526,524 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave6_8"
-			TotalCount 15
-			WaitBeforeStarting 293
-			WaitBetweenSpawns 0.3323
-			TotalCurrency 166
+			TotalCount 23
+			WaitBeforeStarting 105
+			WaitBetweenSpawns 4.38959
+			TotalCurrency 55
 			SpawnCount 1
-			MaxActive 15
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Torching the You"
-				ClassIcon Pyro
-				Health 95
+				Class Medic
+				Name "Transporting Father Burp"
+				ClassIcon Medic_giant
+				Health 1908
 				Skill Normal
-				Attributes HoldFireUntilFullReload
-				Item "The Detonator"
-				Item "The Memory Maker"
-				Item "The Backburner"
+				Attributes MiniBoss
+				Item "Festive Medigun 2011"
+				Item "Festive Ubersaw"
+				Item "The Overdose"
 				CharacterAttributes
 				{
-					"airblast pushback scale" 7.33812
-					"projectile spread angle penalty" 9
-					"no self blast dmg" 1
+					"airblast vulnerability multiplier" 0.61823
+					"damage force reduction" 0.693622
+					"Blast radius increased" 2.50714
 					"damage bonus" 1
-					"move speed bonus" 1.94831
+					"move speed bonus" 0.5
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave6_9"
+			TotalCount 9
+			WaitBeforeStarting 107
+			WaitBetweenSpawns 1.09414
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 9
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Tempting the Mixtape"
+				ClassIcon Pyro
+				Health 175
+				Skill Normal
+				Item "The Detonator"
+				Item "Saxxy"
+				Item "TF_WEAPON_FLAMETHROWER"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_10"
+			TotalCount 9
+			WaitBeforeStarting 107
+			WaitBetweenSpawns 10.0983
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 9
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Mrs. Bumpy Ghost Jerk"
+				ClassIcon Scout
+				Health 250
+				Skill Hard
+				Attributes Aggressive
+				Item "Crit-a-Cola"
+				Item "The Conscientious Objector"
+				Item "Silver Botkiller Scattergun Mk.I"
+				CharacterAttributes
+				{
+					"slow enemy on hit" 0.30874
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_11"
+			TotalCount 1
+			WaitBeforeStarting 109
+			WaitBetweenSpawns 3.41039
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Ms. Running House"
+				ClassIcon Pyro
+				Health 175
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Attributes AlwaysFireWeapon
+				Item "Festive Shotgun 2014"
+				Item "The Neon Annihilator"
+				Item "The Rainblower"
+				CharacterAttributes
+				{
+					"faster reload rate" 0.956337
+					"bleeding duration" 5
+					"slow enemy on hit" 0.52663
+					"bullets per shot bonus" 0.601898
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_12"
+			TotalCount 3
+			WaitBeforeStarting 199
+			WaitBetweenSpawns 5.04189
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 3
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Textbook Train Nuke"
+				ClassIcon Scout
+				Health 125
+				Skill Hard
+				WeaponRestrictions MeleeOnly
+				Attributes AlwaysCrit
+				Item "TTG Max Pistol"
+				Item "The Freedom Staff"
+				Item "TF_WEAPON_SCATTERGUN"
+				CharacterAttributes
+				{
+					"damage causes airblast" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_13"
+			TotalCount 6
+			WaitBeforeStarting 208
+			WaitBetweenSpawns 6.8352
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 6
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Zombie"
+				ClassIcon Spy
+				Health 650
+				Skill Expert
+				Attributes HoldFireUntilFullReload
+				Item "The Ambassador"
+				Item "The Wanga Prick"
+				Item "The Cloak and Dagger"
+				Item "The Ap-Sap"
+				CharacterAttributes
+				{
+					"effect bar recharge rate increased" 1.15539
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_14"
+			TotalCount 6
+			WaitBeforeStarting 208
+			WaitBetweenSpawns 3.97912
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 6
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "General Skeleton"
+				ClassIcon Engineer
+				Health 307
+				Skill Easy
+				MaxVisionRange 30000
+				TeleportWhere spawnbot
+				Attributes Aggressive
+				Item "The Wrangler"
+				Item "Necro Smasher"
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"projectile spread angle penalty" 3
+					"override projectile type" 19
+					"bleeding duration" 5
+					"bullets per shot bonus" 2.31567
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_15"
 			TotalCount 2
+			WaitBeforeStarting 209
+			WaitBetweenSpawns 26.9957
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "My Flaming Gold Mouth"
+				ClassIcon Sniper_giant
+				Health 7226
+				Skill Normal
+				WeaponRestrictions PrimaryOnly
+				Attributes AlwaysFireWeapon
+				Attributes MiniBoss
+				Attributes Aggressive
+				Item "The Razorback"
+				Item "Prinny Machete"
+				Item "Gold Botkiller Sniper Rifle Mk.II"
+				CharacterAttributes
+				{
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.619934
+					"damage force reduction" 0.474687
+					"effect bar recharge rate increased" 1.89889
+					"Set DamageType Ignite" 1
+					"attach particle effect static" 13
+					"weapon burn dmg increased" 2.19407
+					"damage bonus" 1
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_16"
+			TotalCount 5
+			WaitBeforeStarting 227
+			WaitBetweenSpawns 7.3233
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 5
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Tasting the Gnome"
+				ClassIcon Sniper_giant
+				Health 1875
+				Skill Hard
+				Attributes AlwaysFireWeapon
+				Attributes MiniBoss
+				Item "TF_WEAPON_SMG"
+				Item "Frying Pan"
+				Item "Festive Sniper Rifle 2011"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.550102
+					"damage force reduction" 0.641309
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_17"
+			TotalCount 4
+			WaitBeforeStarting 231
+			WaitBetweenSpawns 13.8705
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 4
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Countess Satanic Dynamite"
+				ClassIcon Spy_giant
+				Health 1875
+				Skill Easy
+				Attributes MiniBoss
+				Item "TF_WEAPON_REVOLVER"
+				Item "Festive Knife 2011"
+				Item "The Cloak and Dagger"
+				Item "Festive Sapper"
+				CharacterAttributes
+				{
+					"projectile speed increased" 6.80066
+					"override projectile type" 2
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.607082
+					"damage force reduction" 0.456469
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_18"
+			TotalCount 3
+			WaitBeforeStarting 232
+			WaitBetweenSpawns 2.65737
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 3
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Hating Master Troll Capitalist"
+				ClassIcon Medic
+				Health 150
+				Skill Hard
+				Attributes SpawnWithFullCharge
+				Item "Silver Botkiller Medi Gun Mk.II"
+				Item "The Bat Outta Hell"
+				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
+				CharacterAttributes
+				{
+					"head scale" 3.601
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_19"
+			TotalCount 12
+			WaitBeforeStarting 232
+			WaitBetweenSpawns 1.78502
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 12
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Toasted Capitalist Clarinet"
+				ClassIcon demo
+				Health 207
+				Skill Expert
+				Item "Festive Stickybomb Launcher 2011"
+				Item "The Scotsman's Skullcutter"
+				Item "Festive Grenade Launcher"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_20"
+			TotalCount 29
+			WaitBeforeStarting 233
+			WaitBetweenSpawns 1.34932
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "King Not Mother Bandcamp"
+				ClassIcon medic_vaccinator_fire
+				Health 136
+				Skill Normal
+				MaxVisionRange 30000
+				Attributes VaccinatorFire
+				Attributes SpawnWithFullCharge
+				Item "The Vaccinator"
+				Item "Saxxy"
+				Item "The Overdose"
+				CharacterAttributes
+				{
+					"Blast radius increased" 1.33107
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_21"
+			TotalCount 36
+			WaitBeforeStarting 233
+			WaitBetweenSpawns 1.39014
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Sucking The Black Bronze Torso"
+				ClassIcon Sniper
+				Health 314
+				Skill Easy
+				Attributes AlwaysFireWeapon
+				Item "Jarate"
+				Item "The Bat Outta Hell"
+				Item "Gold Botkiller Sniper Rifle Mk.II"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_22"
+			TotalCount 8
+			WaitBeforeStarting 233
+			WaitBetweenSpawns 6.31971
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 8
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "The Black Uncomfortable Sans Fetish"
+				ClassIcon Spy
+				Health 125
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Item "The Ambassador"
+				Item "Gold Botkiller Knife Mk.I"
+				Item "The Cloak and Dagger"
+				Item "The Red-Tape Recorder"
+				CharacterAttributes
+				{
+					"bullets per shot bonus" 4.31414
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_23"
+			TotalCount 1
 			WaitBeforeStarting 293
-			WaitBetweenSpawns 3.21707
-			TotalCurrency 166
+			WaitBetweenSpawns 5.683
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Sergeant Cymbal Book"
+				ClassIcon demo_giant
+				Health 2625
+				Skill Normal
+				WeaponRestrictions PrimaryOnly
+				Attributes MiniBoss
+				Item "Gold Botkiller Stickybomb Launcher Mk.II"
+				Item "Gold Frying Pan"
+				Item "The Loose Cannon"
+				CharacterAttributes
+				{
+					"override projectile type" 18
+					"bullets per shot bonus" 2.63418
+					"damage bonus" 0.826144
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.537116
+					"damage force reduction" 0.332662
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_24"
+			TotalCount 2
+			WaitBeforeStarting 294
+			WaitBetweenSpawns 2.91702
+			TotalCurrency 55
 			SpawnCount 1
 			MaxActive 2
 			Where spawnbot
@@ -1732,21 +4051,122 @@ WaveSchedule
 			TFBot
 			{
 				Class Engineer
-				Name "Distributing Commander Gem 9gag"
+				Name "Devouring the Flaming Dog"
 				ClassIcon Engineer
-				Health 520
-				Skill Normal
+				Health 745
+				Skill Easy
 				TeleportWhere spawnbot
 				Item "The Wrangler"
-				Item "The Jag"
-				Item "Festive Shotgun 2014"
+				Item "Gold Botkiller Wrench Mk.I"
+				Item "The Frontier Justice"
 				CharacterAttributes
 				{
 					"cannot pick up intelligence" 1
-					"damage causes airblast" 1
-					"Blast radius increased" 1.93309
+					"engineer teleporter build rate multiplier" 1.31093
 					"damage bonus" 1
 					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_25"
+			TotalCount 1
+			WaitBeforeStarting 294
+			WaitBetweenSpawns 3.87724
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Boring Jerk Xylophone"
+				ClassIcon Sniper_giant
+				Health 1875
+				Skill Easy
+				WeaponRestrictions PrimaryOnly
+				Attributes AlwaysFireWeapon
+				Attributes MiniBoss
+				Item "The Cozy Camper"
+				Item "TF_WEAPON_CLUB"
+				Item "Gold Botkiller Sniper Rifle Mk.I"
+				CharacterAttributes
+				{
+					"faster reload rate" 0.464941
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.401801
+					"damage force reduction" 0.533249
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_26"
+			TotalCount 2
+			WaitBeforeStarting 295
+			WaitBetweenSpawns 1.8934
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Planet"
+				ClassIcon Engineer_giant
+				Health 1875
+				Skill Normal
+				TeleportWhere spawnbot
+				Attributes MiniBoss
+				Item "TTG Max Pistol"
+				Item "The Southern Hospitality"
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"hit self on miss" 1
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.435133
+					"damage force reduction" 0.661643
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave6_27"
+			TotalCount 1
+			WaitBeforeStarting 296
+			WaitBetweenSpawns 12.9492
+			TotalCurrency 55
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Slicing Queen Custom Planet Satan"
+				ClassIcon Medic_giant
+				Health 5936
+				Skill Hard
+				Attributes MiniBoss
+				Item "Diamond Botkiller Medi Gun Mk.I"
+				Item "Prinny Machete"
+				Item "The Blutsauger"
+				CharacterAttributes
+				{
+					"airblast vulnerability multiplier" 0.304243
+					"damage force reduction" 0.384395
+					"effect bar recharge rate increased" 0.200153
+					"damage bonus" 1
+					"move speed bonus" 0.5
 				}
 			}
 		}
@@ -1767,63 +4187,60 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave7_1"
-			TotalCount 25
+			TotalCount 1
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 4.38585
-			TotalCurrency 136
+			WaitBetweenSpawns 7.17131
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Soldier
-				Name "Lieutenant Duck Platinum"
-				ClassIcon Soldier_giant
-				Health 14805
-				Skill Easy
+				Class Demoman
+				Name "Eating Captain Atomic Laughter"
+				ClassIcon demoknight
+				Health 1292
+				Skill Normal
 				WeaponRestrictions MeleeOnly
-				Attributes MiniBoss
-				Item "TF_WEAPON_SHOTGUN_PRIMARY"
-				Item "Gold Frying Pan"
-				Item "Gold Botkiller Rocket Launcher Mk.II"
+				Item "Silver Botkiller Stickybomb Launcher Mk.I"
+				Item "The Half-Zatoichi"
+				Item "The Loch-n-Load"
 				CharacterAttributes
 				{
+					"effect bar recharge rate increased" 1.13117
+					"projectile spread angle penalty" 9
 					"damage bonus" 1
-					"override footstep sound set" 3
-					"airblast vulnerability multiplier" 0.502207
-					"damage force reduction" 0.462419
-					"move speed bonus" 0.5
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave7_2"
-			TotalCount 85
-			WaitBeforeStarting 13
-			WaitBetweenSpawns 1.35181
-			TotalCurrency 136
+			TotalCount 1
+			WaitBeforeStarting 4
+			WaitBetweenSpawns 34.7586
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 22
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Admiral Worthless Mistress Witch"
-				ClassIcon Engineer
-				Health 447
+				Class Heavyweapons
+				Name "Sam and Beast"
+				ClassIcon heavy
+				Health 703
 				Skill Hard
-				TeleportWhere spawnbot
-				Item "Festive Wrangler"
-				Item "Gold Frying Pan"
-				Item "Panic Attack Shotgun"
+				Attributes AlwaysCrit
+				Item "The Family Business"
+				Item "The Eviction Notice"
+				Item "Silver Botkiller Minigun Mk.II"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"effect bar recharge rate increased" 1.26491
-					"bleeding duration" 5
+					"fire rate bonus" 0.126412
+					"clip size bonus" 100000
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -1832,96 +4249,27 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave7_3"
-			TotalCount 3
-			WaitBeforeStarting 171
-			WaitBetweenSpawns 16.5892
-			TotalCurrency 136
-			SpawnCount 1
-			MaxActive 3
-			Where spawnbot
-
-			TFBot
-			{
-				Class Spy
-				Name "Officer Broken Cancer Fetish"
-				ClassIcon Spy_giant
-				Health 11795
-				Skill Easy
-				Attributes MiniBoss
-				Item "TF_WEAPON_REVOLVER"
-				Item "Festive Knife 2011"
-				Item "TF_WEAPON_INVIS"
-				Item "TF_WEAPON_BUILDER_SPY"
-				CharacterAttributes
-				{
-					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.514228
-					"damage force reduction" 0.620325
-					"projectile speed increased" 1.96928
-					"override projectile type" 12
-					"damage bonus" 1
-					"move speed bonus" 0.5
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave7_4"
-			TotalCount 12
-			WaitBeforeStarting 177
-			WaitBetweenSpawns 6.7851
-			TotalCurrency 136
-			SpawnCount 1
-			MaxActive 12
-			Where spawnbot
-
-			TFBot
-			{
-				Class Pyro
-				Name "Poking the Wonderful Gnome"
-				ClassIcon Pyro_giant
-				Health 2625
-				Skill Expert
-				Attributes MiniBoss
-				Item "The Manmelter"
-				Item "The Ham Shank"
-				Item "Silver Botkiller Flame Thrower Mk.II"
-				CharacterAttributes
-				{
-					"projectile spread angle penalty" 3
-					"damage bonus" 1
-					"override footstep sound set" 6
-					"airblast vulnerability multiplier" 0.397574
-					"damage force reduction" 0.502699
-					"move speed bonus" 0.5
-				}
-			}
-		}
-		WaveSpawn
-		{
-			Name "wave7_5"
-			TotalCount 26
-			WaitBeforeStarting 182
-			WaitBetweenSpawns 1.43515
-			TotalCurrency 136
+			TotalCount 59
+			WaitBeforeStarting 8
+			WaitBetweenSpawns 1.45146
+			TotalCurrency 50
 			SpawnCount 1
 			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Sniper
-				Name "Cooking the Good Vaccine"
-				ClassIcon Sniper
+				Class Scout
+				Name "Strangling the Stinky Hand Truck"
+				ClassIcon Scout
 				Health 250
 				Skill Expert
-				Item "The Razorback"
-				Item "Gold Frying Pan"
-				Item "The Classic"
+				Item "Crit-a-Cola"
+				Item "The Sandman"
+				Item "Festive Scattergun 2011"
 				CharacterAttributes
 				{
-					"apply look velocity on damage" -5.39008
-					"attach particle effect static" 31
+					"attach particle effect static" 21
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -1929,67 +4277,130 @@ WaveSchedule
 		}
 		WaveSpawn
 		{
-			Name "wave7_6"
-			TotalCount 20
-			WaitBeforeStarting 267
-			WaitBetweenSpawns 1.03642
-			TotalCurrency 136
+			Name "wave7_4"
+			TotalCount 1
+			WaitBeforeStarting 8
+			WaitBetweenSpawns 8.82889
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 20
+			MaxActive 1
 			Where spawnbot
 
 			TFBot
 			{
-				Class Spy
-				Name "Spitting on Father World Duwang"
-				ClassIcon Spy_giant
-				Health 1875
-				Skill Easy
+				Class Demoman
+				Name "Inflated Music"
+				ClassIcon demo_giant
+				Health 7350
+				Scale 1.9
+				Skill Hard
 				Attributes MiniBoss
-				Item "Festive Revolver 2014"
-				Item "Blood Botkiller Knife Mk.I"
-				Item "The Cloak and Dagger"
-				Item "TF_WEAPON_BUILDER_SPY"
+				Attributes UseBossHealthBar
+				Item "The Splendid Screen"
+				Item "Necro Smasher"
+				Item "Festive Grenade Launcher"
 				CharacterAttributes
 				{
-					"override projectile type" 19
+					"override projectile type" 4
 					"damage bonus" 1
 					"override footstep sound set" 4
-					"airblast vulnerability multiplier" 0.456122
-					"damage force reduction" 0.364284
+					"airblast vulnerability multiplier" 0.643746
+					"damage force reduction" 0.61205
+					"attach particle effect static" 22
+					"move speed bonus" 0.25
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_5"
+			TotalCount 17
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 2.0081
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 17
+			Where spawnbot
+
+			TFBot
+			{
+				Class Sniper
+				Name "Poking Sam and Vore"
+				ClassIcon Sniper_giant
+				Health 3255
+				Skill Easy
+				Attributes AlwaysFireWeapon
+				Attributes MiniBoss
+				Item "Festive Jarate"
+				Item "The Crossing Guard"
+				Item "Gold Botkiller Sniper Rifle Mk.I"
+				CharacterAttributes
+				{
+					"effect bar recharge rate increased" 1.99849
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.480714
+					"damage force reduction" 0.596825
 					"move speed bonus" 0.5
 				}
 			}
 		}
 		WaveSpawn
 		{
-			Name "wave7_7"
-			TotalCount 2
-			WaitBeforeStarting 267
-			WaitBetweenSpawns 11.2768
-			TotalCurrency 136
+			Name "wave7_6"
+			TotalCount 78
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 1.02807
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 2
+			MaxActive 22
 			Where spawnbot
 
 			TFBot
 			{
-				Class Pyro
-				Name "Sitting on Commander Groove Ghost"
-				ClassIcon Pyro
-				Health 175
-				Skill Normal
-				Attributes AlwaysCrit
-				Attributes AlwaysFireWeapon
-				Item "The Manmelter"
-				Item "The Lollichop"
-				Item "The Phlogistinator"
+				Class Sniper
+				Name "Sneezing on the Hole Autism"
+				ClassIcon Sniper
+				Health 125
+				Skill Hard
+				WeaponRestrictions MeleeOnly
+				MaxVisionRange 30000
+				Item "TF_WEAPON_SMG"
+				Item "The Memory Maker"
+				Item "Shooting Star"
 				CharacterAttributes
 				{
-					"deflection size multiplier" 2.46826
-					"override projectile type" 18
+					"override projectile type" 13
+					"Blast radius increased" 1.05905
 					"use large smoke explosion" 1
-					"increase buff duration" 13.3385
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_7"
+			TotalCount 10
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 1.20763
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 10
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Recording Officer Overlord"
+				ClassIcon Scout
+				Health 136
+				Skill Expert
+				Item "TF_WEAPON_PISTOL_SCOUT"
+				Item "The Freedom Staff"
+				Item "Gold Botkiller Scattergun Mk.I"
+				CharacterAttributes
+				{
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -1998,30 +4409,29 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave7_8"
-			TotalCount 1
-			WaitBeforeStarting 294
-			WaitBetweenSpawns 1.47593
-			TotalCurrency 136
+			TotalCount 6
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 1.29937
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 1
+			MaxActive 6
 			Where spawnbot
 
 			TFBot
 			{
-				Class Medic
-				Name "Nuking Squire Teleporter Plane"
-				ClassIcon medic_vaccinator_bullet
-				Health 150
-				Skill Normal
-				MaxVisionRange 30000
-				Attributes VaccinatorBullets
-				Item "The Vaccinator"
-				Item "The Crossing Guard"
-				Item "Festive Crusader's Crossbow"
+				Class Engineer
+				Name "Inflated Laughter Blast"
+				ClassIcon Engineer
+				Health 602
+				Skill Hard
+				TeleportWhere spawnbot
+				Attributes HoldFireUntilFullReload
+				Item "TF_WEAPON_PISTOL"
+				Item "The Eureka Effect"
+				Item "The Rescue Ranger"
 				CharacterAttributes
 				{
-					"projectile speed increased" 7.93911
-					"bullets per shot bonus" 2.48401
+					"cannot pick up intelligence" 1
 					"damage bonus" 1
 					"move speed bonus" 1
 				}
@@ -2030,57 +4440,347 @@ WaveSchedule
 		WaveSpawn
 		{
 			Name "wave7_9"
-			TotalCount 10
-			WaitBeforeStarting 294
-			WaitBetweenSpawns 0.567424
-			TotalCurrency 136
+			TotalCount 9
+			WaitBeforeStarting 79
+			WaitBetweenSpawns 2.82002
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 10
+			MaxActive 9
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Licking Mistress Magic"
-				ClassIcon Engineer
-				Health 782
-				Skill Hard
-				TeleportWhere spawnbot
-				Item "TTG Max Pistol"
-				Item "Diamond Botkiller Wrench Mk.I"
-				Item "Festive Shotgun 2014"
+				Class Pyro
+				Name "Beast Clicker"
+				ClassIcon Pyro
+				Health 1002
+				Skill Normal
+				Item "The Manmelter"
+				Item "The Axtinguisher"
+				Item "Silver Botkiller Flame Thrower Mk.I"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"engineer sentry build rate multiplier" 3.07988
-					"projectile spread angle penalty" 3
-					"override projectile type" 19
+					"airblast vertical pushback scale" -1.72793
+					"projectile speed increased" 0.120678
 					"damage bonus" 1
-					"move speed bonus" 0.960901
+					"move speed bonus" 1
 				}
 			}
 		}
 		WaveSpawn
 		{
 			Name "wave7_10"
-			TotalCount 7
-			WaitBeforeStarting 294
-			WaitBetweenSpawns 0.342968
-			TotalCurrency 136
+			TotalCount 5
+			WaitBeforeStarting 80
+			WaitBetweenSpawns 9.91143
+			TotalCurrency 50
 			SpawnCount 1
-			MaxActive 7
+			MaxActive 5
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Seducing Mistress Volcano"
+				ClassIcon heavy_giant
+				Health 4500
+				Skill Easy
+				Attributes MiniBoss
+				Item "The Family Business"
+				Item "The Eviction Notice"
+				Item "Blood Botkiller Minigun Mk.I"
+				CharacterAttributes
+				{
+					"projectile spread angle penalty" 3
+					"no self blast dmg" 1
+					"damage bonus" 1
+					"override footstep sound set" 2
+					"airblast vulnerability multiplier" 0.386441
+					"damage force reduction" 0.37513
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_11"
+			TotalCount 13
+			WaitBeforeStarting 95
+			WaitBetweenSpawns 1.24483
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 13
 			Where spawnbot
 
 			TFBot
 			{
 				Class Demoman
-				Name "Wooden Monster"
+				Name "Mom and Dad and Teleporter George"
 				ClassIcon demo
 				Health 175
 				Skill Hard
-				Item "The Tide Turner"
-				Item "The Ullapool Caber"
+				Attributes Aggressive
+				Item "The Scottish Resistance"
+				Item "The Scottish Handshake"
 				Item "The Loch-n-Load"
+				CharacterAttributes
+				{
+					"charge time increased" 7.57078
+					"Set DamageType Ignite" 1
+					"attach particle effect static" 13
+					"weapon burn dmg increased" 1.20028
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_12"
+			TotalCount 1
+			WaitBeforeStarting 96
+			WaitBetweenSpawns 8.17434
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Bean Lamp"
+				ClassIcon Engineer_giant
+				Health 1875
+				Skill Easy
+				TeleportWhere spawnbot
+				Attributes MiniBoss
+				Item "TTG Max Pistol"
+				Item "Prinny Machete"
+				Item "Festive Shotgun 2014"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.400487
+					"damage force reduction" 0.46318
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_13"
+			TotalCount 2
+			WaitBeforeStarting 106
+			WaitBetweenSpawns 2.60365
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Fixing the Internet Father"
+				ClassIcon demo
+				Health 175
+				Skill Expert
+				Item "Rust Botkiller Stickybomb Launcher Mk.I"
+				Item "Festive Eyelander"
+				Item "The Bootlegger"
+				CharacterAttributes
+				{
+					"faster reload rate" -1
+					"override projectile type" 2
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_14"
+			TotalCount 6
+			WaitBeforeStarting 106
+			WaitBetweenSpawns 19.4224
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 6
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Deputy Hell Shirt"
+				ClassIcon demo
+				Health 1211
+				Skill Hard
+				Item "Silver Botkiller Stickybomb Launcher Mk.I"
+				Item "Necro Smasher"
+				Item "The Bootlegger"
+				CharacterAttributes
+				{
+					"charge time increased" 4.40145
+					"slow enemy on hit major" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_15"
+			TotalCount 22
+			WaitBeforeStarting 113
+			WaitBetweenSpawns 4.55419
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Arch Nemesis Mother Sock"
+				ClassIcon Engineer_giant
+				Health 1875
+				Skill Normal
+				WeaponRestrictions SecondaryOnly
+				TeleportWhere spawnbot
+				Attributes HoldFireUntilFullReload
+				Attributes MiniBoss
+				Item "TF_WEAPON_PISTOL"
+				Item "The Gunslinger"
+				Item "TF_WEAPON_SHOTGUN_PRIMARY"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"engy sentry radius increased" 1.74322
+					"damage bonus" 1
+					"override footstep sound set" 4
+					"airblast vulnerability multiplier" 0.302005
+					"damage force reduction" 0.484459
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_16"
+			TotalCount 39
+			WaitBeforeStarting 114
+			WaitBetweenSpawns 2.70217
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Bad Mouse"
+				ClassIcon Medic
+				Health 150
+				Skill Expert
+				Item "Gold Botkiller Medi Gun Mk.I"
+				Item "Festive Ubersaw"
+				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
+				CharacterAttributes
+				{
+					"faster reload rate" 0.123272
+					"effect bar recharge rate increased" 1.6148
+					"apply look velocity on damage" 1.02674
+					"Blast radius increased" 2.87053
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_17"
+			TotalCount 10
+			WaitBeforeStarting 115
+			WaitBetweenSpawns 5.78677
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 10
+			Where spawnbot
+
+			TFBot
+			{
+				Class Scout
+				Name "Commander Rick Mother"
+				ClassIcon Scout
+				Health 559
+				Skill Expert
+				Item "Mad Milk"
+				Item "The Wrap Assassin"
+				Item "Silver Botkiller Scattergun Mk.II"
+				CharacterAttributes
+				{
+					"Blast radius increased" 3.18437
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_18"
+			TotalCount 1
+			WaitBeforeStarting 116
+			WaitBetweenSpawns 31.3445
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Medic
+				Name "Sneezing on the Snow Undertale"
+				ClassIcon Medic
+				Health 568
+				Skill Expert
+				WeaponRestrictions PrimaryOnly
+				MaxVisionRange 30000
+				Attributes SpawnWithFullCharge
+				Item "TF_WEAPON_MEDIGUN"
+				Item "Gold Frying Pan"
+				Item "TF_WEAPON_SYRINGEGUN_MEDIC"
+				CharacterAttributes
+				{
+					"Set DamageType Ignite" 1
+					"attach particle effect static" 13
+					"damage bonus" 1
+					"move speed bonus" 2.88854
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_19"
+			TotalCount 12
+			WaitBeforeStarting 225
+			WaitBetweenSpawns 1.09481
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 12
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Judge Minimum Homestuck Duckoid"
+				ClassIcon heavy
+				Health 193
+				Skill Expert
+				Attributes Aggressive
+				Item "Festive Shotgun 2014"
+				Item "The Freedom Staff"
+				Item "Natascha"
 				CharacterAttributes
 				{
 					"damage bonus" 1
@@ -2090,31 +4790,339 @@ WaveSchedule
 		}
 		WaveSpawn
 		{
-			Name "wave7_11"
+			Name "wave7_20"
+			TotalCount 13
+			WaitBeforeStarting 225
+			WaitBetweenSpawns 3.40367
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 13
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Max Sans"
+				ClassIcon heavy
+				Health 300
+				Skill Normal
+				MaxVisionRange 30000
+				Item "Festive Shotgun 2014"
+				Item "Gold Frying Pan"
+				Item "TF_WEAPON_MINIGUN"
+				CharacterAttributes
+				{
+					"Blast radius increased" 1.0691
+					"use large smoke explosion" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_21"
+			TotalCount 15
+			WaitBeforeStarting 225
+			WaitBetweenSpawns 1.02095
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 15
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Hand"
+				ClassIcon demo
+				Health 175
+				Skill Normal
+				MaxVisionRange 30000
+				Item "Festive Stickybomb Launcher 2011"
+				Item "The Bat Outta Hell"
+				Item "Festive Grenade Launcher"
+				CharacterAttributes
+				{
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_22"
+			TotalCount 109
+			WaitBeforeStarting 225
+			WaitBetweenSpawns 0.505787
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 22
+			Where spawnbot
+
+			TFBot
+			{
+				Class Engineer
+				Name "Fire"
+				ClassIcon Engineer
+				Health 31
+				Skill Easy
+				MaxVisionRange 30000
+				TeleportWhere spawnbot
+				Item "TTG Max Pistol"
+				Item "The Jag"
+				Item "Festive Shotgun 2014"
+				CharacterAttributes
+				{
+					"cannot pick up intelligence" 1
+					"faster reload rate" -1
+					"bleeding duration" 5
+					"damage bonus" 0.964613
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_23"
+			TotalCount 5
+			WaitBeforeStarting 225
+			WaitBetweenSpawns 3.54015
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 5
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "Tracking the Soundcloud Duck"
+				ClassIcon soldier_backup
+				Health 1090
+				Skill Expert
+				Item "The Battalion's Backup"
+				Item "The Market Gardener"
+				Item "Carbonado Botkiller Rocket Launcher Mk.I"
+				CharacterAttributes
+				{
+					"hit self on miss" 1
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_24"
+			TotalCount 4
+			WaitBeforeStarting 226
+			WaitBetweenSpawns 14.7351
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 4
+			Where spawnbot
+
+			TFBot
+			{
+				Class Pyro
+				Name "Renting the Mixtape Apex"
+				ClassIcon Pyro
+				Health 1178
+				Skill Hard
+				Item "The Detonator"
+				Item "Frying Pan"
+				Item "Gold Botkiller Flame Thrower Mk.II"
+				CharacterAttributes
+				{
+					"override projectile type" 2
+					"Set DamageType Ignite" 1
+					"attach particle effect static" 13
+					"Blast radius increased" 3.51169
+					"damage bonus" 0.396772
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_25"
+			TotalCount 8
+			WaitBeforeStarting 278
+			WaitBetweenSpawns 2.0399
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 8
+			Where spawnbot
+
+			TFBot
+			{
+				Class Spy
+				Name "Dancing With King Shitty Giant"
+				ClassIcon Spy
+				Health 125
+				Skill Expert
+				Attributes Aggressive
+				Item "The Ambassador"
+				Item "Saxxy"
+				Item "The Quackenbirdt"
+				Item "Festive Sapper"
+				CharacterAttributes
+				{
+					"bullets per shot bonus" 3.14866
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_26"
 			TotalCount 3
-			WaitBeforeStarting 294
-			WaitBetweenSpawns 1.57266
-			TotalCurrency 136
+			WaitBeforeStarting 278
+			WaitBetweenSpawns 4.83622
+			TotalCurrency 50
 			SpawnCount 1
 			MaxActive 3
 			Where spawnbot
 
 			TFBot
 			{
-				Class Engineer
-				Name "Vice President Sauce Reactor"
-				ClassIcon Engineer
-				Health 326
-				Skill Expert
-				WeaponRestrictions SecondaryOnly
-				TeleportWhere spawnbot
-				Item "TTG Max Pistol"
-				Item "Silver Botkiller Wrench Mk.I"
-				Item "The Frontier Justice"
+				Class Heavyweapons
+				Name "Studying the Nuclear Button"
+				ClassIcon heavy
+				Health 505
+				Skill Normal
+				Item "Festive Shotgun 2014"
+				Item "Warrior's Spirit"
+				Item "Silver Botkiller Minigun Mk.I"
 				CharacterAttributes
 				{
-					"cannot pick up intelligence" 1
-					"hit self on miss" 1
+					"weapon spread bonus" 3
+					"bullets per shot bonus" 3.95505
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_27"
+			TotalCount 1
+			WaitBeforeStarting 279
+			WaitBetweenSpawns 8.84778
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Soldier
+				Name "The White Knife Rick"
+				ClassIcon soldier_buff_giant
+				Health 3000
+				Skill Easy
+				Attributes MiniBoss
+				Item "The Buff Banner"
+				Item "Saxxy"
+				Item "The Beggar's Bazooka"
+				CharacterAttributes
+				{
+					"fire rate bonus" 0.992458
+					"clip size bonus" 100000
+					"projectile spread angle penalty" 81
+					"bullets per shot bonus" 1.87599
+					"damage bonus" 1
+					"override footstep sound set" 3
+					"airblast vulnerability multiplier" 0.31885
+					"damage force reduction" 0.425061
+					"move speed bonus" 0.5
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_28"
+			TotalCount 2
+			WaitBeforeStarting 281
+			WaitBetweenSpawns 1.04574
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 2
+			Where spawnbot
+
+			TFBot
+			{
+				Class Demoman
+				Name "Loving Arch Nemesis Gold"
+				ClassIcon demo
+				Health 175
+				Skill Easy
+				Item "Blood Botkiller Stickybomb Launcher Mk.I"
+				Item "Nessie's Nine Iron"
+				Item "The Loose Cannon"
+				CharacterAttributes
+				{
+					"charge time increased" 10.2628
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_29"
+			TotalCount 7
+			WaitBeforeStarting 281
+			WaitBetweenSpawns 1.93492
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 7
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Erasing Sergeant Cooked Body"
+				ClassIcon heavy_gru
+				Health 141
+				Skill Normal
+				WeaponRestrictions MeleeOnly
+				Attributes Aggressive
+				Item "The Family Business"
+				Item "Festive Gloves of Running Urgently"
+				Item "The Huo Long Heatmaker"
+				CharacterAttributes
+				{
+					"projectile speed increased" 9.09572
+					"damage bonus" 1
+					"move speed bonus" 1
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave7_30"
+			TotalCount 1
+			WaitBeforeStarting 282
+			WaitBetweenSpawns 2.40627
+			TotalCurrency 50
+			SpawnCount 1
+			MaxActive 1
+			Where spawnbot
+
+			TFBot
+			{
+				Class Heavyweapons
+				Name "Recording the Communist Stinker"
+				ClassIcon heavy
+				Health 300
+				Skill Expert
+				Attributes Aggressive
+				Item "The Family Business"
+				Item "The Bread Bite"
+				Item "Iron Curtain"
+				CharacterAttributes
+				{
 					"damage bonus" 1
 					"move speed bonus" 1
 				}

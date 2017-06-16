@@ -252,7 +252,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			ws.time_until_next_spawn = ws.wait_before_starting;
 			ws.spawns_remaining = ws.total_count;
 			ws.effective_pressure = static_cast<float>(health);
-			ws.challenge_to_kill = ws.effective_pressure / pressure_decay_rate;
+			ws.time_to_kill = ws.effective_pressure / pressure_decay_rate;
 			ws.type_of_spawned = wavespawn::type::tank;
 			ws.tnk.speed = speed;
 			ws.tnk.health = health;
@@ -290,7 +290,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				float speed_pressure = ((speed - 10.0f) * 0.1f) + 1.0f;
 
 				// How long it should take to kill the theoretical bot.
-				float challenge_to_kill;
+				float time_to_kill;
 
 				// Cache the recipricol of the pressure decay rate.
 				const float recip_pressure_decay_rate = 1 / pressure_decay_rate;
@@ -302,14 +302,18 @@ void wave_generator::generate_mission(int argc, char** argv)
 				while (max_count == 0)
 				{
 					effective_pressure = health * speed_pressure;
-					challenge_to_kill = effective_pressure * recip_pressure_decay_rate;
-					wait_between_spawns = challenge_to_kill * rand_float(1.0f, 5.0f);
+					time_to_kill = effective_pressure * recip_pressure_decay_rate;
+					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f);
 					max_count = static_cast<int>(floor((max_time - t) / wait_between_spawns));
 
 					// If the max count is too low, it means the bot may be too strong.
 					if (max_count == 0 && health > 1000)
 					{
 						health = static_cast<int>(health * 0.9f);
+					}
+					else
+					{
+						max_count = 1;
 					}
 				}
 
@@ -326,11 +330,12 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.spawns_remaining = ws.total_count - 1;
 				ws.effective_pressure = effective_pressure;
-				ws.challenge_to_kill = challenge_to_kill;
+				ws.time_to_kill = time_to_kill;
 				ws.type_of_spawned = wavespawn::type::tank;
 				ws.tnk.speed = speed;
 				ws.tnk.health = health;
 				ws.time_until_next_spawn = ws.wait_between_spawns;
+				ws.time_to_kill_expires = ws.time_to_kill;
 				wavespawns.emplace_back(ws);
 
 				++active_wavespawns;
@@ -352,8 +357,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::cout << "Entering TFBot TotalCount calculation loop..." << std::endl;
 
 				// How long it should take to kill the theoretical bot.
-				float challenge_to_kill;
-				//float effective_challenge_to_kill;
+				float time_to_kill;
+				//float effective_time_to_kill;
 
 				// Cache the recipricol of the pressure decay rate.
 				const float recip_pressure_decay_rate = 1 / pressure_decay_rate;
@@ -382,11 +387,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 				while (max_count == 0)
 				{
 					effective_pressure = bot_meta.pressure * bot.health;
-					challenge_to_kill = effective_pressure * recip_pressure_decay_rate;
-					wait_between_spawns = challenge_to_kill * rand_float(1.0f, 5.0f); // * pressure_compensation;
+					time_to_kill = effective_pressure * recip_pressure_decay_rate;
+					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f); // * pressure_compensation;
 					max_count = static_cast<int>(floor(time_left / wait_between_spawns));
 
-					//effective_challenge_to_kill = effective_pressure / effective_pressure_decay_rate;
+					//effective_time_to_kill = effective_pressure / effective_pressure_decay_rate;
 
 					//bool has_pressure_issue = (pressure_compensation > 0.0f && bot.health > pressure_decay_rate * 100.0f / pressure_compensation);
 
@@ -410,7 +415,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 							}
 						}
 					}
-					else if (max_count > 100)
+					else if (wait_between_spawns < 1.0f)
 					{
 						if (rand_chance(0.9f))
 						{
@@ -459,10 +464,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.bot = bot;
 				ws.effective_pressure = effective_pressure;
-				ws.challenge_to_kill = challenge_to_kill;
+				ws.time_to_kill = time_to_kill;
 				ws.spawns_remaining = ws.total_count - 1;
 				ws.type_of_spawned = wavespawn::type::tfbot;
 				ws.time_until_next_spawn = ws.wait_between_spawns;
+				ws.time_to_kill_expires = ws.time_to_kill;
 				wavespawns.emplace_back(ws);
 
 				++active_wavespawns;
@@ -495,24 +501,45 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Iterate through the wavespawns to update the pressure.
 				for (wavespawn& ws : wavespawns)
 				{
-					ws.time_until_next_spawn -= 1;
-					while (ws.spawns_remaining != -1 && ws.time_until_next_spawn <= 0.0f)
+					// Time To Kill Expires Greater Than 0
+					bool ttkegtz = false;
+					if (ws.time_to_kill_expires > 0.0f)
+					{
+						ttkegtz = true;
+					}
+					ws.time_to_kill_expires -= 1.0f;
+					if (ttkegtz && ws.time_to_kill_expires <= 0.0f)
+					{
+						--active_wavespawns;
+						ttkegtz = false;
+					}
+
+					ws.time_until_next_spawn -= 1.0f;
+
+					while (ws.spawns_remaining != 0 && ws.time_until_next_spawn <= 0.0f)
 					{
 						/*
 						if (ws.spawns_remaining == ws.total_count)
 						{
 							++active_wavespawns;
 						}
-						*/
 						if (ws.spawns_remaining == 0)
 						{
 							--active_wavespawns;
 						}
 						else
 						{
-							pressure_increase += ws.effective_pressure;
-							ws.time_until_next_spawn += ws.wait_between_spawns;
+						*/
+						pressure_increase += ws.effective_pressure;
+						ws.time_until_next_spawn += ws.wait_between_spawns;
+
+						if (!ttkegtz)
+						{
+							++active_wavespawns;
 						}
+						ws.time_to_kill_expires = ws.time_to_kill;
+						ttkegtz = true;
+						//}
 						ws.spawns_remaining -= 1;
 
 						// Since something just spawned, reset the empty seconds.
@@ -524,7 +551,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Modify the pressure.
 				pressure += pressure_increase; // *active_wavespawns;
 				// Since time has passed, reduce the pressure.
-				pressure -= pressure_decay_rate / (active_wavespawns + 1);
+				pressure -= pressure_decay_rate * pressure_decay_rate_multiplier_in_time / (active_wavespawns + 1);
 			}
 
 			//++t;
@@ -711,7 +738,7 @@ void wave_generator::calculate_effective_pressure_decay_rate
 		*/
 
 		float time_of_last_spawn = ws.wait_before_starting + ws.wait_between_spawns * (ws.total_count - 1);
-		float time_of_last_dead = time_of_last_spawn + ws.challenge_to_kill;
+		float time_of_last_dead = time_of_last_spawn + ws.time_to_kill;
 
 		if (t >= ws.wait_before_starting && t <= time_of_last_dead)
 		{

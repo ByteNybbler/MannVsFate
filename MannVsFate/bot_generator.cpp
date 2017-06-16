@@ -357,7 +357,7 @@ tfbot_meta bot_generator::generate_bot()
 	// Have a chance to tweak the health value.
 	if ((bot_meta.isGiant && rand_chance(0.8f)) || rand_chance(0.5f))
 	{
-		float upper_bound = pressure_decay_rate * 0.002f;
+		float upper_bound = pressure_decay_rate * 0.007f; // 0.002f;
 		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, upper_bound));
 	}
 	if (rand_chance(0.1f * chanceMult))
