@@ -9,7 +9,7 @@
 
 class wave_generator
 {
-	const std::string version = "0.1.12";
+	const std::string version = "0.2.0";
 
 public:
 	// Accessors.
@@ -63,22 +63,22 @@ private:
 	int waves = 7;
 	// How many players the mission is intended for.
 	int players = 4;
-	// The base pressure decay rate, measured per player.
+	// The base pressure decay rate, measured per player, pre-multiplication.
 	int base_pressure_decay_rate = 50;
 	// The pressure decay rate multiplier.
-	float pressure_decay_rate_multiplier = 0.03f;
+	float pressure_decay_rate_multiplier = 0.1f; //0.03f;
 	// The maximum number of wavespawns per wave.
 	unsigned int max_wavespawns = 30;
 	// The maximum amount of time that a wave can last.
 	int max_time = 300;
 	// The maximum number of unique icons per wave. There can be 23 icons before the HUD starts to look stupid.
 	unsigned int max_icons = 23;
-	// How much currency the players earn per wave.
+	// How much currency the players can earn per wave (not counting bonuses).
 	int currency_per_wave = 1500;
 	// The amount by which currency is multiplied when used to increase pressure.
 	float currency_pressure_multiplier = 0.8f;
-	// The chance that a tank will exist in the wave.
-	float tank_chance = 0.4f;
+	// The chance that a WaveSpawn will be a tank WaveSpawn.
+	float tank_chance = 0.02f;
 
 	// Write a number of indents based on the indentation level.
 	void write_indents();

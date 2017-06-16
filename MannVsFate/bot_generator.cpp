@@ -102,7 +102,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot.items.emplace_back(primary);
 	}
 
-	if (!bot_meta.isAlwaysCrit && rand_chance(0.1f))
+	if (!bot_meta.isAlwaysCrit && rand_chance(0.05f))
 	{
 		bot.attributes.emplace_back("AlwaysCrit");
 		bot_meta.pressure *= 4.5f;
@@ -278,6 +278,40 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.class_icon = "soldier_conch";
 		}
+		break;
+
+	case player_class::medic:
+		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
+		{
+			/*
+			if (rand_chance(0.2f * chanceMult))
+			{
+			bot.attributes.emplace_back("ProjectileShield");
+			bot.pressure *= 3.0f;
+			}
+			*/
+			if (secondary == "The Vaccinator")
+			{
+				const int type = rand_int(0, 3);
+				switch (type)
+				{
+				case 0:
+					bot.attributes.emplace_back("VaccinatorBullets");
+					bot.class_icon = "medic_vaccinator_bullet";
+					break;
+				case 1:
+					bot.attributes.emplace_back("VaccinatorBlast");
+					bot.class_icon = "medic_vaccinator_blast";
+					break;
+				case 2:
+					bot.attributes.emplace_back("VaccinatorFire");
+					bot.class_icon = "medic_vaccinator_fire";
+					break;
+				}
+				//bot_meta.pressure *= 1.1f;
+			}
+		}
+		break;
 	}
 
 	if (rand_chance(0.05f))
@@ -302,11 +336,13 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 
+	/*
 	if (bot.cl == player_class::spy)
 	{
 		//chanceMult *= 3.0f;
 		bot_meta.pressure *= 1.2f;
 	}
+	*/
 
 	// A bot has a chance to be a giant.
 	if (!bot_meta.isGiant && !bot_meta.permaSmall && rand_chance(0.1f))
@@ -362,6 +398,7 @@ tfbot_meta bot_generator::generate_bot()
 	bot.pressure *= 2.0f;
 	}
 	*/
+	// Parachute does nothing.
 	/*
 	if (rand_chance(0.1f * chanceMult))
 	{
@@ -369,37 +406,7 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	*/
 
-	if (item_class == player_class::medic)
-	{
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
-		{
-			/*
-			if (rand_chance(0.2f * chanceMult))
-			{
-			bot.attributes.emplace_back("ProjectileShield");
-			bot.pressure *= 3.0f;
-			}
-			*/
-			if (secondary == "The Vaccinator")
-			{
-				const int type = rand_int(0, 3);
-				switch (type)
-				{
-				case 0:
-					bot.attributes.emplace_back("VaccinatorBullets");
-					break;
-				case 1:
-					bot.attributes.emplace_back("VaccinatorBlast");
-					break;
-				case 2:
-					bot.attributes.emplace_back("VaccinatorFire");
-					break;
-				}
-				bot_meta.pressure *= 1.1f;
-			}
-		}
-	}
-	else if (item_class == player_class::demoman)
+	if (item_class == player_class::demoman)
 	{
 		if (rand_chance(0.3f * chanceMult))
 		{
@@ -602,14 +609,16 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	if (rand_chance(0.1f * chanceMult))
 	{
-		float damage_bonus_mod = rand_float(0.1f, 3.0f);
-		bot_meta.damage_bonus *= damage_bonus_mod;
-		/*
-		if (rand_chance(0.01f))
+		float damage_bonus_mod;
+		if (bot_meta.isGiant)
 		{
-		damage_bonus *= 10.0f;
+			damage_bonus_mod = rand_float(0.1f, 3.0f);
 		}
-		*/
+		else
+		{
+			damage_bonus_mod = rand_float(0.1f, 1.0f);
+		}
+		bot_meta.damage_bonus *= damage_bonus_mod;
 	}
 	if (rand_chance(0.1f * chanceMult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
 	{
@@ -658,7 +667,7 @@ tfbot_meta bot_generator::generate_bot()
 		else
 		{
 			float look_velocity = rand_float(-10.0f, 10.0f);
-			bot.character_attributes.emplace_back("apply_look_velocity_on_damage", look_velocity);
+			bot.character_attributes.emplace_back("apply look velocity on damage", look_velocity);
 		}
 		bot_meta.pressure *= 2.5f;
 	}
@@ -834,17 +843,8 @@ tfbot_meta bot_generator::generate_bot()
 	bot.character_attributes.emplace_back("damage bonus", bot_meta.damage_bonus);
 	if (bot_meta.damage_bonus > 0.0f)
 	{
-		/*
-		if (damage_bonus < 1.0f)
-		{
-		bot.pressure *= ((damage_bonus - 1.0f) * 0.3f) + 1.0f;
-		}
-		else
-		{
-		bot.pressure *= damage_bonus;
-		}
-		*/
-		bot_meta.pressure *= bot_meta.damage_bonus * 2.0f;
+		bot_meta.pressure *= bot_meta.damage_bonus;
+		//bot_meta.pressure *= bot_meta.damage_bonus * 2.0f;
 	}
 
 	std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;

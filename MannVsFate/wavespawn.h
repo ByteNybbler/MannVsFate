@@ -26,8 +26,8 @@ struct wavespawn
 	// Variables for assistance with calculating pressure.
 
 	float effective_pressure;
-	float time_to_kill;
-
+	float challenge_to_kill;
+	
 	float time_until_next_spawn = 0.0f;
 	int spawns_remaining = 0;
 };
