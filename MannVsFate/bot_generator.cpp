@@ -295,7 +295,7 @@ tfbot_meta bot_generator::generate_bot()
 			bot.pressure *= 3.0f;
 			}
 			*/
-			if (secondary == "The Vaccinator")
+			if (secondary == "The Vaccinator MVM")
 			{
 				const int type = rand_int(0, 3);
 				switch (type)

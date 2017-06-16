@@ -1,7 +1,7 @@
 TF_WEAPON_MEDIGUN
 The Kritzkrieg
 The Quick-Fix
-The Vaccinator
+The Vaccinator MVM
 Festive Medigun 2011
 Silver Botkiller Medi Gun Mk.I
 Gold Botkiller Medi Gun Mk.I
