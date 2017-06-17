@@ -807,7 +807,6 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		bot.character_attributes.emplace_back("no self blast dmg", 1);
 	}
-	// Disabled due to causing crashes.
 	/*
 	if (rand_chance(0.01f))
 	{
