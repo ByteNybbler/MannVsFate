@@ -871,10 +871,14 @@ tfbot_meta bot_generator::generate_bot()
 	bot_meta.pressure *= skill_pressure;
 
 	bot.character_attributes.emplace_back("damage bonus", bot_meta.damage_bonus);
-	if (bot_meta.damage_bonus > 0.0f)
+	if (bot_meta.damage_bonus >= 1.0f)
 	{
 		bot_meta.pressure *= bot_meta.damage_bonus;
 		//bot_meta.pressure *= bot_meta.damage_bonus * 2.0f;
+	}
+	else
+	{
+		bot_meta.pressure *= ((bot_meta.damage_bonus - 1.0f) * 0.2f) + 1.0f;
 	}
 
 	std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;

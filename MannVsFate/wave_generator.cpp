@@ -286,7 +286,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				class_icons.emplace("tank");
 
-				float speed = rand_float(10, 100);
+				// 500 is around the maximum amount of speed a tank can have without risking getting stuck,
+				// at least on mvm_bigrock.
+				float speed = rand_float(10, 150);
+				if (rand_chance(0.2f))
+				{
+					speed *= 3.3f;
+				}
+
 				int health = rand_int(1, 100) * 1000;
 
 				float speed_pressure = ((speed - 10.0f) * 0.1f) + 1.0f;
