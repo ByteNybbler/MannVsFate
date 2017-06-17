@@ -807,6 +807,8 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		bot.character_attributes.emplace_back("no self blast dmg", 1);
 	}
+	// Disabled due to causing crashes.
+	/*
 	if (rand_chance(0.01f))
 	{
 		bot.character_attributes.emplace_back("melee bounds multiplier", 360.0f);
@@ -816,6 +818,7 @@ tfbot_meta bot_generator::generate_bot()
 		// Compensate for the massively decreased damage bonus.
 		bot_meta.pressure *= 50.0f;
 	}
+	*/
 	if (rand_chance(0.02f))
 	{
 		bot.character_attributes.emplace_back("use large smoke explosion", 1);
