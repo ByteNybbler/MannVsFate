@@ -9,7 +9,7 @@
 
 class wave_generator
 {
-	const std::string version = "0.2.3";
+	static const std::string version;
 
 public:
 	// Accessors.
@@ -71,7 +71,7 @@ private:
 	// The amount by which the pressure decay rate is multiplied when stepping through time.
 	float pressure_decay_rate_multiplier_in_time = 3.0f;
 	// The maximum number of wavespawns per wave.
-	unsigned int max_wavespawns = 30;
+	unsigned int max_wavespawns = 50;
 	// The maximum amount of time that a wave can last.
 	int max_time = 300;
 	// The maximum number of unique icons per wave. There can be 23 icons before the HUD starts to look stupid.
@@ -81,7 +81,7 @@ private:
 	// The amount by which currency is multiplied when used to increase pressure.
 	float currency_pressure_multiplier = 0.8f;
 	// The chance that a WaveSpawn will be a tank WaveSpawn.
-	float tank_chance = 0.02f;
+	float tank_chance = 0.03f;
 	// The maximum number of seconds that a TFBot WaveSpawn can last.
 	int max_tfbot_wavespawn_time = 120;
 

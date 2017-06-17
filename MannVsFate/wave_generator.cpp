@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <iostream>
 
+const std::string wave_generator::version = "0.2.4";
+
 void wave_generator::set_map_name(const std::string& in)
 {
 	map_name = in;
@@ -306,14 +308,17 @@ void wave_generator::generate_mission(int argc, char** argv)
 					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f);
 					max_count = static_cast<int>(floor((max_time - t) / wait_between_spawns));
 
-					// If the max count is too low, it means the bot may be too strong.
-					if (max_count == 0 && health > 1000)
+					// If the max count is too low, it means the tank may be too strong.
+					if (max_count == 0)
 					{
-						health = static_cast<int>(health * 0.9f);
-					}
-					else
-					{
-						max_count = 1;
+						if (health > 1000)
+						{
+							health = static_cast<int>(health * 0.9f);
+						}
+						else
+						{
+							max_count = 1;
+						}
 					}
 				}
 
