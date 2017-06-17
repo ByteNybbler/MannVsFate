@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_bigrock -name tanks -fixedrespawnwavetime -players 8 -tankchance 1
