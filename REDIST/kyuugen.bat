@@ -1,0 +1,1 @@
+-map mvm_bigrock -name kyuugen -startingcurrency 2400 -waves 16 -fixedrespawnwavetime -players 1 -wavecurrency 1600 -tankchance 0.1 -wavespawns 8 -classes 223

@@ -222,6 +222,10 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				bot.class_icon = "scout_stun";
 			}
+			else if (melee == "The Holy Mackerel")
+			{
+				bot.class_icon = "scout_fish";
+			}
 		}
 		else
 		{

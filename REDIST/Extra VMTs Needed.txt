@@ -4,6 +4,9 @@ materials/hud/leaderboard_class_sniper_giant.vmt
 materials/hud/leaderboard_class_heavy_steelfist_giant.vmt
 materials/hud/leaderboard_class_sniper_bow_giant.vmt
 materials/hud/leaderboard_class_heavy_mittens_giant.vmt
+materials/hud/leaderboard_class_scout_fish.vtf
+materials/hud/leaderboard_class_scout_fish.vmt
+materials/hud/leaderboard_class_scout_fish_giant.vmt
 materials/hud/leaderboard_class_scout_bat_giant.vmt
 materials/hud/leaderboard_class_scout_shortstop_giant.vmt
 materials/hud/leaderboard_class_sniper_jarate_giant.vmt
