@@ -565,7 +565,7 @@ tfbot_meta bot_generator::generate_bot()
 				if (rand_chance(0.5f))
 				{
 					bot.items.emplace_back("The B.A.S.E. Jumper");
-					bot_meta.pressure *= 1.5f;
+					bot_meta.pressure *= ((increased_jump_height - 1.0f) * 0.3f) + 1.0f;
 				}
 			}
 		}
@@ -724,30 +724,34 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot.character_attributes.emplace_back("head scale", head_size);
 	}
-	if (rand_chance(0.2f * chanceMult))
+	// Only override projectiles if there's no crash risk.
+	if (true)
 	{
-		int proj_type = rand_int(1, 20);
-
-		// Fix invalid values.
-		switch (proj_type)
+		if (rand_chance(0.2f * chanceMult))
 		{
-		case 7:
-			proj_type = 6; // Flare
-			break;
+			int proj_type = rand_int(1, 20);
 
-		case 9:
-		case 10:
-		case 15:
-		case 16:
-			proj_type = 2; // Rocket
-			break;
-		}
+			// Fix invalid values.
+			switch (proj_type)
+			{
+			case 7:
+				proj_type = 6; // Flare
+				break;
 
-		bot.character_attributes.emplace_back("override projectile type", proj_type);
+			case 9:
+			case 10:
+			case 15:
+			case 16:
+				proj_type = 2; // Rocket
+				break;
+			}
 
-		if (proj_type == 2 && item_class != player_class::soldier)
-		{
-			bot_meta.pressure *= 1.5f;
+			bot.character_attributes.emplace_back("override projectile type", proj_type);
+
+			if (proj_type == 2 && item_class != player_class::soldier)
+			{
+				bot_meta.pressure *= 1.5f;
+			}
 		}
 	}
 	// The TeleportToHint attribute requires the other bots to have progressed a certain distance before this bot spawns.
