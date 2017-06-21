@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.5";
+const std::string wave_generator::version = "0.2.6";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -101,6 +101,11 @@ void wave_generator::set_possible_classes(const std::vector<player_class>& class
 void wave_generator::set_max_tfbot_wavespawn_time(int in)
 {
 	max_tfbot_wavespawn_time = in;
+}
+
+void wave_generator::set_pressure_decay_rate_multiplier_in_time(float in)
+{
+	pressure_decay_rate_multiplier_in_time = in;
 }
 
 void wave_generator::generate_mission(int argc, char** argv)
@@ -530,7 +535,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Iterate through the wavespawns to update the pressure.
 				for (wavespawn& ws : wavespawns)
 				{
-					// Time To Kill Expires Greater Than 0
+					// TTKEGTZ: Time To Kill Expires Greater Than 0
 					bool ttkegtz = false;
 					if (ws.time_to_kill_expires > 0.0f)
 					{

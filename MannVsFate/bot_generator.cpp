@@ -725,16 +725,33 @@ tfbot_meta bot_generator::generate_bot()
 		bot.character_attributes.emplace_back("head scale", head_size);
 	}
 	// Only override projectiles if there's no crash risk.
-	if (true)
+	bool projectile_override_crash_risk = false;
+	if (item_class == player_class::demoman)
+	{
+		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+		{
+			if (primary == "The Loose Cannon")
+			{
+				projectile_override_crash_risk = true;
+			}
+		}
+		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
+		{
+			projectile_override_crash_risk = true;
+		}
+	}
+	if (!projectile_override_crash_risk)
 	{
 		if (rand_chance(0.2f * chanceMult))
 		{
-			int proj_type = rand_int(1, 20);
+			int proj_type = rand_int(1, 27);
 
 			// Fix invalid values.
 			switch (proj_type)
 			{
+			case 4: // Stickybomb (Stickybomb Launcher)
 			case 7:
+			case 14: // Stickybomb (Sticky Jumper)
 				proj_type = 6; // Flare
 				break;
 
@@ -742,6 +759,8 @@ tfbot_meta bot_generator::generate_bot()
 			case 10:
 			case 15:
 			case 16:
+			case 20:
+			case 21:
 				proj_type = 2; // Rocket
 				break;
 			}
@@ -749,6 +768,10 @@ tfbot_meta bot_generator::generate_bot()
 			bot.character_attributes.emplace_back("override projectile type", proj_type);
 
 			if (proj_type == 2 && item_class != player_class::soldier)
+			{
+				bot_meta.pressure *= 1.5f;
+			}
+			if (proj_type == 6 && item_class != player_class::pyro)
 			{
 				bot_meta.pressure *= 1.5f;
 			}
@@ -918,6 +941,10 @@ void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 	// Add some giant-related attributes.
 	bot.character_attributes.emplace_back("airblast vulnerability multiplier", rand_float(0.3f, 0.7f));
 	bot.character_attributes.emplace_back("damage force reduction", rand_float(0.3f, 0.7f));
+
+	// Since giants can't be knocked around as easily, let's up the pressure a bit.
+	bot_meta.pressure *= 1.2f;
+
 	// If the class isn't Scout, incur a move speed penalty...
 	if (bot.cl != player_class::scout)
 	{

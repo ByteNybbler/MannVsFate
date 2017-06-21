@@ -176,6 +176,12 @@ int main(int argc, char** argv)
 					gen.set_max_tfbot_wavespawn_time(toint(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-difficulty") == 0)
+				{
+					++i;
+					gen.set_pressure_decay_rate_multiplier_in_time(tofloat(argv[i]));
+					continue;
+				}
 			}
 		}
 

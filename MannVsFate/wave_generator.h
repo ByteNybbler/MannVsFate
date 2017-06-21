@@ -32,6 +32,7 @@ public:
 	void set_max_wavespawns(int in);
 	void set_possible_classes(const std::vector<player_class>& classes);
 	void set_max_tfbot_wavespawn_time(int in);
+	void set_pressure_decay_rate_multiplier_in_time(float in);
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
 
@@ -69,6 +70,7 @@ private:
 	// The pressure decay rate multiplier.
 	float pressure_decay_rate_multiplier = 0.03f; // 0.1f;
 	// The amount by which the pressure decay rate is multiplied when stepping through time.
+	// This is effectively the main variable that determines the difficulty of the mission.
 	float pressure_decay_rate_multiplier_in_time = 3.0f;
 	// The maximum number of wavespawns per wave.
 	unsigned int max_wavespawns = 50;
