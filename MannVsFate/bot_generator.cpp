@@ -33,16 +33,19 @@ tfbot_meta bot_generator::generate_bot()
 	// Choose a weapon restriction.
 	//if (bot.cl != player_class::engineer)
 	//{
-	if (rand_chance(0.3f))
+	if (bot.cl != player_class::spy)
 	{
-		std::vector<std::string> restrictions;
-		if (bot.cl != player_class::spy)
+		if (rand_chance(0.3f))
 		{
-			restrictions.emplace_back("PrimaryOnly");
+			std::vector<std::string> restrictions;
+			if (bot.cl != player_class::spy)
+			{
+				restrictions.emplace_back("PrimaryOnly");
+			}
+			restrictions.emplace_back("SecondaryOnly");
+			restrictions.emplace_back("MeleeOnly");
+			bot.weapon_restrictions = restrictions.at(rand_int(0, restrictions.size()));
 		}
-		restrictions.emplace_back("SecondaryOnly");
-		restrictions.emplace_back("MeleeOnly");
-		bot.weapon_restrictions = restrictions.at(rand_int(0, restrictions.size()));
 	}
 	//}
 
@@ -953,8 +956,16 @@ void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 	// If the class isn't Scout, incur a move speed penalty...
 	if (bot.cl != player_class::scout)
 	{
-		bot_meta.move_speed_bonus *= 0.5f;
-		bot_meta.pressure *= 0.5f;
+		if (bot.cl == player_class::spy)
+		{
+			bot_meta.move_speed_bonus *= 0.75f;
+			bot_meta.pressure *= 0.75f;
+		}
+		else
+		{
+			bot_meta.move_speed_bonus *= 0.5f;
+			bot_meta.pressure *= 0.5f;
+		}
 	}
 
 	// Modify the bot class icon.

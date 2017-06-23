@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.8";
+const std::string wave_generator::version = "0.2.9";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -463,6 +463,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 				if (!bot_meta.is_giant && !bot_meta.perma_small && bot.health >= 1000 && rand_chance(0.7f))
 				{
 					botgen.make_bot_into_giant_pure(bot_meta);
+				}
+				// If Spies are too large, they'll get stuck in the walls and die when they spawn.
+				if (bot.cl == player_class::spy && (bot_meta.is_giant || bot.scale > 1.3f))
+				{
+					bot.scale = 1.3f;
 				}
 
 				//max_count = ceil(static_cast<float>(max_count) * 0.7f);
