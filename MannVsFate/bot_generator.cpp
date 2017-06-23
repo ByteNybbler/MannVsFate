@@ -16,6 +16,11 @@ void bot_generator::set_pressure_decay_rate(float in)
 	pressure_decay_rate = in;
 }
 
+void bot_generator::set_giant_chance(float in)
+{
+	giant_chance = in;
+}
+
 void bot_generator::set_boss_chance(float in)
 {
 	boss_chance = in;
@@ -375,7 +380,7 @@ tfbot_meta bot_generator::generate_bot()
 	*/
 
 	// A bot has a chance to be a giant.
-	if (!bot_meta.is_giant && !bot_meta.perma_small && rand_chance(0.1f))
+	if (!bot_meta.is_giant && !bot_meta.perma_small && rand_chance(giant_chance))
 	{
 		make_bot_into_giant(bot_meta);
 	}

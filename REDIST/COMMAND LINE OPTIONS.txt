@@ -3,6 +3,8 @@ Open the example.bat file in a text editor to see how command line arguments are
 -map [name of the map the mission is intended for]
 -name [name of the popfile that comes after the map name and underscore]
 -startingcurrency [how many credits the mission begins with]
+-wavecurrency [how much currency is given in each wave]
+-currencyspread [the range of currency per wave in each direction; for example, 2500 wavecurrency with a currencyspread of 250 will yield between 2250 and 2750 currency per wave inclusive]
 -waves [how many waves will be in the mission]
 -halloween <no arguments; enables halloween mode for the mission>
 -fixedrespawnwavetime <no arguments; makes it so that the respawn time doesn't change over the course of the mission>
@@ -11,7 +13,6 @@ Open the example.bat file in a text editor to see how command line arguments are
 -botspawnattack <no arguments; allows bots to attack within the spawn area>
 -bustercooldown [how many seconds must occur between each sentry buster spawn per engineer]
 -players [how many players the mission is intended for; this directly affects the mission difficulty]
--wavecurrency [how much currency is given in each wave]
 -time [the maximum number of seconds that each wave should last]
 -tankchance [the chance a wavespawn has of being a tank instead of a robot]
 -icons [the maximum number of unique bot icons on the top bar per wave]
@@ -19,4 +20,5 @@ Open the example.bat file in a text editor to see how command line arguments are
 -classes [bitfield of possible classes that can be spawned during the mission; 1 = scout, 2 = soldier, 4 = pyro, 8 = demoman, 16 = heavyweapons, 32 = engineer, 64 = medic, 128 = sniper, 256 = spy; sum them up for the classes you desire]
 -botmaxtime [the maximum number of seconds any bot wavespawn can last]
 -difficulty [a floating point number determing how difficult the mission should be; higher number means higher difficulty; it is 3.0 by default]
--bosschance [the chance that some giants have of being upgraded into bosses]
+-giantchance [the chance that standard robots have of initially being upgraded into giants]
+-bosschance [the chance that some giants have of initially being upgraded into bosses]

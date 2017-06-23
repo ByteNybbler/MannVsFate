@@ -182,10 +182,22 @@ int main(int argc, char** argv)
 					gen.set_pressure_decay_rate_multiplier_in_time(tofloat(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-giantchance") == 0)
+				{
+					++i;
+					gen.set_giant_chance(tofloat(argv[i]));
+					continue;
+				}
 				if (std::strcmp(argv[i], "-bosschance") == 0)
 				{
 					++i;
 					gen.set_boss_chance(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-currencyspread") == 0)
+				{
+					++i;
+					gen.set_currency_spread(toint(argv[i]));
 					continue;
 				}
 			}

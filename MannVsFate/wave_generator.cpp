@@ -108,9 +108,19 @@ void wave_generator::set_pressure_decay_rate_multiplier_in_time(float in)
 	pressure_decay_rate_multiplier_in_time = in;
 }
 
+void wave_generator::set_giant_chance(float in)
+{
+	botgen.set_giant_chance(in);
+}
+
 void wave_generator::set_boss_chance(float in)
 {
 	botgen.set_boss_chance(in);
+}
+
+void wave_generator::set_currency_spread(int in)
+{
+	currency_spread = in;
 }
 
 void wave_generator::generate_mission(int argc, char** argv)
@@ -437,6 +447,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 							{
 								max_count = 1;
 							}
+							else
+							{
+								bot.health = static_cast<int>(bot.health * 0.9f);
+							}
 						}
 					}
 					else if (wait_between_spawns < 1.0f)
@@ -605,8 +619,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 		std::cout << "Wave generation complete. Writing to popfile..." << std::endl;
 
-		current_currency += currency_per_wave;
-		int currency_per_wavespawn = currency_per_wave / wavespawns.size();
+		int currency_in_this_wave = currency_per_wave + rand_int(-currency_spread, currency_spread);
+		if (currency_in_this_wave < 0)
+		{
+			currency_in_this_wave = 0;
+		}
+		current_currency += currency_in_this_wave;
+		int currency_per_wavespawn = currency_in_this_wave / wavespawns.size();
 
 		// Write the WaveSpawns.
 		for (const wavespawn& ws : wavespawns)

@@ -33,7 +33,9 @@ public:
 	void set_possible_classes(const std::vector<player_class>& classes);
 	void set_max_tfbot_wavespawn_time(int in);
 	void set_pressure_decay_rate_multiplier_in_time(float in);
+	void set_giant_chance(float in);
 	void set_boss_chance(float in);
+	void set_currency_spread(int in);
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
 
@@ -81,6 +83,9 @@ private:
 	unsigned int max_icons = 23;
 	// How much currency the players can earn per wave (not counting bonuses).
 	int currency_per_wave = 1500;
+	// The range of currency per wave in each direction.
+	// For example, 2500 currency_per_wave with a currency_spread of 250 will yield between 2250 to 2750 currency per wave inclusive.
+	int currency_spread = 0;
 	// The amount by which currency is multiplied when used to increase pressure.
 	float currency_pressure_multiplier = 0.8f;
 	// The chance that a WaveSpawn will be a tank WaveSpawn.
