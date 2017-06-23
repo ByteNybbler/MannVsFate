@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.10";
+const std::string wave_generator::version = "0.3.0";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -453,7 +453,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 							}
 						}
 					}
-					else if (wait_between_spawns < 1.0f)
+					else if (time_to_kill < 1.0f)
 					{
 						if (rand_chance(0.9f))
 						{
