@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.7";
+const std::string wave_generator::version = "0.2.8";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -483,7 +483,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::stringstream wsname;
 				wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
 				ws.name = wsname.str();
-				if (bot.cl == player_class::engineer)
+				if (bot.cl == player_class::engineer || bot.cl == player_class::medic)
 				{
 					max_count = static_cast<int>(std::ceil(static_cast<float>(max_count) * 0.2f));
 					ws.total_count = rand_int(1, max_count + 1);

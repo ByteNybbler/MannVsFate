@@ -1,6 +1,5 @@
 TF_WEAPON_SNIPERRIFLE
 The Huntsman
-The Machina
 The Sydney Sleeper
 The Bazaar Bargain
 The Hitman's Heatmaker

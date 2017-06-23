@@ -340,7 +340,9 @@ tfbot_meta bot_generator::generate_bot()
 	if (item_class == player_class::sniper)
 	{
 		if ((bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly") && !bot_meta.is_always_fire_weapon &&
-			bot.class_icon != "sniper_bow" && primary != "The Classic")
+			bot.class_icon != "sniper_bow"
+			//&& primary != "The Classic"
+			)
 		{
 			bot.attributes.emplace_back("AlwaysFireWeapon");
 			bot_meta.is_always_fire_weapon = true;
