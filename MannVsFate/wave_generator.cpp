@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.6";
+const std::string wave_generator::version = "0.2.7";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -301,7 +301,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				int health = rand_int(1, 100) * 1000;
 
-				float speed_pressure = ((speed - 10.0f) * 0.1f) + 1.0f;
+				float speed_pressure = ((speed - 10.0f) * 0.2f) + 1.0f;
 
 				// How long it should take to kill the theoretical bot.
 				float time_to_kill;

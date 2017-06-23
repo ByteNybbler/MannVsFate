@@ -849,12 +849,15 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= 50.0f;
 	}
 	*/
+	/*
 	if (rand_chance(0.02f))
 	{
 		bot.character_attributes.emplace_back("use large smoke explosion", 1);
 		bot_meta.pressure *= 1.2f;
 	}
-	else if (rand_chance(0.05f * chanceMult))
+	else
+	*/
+	if (rand_chance(0.05f * chanceMult))
 	{
 		float rad = rand_float(0.1f, 5.0f);
 		bot.character_attributes.emplace_back("Blast radius increased", rad);
