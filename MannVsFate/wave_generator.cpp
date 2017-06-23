@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.3.0";
+const std::string wave_generator::version = "0.3.1";
 
 void wave_generator::set_map_name(const std::string& in)
 {

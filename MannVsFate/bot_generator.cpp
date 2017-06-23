@@ -120,13 +120,6 @@ tfbot_meta bot_generator::generate_bot()
 		bot.items.emplace_back(primary);
 	}
 
-	if (!bot_meta.is_always_crit && rand_chance(0.05f))
-	{
-		bot.attributes.emplace_back("AlwaysCrit");
-		bot_meta.pressure *= 4.5f;
-		bot_meta.is_always_crit = true;
-	}
-
 	// If the bot is a Heavy, possibly set deflector properties.
 	if (bot.cl == player_class::heavyweapons)
 	{
@@ -347,13 +340,6 @@ tfbot_meta bot_generator::generate_bot()
 		break;
 	}
 
-	if (rand_chance(0.05f))
-	{
-		float change = rand_float(0.5f, 3.0f);
-		bot_meta.move_speed_bonus *= change;
-		bot_meta.pressure *= change;
-	}
-
 	if (bot.cl == player_class::engineer)
 	{
 		// Make it so that engineers cannot pick up the bomb.
@@ -390,6 +376,20 @@ tfbot_meta bot_generator::generate_bot()
 		float upper_bound = pressure_decay_rate * 0.007f; // 0.002f;
 		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, upper_bound));
 	}
+
+	if (!bot_meta.is_always_crit && rand_chance(0.05f * chanceMult))
+	{
+		bot.attributes.emplace_back("AlwaysCrit");
+		bot_meta.pressure *= 4.5f;
+		bot_meta.is_always_crit = true;
+	}
+	if (rand_chance(0.05f * chanceMult))
+	{
+		float change = rand_float(0.5f, 3.0f);
+		bot_meta.move_speed_bonus *= change;
+		bot_meta.pressure *= change;
+	}
+
 	if (rand_chance(0.1f * chanceMult))
 	{
 		bot.attributes.emplace_back("Aggressive");
@@ -612,7 +612,7 @@ tfbot_meta bot_generator::generate_bot()
 		//!is_giant &&
 		rand_chance(0.15f * chanceMult))
 	{
-		bot.scale *= rand_float(0.3f, 1.6f);
+		bot.scale = rand_float(0.3f, 1.6f);
 		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
 	}
 
@@ -624,12 +624,20 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.pressure *= 2.0f;
 		}
 	}
+	bool instant_reload = false;
 	if (rand_chance(0.1f * chanceMult))
 	{
 		float fire_rate_bonus = rand_float(0.1f, 2.0f);
 		bot.character_attributes.emplace_back("fire rate bonus", fire_rate_bonus);
 		bot.character_attributes.emplace_back("clip size bonus", 100000);
-		bot_meta.pressure /= ((fire_rate_bonus - 1.0f) * 0.3f) + 1.0f;
+		if (fire_rate_bonus >= 1.0f)
+		{
+			bot_meta.pressure /= ((fire_rate_bonus - 1.0f) * 0.3f) + 1.0f;
+		}
+		else
+		{
+			bot_meta.pressure /= fire_rate_bonus;
+		}
 	}
 	else if (rand_chance(0.1f * chanceMult))
 	{
@@ -646,6 +654,7 @@ tfbot_meta bot_generator::generate_bot()
 		else
 		{
 			bot.character_attributes.emplace_back("faster reload rate", -1);
+			instant_reload = true;
 			if (bot.cl == player_class::heavyweapons && (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly"))
 			{
 				// No reloading means Heavy's minigun shoots bullets at an insane rate.
@@ -764,6 +773,16 @@ tfbot_meta bot_generator::generate_bot()
 			projectile_override_crash_risk = true;
 		}
 	}
+	if (item_class == player_class::heavyweapons)
+	{
+		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+		{
+			if (instant_reload)
+			{
+				projectile_override_crash_risk = true;
+			}
+		}
+	}
 	if (!projectile_override_crash_risk)
 	{
 		if (rand_chance(0.2f * chanceMult))
@@ -791,6 +810,7 @@ tfbot_meta bot_generator::generate_bot()
 
 			bot.character_attributes.emplace_back("override projectile type", proj_type);
 
+			/*
 			if (proj_type == 2 && item_class != player_class::soldier)
 			{
 				bot_meta.pressure *= 1.5f;
@@ -799,6 +819,7 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				bot_meta.pressure *= 1.5f;
 			}
+			*/
 		}
 	}
 	// The TeleportToHint attribute requires the other bots to have progressed a certain distance before this bot spawns.
@@ -1024,7 +1045,9 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		bot_meta.pressure *= 0.5;
 		bot.attributes.emplace_back("UseBossHealthBar");
 		chanceMult *= 4.0f;
-		bot.scale = 1.9f;
+
+		// Bot scale of 1.9 may be a bit too large...
+		//bot.scale = 1.9f;
 
 		bot.character_attributes.emplace_back("attach particle effect static", rand_int(1, 48));
 
