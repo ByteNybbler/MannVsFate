@@ -182,6 +182,12 @@ int main(int argc, char** argv)
 					gen.set_pressure_decay_rate_multiplier_in_time(tofloat(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-bosschance") == 0)
+				{
+					++i;
+					gen.set_boss_chance(tofloat(argv[i]));
+					continue;
+				}
 			}
 		}
 

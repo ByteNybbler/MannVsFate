@@ -33,6 +33,7 @@ public:
 	void set_possible_classes(const std::vector<player_class>& classes);
 	void set_max_tfbot_wavespawn_time(int in);
 	void set_pressure_decay_rate_multiplier_in_time(float in);
+	void set_boss_chance(float in);
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
 

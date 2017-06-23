@@ -16,6 +16,11 @@ void bot_generator::set_pressure_decay_rate(float in)
 	pressure_decay_rate = in;
 }
 
+void bot_generator::set_boss_chance(float in)
+{
+	boss_chance = in;
+}
+
 tfbot_meta bot_generator::generate_bot()
 {
 	// Let's generate a random TFBot.
@@ -250,7 +255,10 @@ tfbot_meta bot_generator::generate_bot()
 	case player_class::sniper:
 		if (bot.weapon_restrictions == "SecondaryOnly")
 		{
-			bot.class_icon = "sniper_jarate";
+			if (secondary == "Jarate" || secondary == "Festive Jarate")
+			{
+				bot.class_icon = "sniper_jarate";
+			}
 		}
 		else
 		{
@@ -262,6 +270,12 @@ tfbot_meta bot_generator::generate_bot()
 			else if (primary == "The Sydney Sleeper")
 			{
 				bot.class_icon = "sniper_sydneysleeper";
+			}
+			else if (primary == "The Classic" || primary == "The Machina")
+			{
+				// Sniper bots don't know how to fire The Classic and The Machina.
+				// If they're using that weapon, that effectively makes them wimps.
+				bot_meta.pressure *= 0.2f;
 			}
 		}
 		break;
@@ -997,7 +1011,7 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 	make_bot_into_giant_pure(bot_meta);
 
 	// A giant has a chance to be a BOSS!!!
-	if (rand_chance(0.1f))
+	if (rand_chance(boss_chance))
 	{
 		bot_meta.is_boss = true;
 		bot.health *= 5;

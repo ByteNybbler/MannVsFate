@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.2.9";
+const std::string wave_generator::version = "0.2.10";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -106,6 +106,11 @@ void wave_generator::set_max_tfbot_wavespawn_time(int in)
 void wave_generator::set_pressure_decay_rate_multiplier_in_time(float in)
 {
 	pressure_decay_rate_multiplier_in_time = in;
+}
+
+void wave_generator::set_boss_chance(float in)
+{
+	botgen.set_boss_chance(in);
 }
 
 void wave_generator::generate_mission(int argc, char** argv)

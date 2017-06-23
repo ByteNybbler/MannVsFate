@@ -16,6 +16,7 @@ public:
 	// Accessors.
 	void set_possible_classes(const std::vector<player_class>& classes);
 	void set_pressure_decay_rate(float in);
+	void set_boss_chance(float in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -48,6 +49,9 @@ private:
 
 	// The pressure decay rate.
 	float pressure_decay_rate;
+
+	// The chance that a giant will end up being a boss.
+	float boss_chance = 0.15f;
 };
 
 #endif
