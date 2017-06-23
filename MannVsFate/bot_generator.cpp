@@ -655,9 +655,11 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.character_attributes.emplace_back("faster reload rate", -1);
 			instant_reload = true;
-			if (bot.cl == player_class::heavyweapons && (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly"))
+			if ((bot.cl == player_class::heavyweapons || bot.cl == player_class::sniper) &&
+				(bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly"))
 			{
 				// No reloading means Heavy's minigun shoots bullets at an insane rate.
+				// Same for Sniper's rifles.
 				bot_meta.pressure *= 4.0f;
 			}
 			else
