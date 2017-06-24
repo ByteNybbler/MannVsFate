@@ -1,6 +1,7 @@
 #include "bot_generator.h"
 #include "rand_util.h"
 #include <iostream>
+#include <algorithm>
 
 bot_generator::bot_generator()
 	: random_names("names/verbs.txt", "names/titles.txt", "names/adjectives.txt", "names/nouns.txt")
@@ -26,6 +27,11 @@ void bot_generator::set_boss_chance(float in)
 	boss_chance = in;
 }
 
+void bot_generator::set_engies_enabled(bool in)
+{
+	engies_enabled = in;
+}
+
 tfbot_meta bot_generator::generate_bot()
 {
 	// Let's generate a random TFBot.
@@ -33,6 +39,12 @@ tfbot_meta bot_generator::generate_bot()
 	tfbot& bot = bot_meta.get_bot();
 
 	chanceMult = 1.0f;
+
+	// If engineers are disabled, remove them from the possible classes vector.
+	if (!engies_enabled)
+	{
+		possible_classes.erase(std::remove(possible_classes.begin(), possible_classes.end(), player_class::engineer), possible_classes.end());
+	}
 
 	// Give the bot a random name!
 	bot.name = random_names.get_random_name();
@@ -43,11 +55,14 @@ tfbot_meta bot_generator::generate_bot()
 	// Choose a weapon restriction.
 	//if (bot.cl != player_class::engineer)
 	//{
+	// Restricting Spies' weapons may cause them to not be able to sap?
 	if (bot.cl != player_class::spy)
 	{
 		if (rand_chance(0.3f))
 		{
 			std::vector<std::string> restrictions;
+
+			// Spies do not have primary weapons.
 			if (bot.cl != player_class::spy)
 			{
 				restrictions.emplace_back("PrimaryOnly");
@@ -660,7 +675,7 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				// No reloading means Heavy's minigun shoots bullets at an insane rate.
 				// Same for Sniper's rifles.
-				bot_meta.pressure *= 4.0f;
+				bot_meta.pressure *= 5.0f;
 			}
 			else
 			{

@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.3.4";
+const std::string wave_generator::version = "0.3.5";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -197,21 +197,51 @@ void wave_generator::generate_mission(int argc, char** argv)
 	float bot_path_length = 1.0f;
 	// This is the name of the wave_start_relay entity.
 	std::string wave_start_relay = "wave_start_relay";
+	std::string wave_finished_relay = "wave_finished_relay";
+	// This is the collection of starting points for each robot spawn.
+	std::vector<std::string> spawnbots;
 	// This is the collection of starting points for each tank path.
 	std::vector<std::string> tank_path_starting_points;
+	// Whether enemy engineers can spawn on this map.
+	bool engies_enabled = true;
 
 	// Bigrock.
 	if (map_name == "mvm_bigrock")
 	{
+		spawnbots.emplace_back("spawnbot");
 		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
 	}
 	else if (map_name == "mvm_rottenburg")
 	{
-		bot_path_length = 0.6f;
+		bot_path_length = 0.7f;
 		wave_start_relay = "wave_start_relay_classic";
+		spawnbots.emplace_back("spawnbot");
 		tank_path_starting_points.emplace_back("\"tank_path_a_10\"");
 		tank_path_starting_points.emplace_back("\"tank_path_b_10\"");
 	}
+	else if (map_name == "mvm_decoy")
+	{
+		bot_path_length = 0.5f;
+		spawnbots.emplace_back("spawnbot");
+		spawnbots.emplace_back("spawnbot_invasion");
+		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
+		tank_path_starting_points.emplace_back("\"boss_path_b1\"");
+	}
+	else if (map_name == "mvm_mannworks")
+	{
+		bot_path_length = 0.7f;
+		wave_start_relay = "bombpath_arrows_clear_relay";
+		wave_finished_relay = "bombpath_wavefinished";
+		engies_enabled = false;
+		spawnbots.emplace_back("spawnbot");
+		spawnbots.emplace_back("spawnbot_lower");
+		spawnbots.emplace_back("spawnbot_left");
+		spawnbots.emplace_back("spawnbot_right");
+		tank_path_starting_points.emplace_back("\"boss_path_1\"");
+		tank_path_starting_points.emplace_back("\"boss_path2_1\"");
+	}
+
+	botgen.set_engies_enabled(engies_enabled);
 
 	// Generate the actual waves!
 	while (current_wave < waves)
@@ -229,7 +259,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 		write("Action", "Trigger");
 		block_end(); // StartWaveOutput
 		block_start("DoneOutput");
-		write("Target", "wave_finished_relay");
+		write("Target", wave_finished_relay);
 		write("Action", "Trigger");
 		block_end(); // DoneOutPut
 
@@ -623,9 +653,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 			write("TotalCurrency", currency_per_wavespawn);
 			if (ws.type_of_spawned == wavespawn::type::tfbot)
 			{
+				// Choose a random spawnbot to spawn in.
+				std::string spawnbot;
+				int spawnbot_index = rand_int(0, spawnbots.size());
+				spawnbot = spawnbots.at(spawnbot_index);
+
 				write("SpawnCount", ws.spawn_count);
 				write("MaxActive", ws.max_active);
-				write("Where", "spawnbot");
+				write("Where", spawnbot);
 				write_blank();
 				block_start("TFBot");
 				write("Class", player_class_to_string(ws.bot.cl));
