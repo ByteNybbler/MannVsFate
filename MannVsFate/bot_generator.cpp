@@ -808,6 +808,13 @@ tfbot_meta bot_generator::generate_bot()
 			case 21:
 				proj_type = 2; // Rocket
 				break;
+
+			case 26: // Grappling hook
+				if (bot.cl == player_class::heavyweapons && (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly"))
+				{
+					proj_type = 6; // Flare
+				}
+				break;
 			}
 
 			bot.character_attributes.emplace_back("override projectile type", proj_type);

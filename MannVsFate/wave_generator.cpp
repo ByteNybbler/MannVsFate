@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.3.3";
+const std::string wave_generator::version = "0.3.4";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -189,6 +189,30 @@ void wave_generator::generate_mission(int argc, char** argv)
 	// How much currency the players currently have.
 	int current_currency = starting_currency;
 
+	// Important MVM properties differ for each map.
+
+	// This is the relative length of the map's bot path.
+	// This is used to help determine pressure decay.
+	// mvm_bigrock is used as a basis, with a length of 1.0f.
+	float bot_path_length = 1.0f;
+	// This is the name of the wave_start_relay entity.
+	std::string wave_start_relay = "wave_start_relay";
+	// This is the collection of starting points for each tank path.
+	std::vector<std::string> tank_path_starting_points;
+
+	// Bigrock.
+	if (map_name == "mvm_bigrock")
+	{
+		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
+	}
+	else if (map_name == "mvm_rottenburg")
+	{
+		bot_path_length = 0.6f;
+		wave_start_relay = "wave_start_relay_classic";
+		tank_path_starting_points.emplace_back("\"tank_path_a_10\"");
+		tank_path_starting_points.emplace_back("\"tank_path_b_10\"");
+	}
+
 	// Generate the actual waves!
 	while (current_wave < waves)
 	{
@@ -201,7 +225,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			" ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n";
 		block_start("Wave");
 		block_start("StartWaveOutput");
-		write("Target", "wave_start_relay");
+		write("Target", wave_start_relay);
 		write("Action", "Trigger");
 		block_end(); // StartWaveOutput
 		block_start("DoneOutput");
@@ -235,54 +259,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// This decay rate is measured per second.
 		// Since this decay rate essentially calculates how powerful and capable the RED team is,
 		// it is also used to calculate how powerful the robots should be.
-		float pressure_decay_rate = (current_currency * currency_pressure_multiplier + base_pressure_decay_rate) * players * pressure_decay_rate_multiplier;
+		float pressure_decay_rate = (current_currency * currency_pressure_multiplier + base_pressure_decay_rate)
+			* players * pressure_decay_rate_multiplier * bot_path_length;
 
 		std::cout << "The pressure decay rate is " << pressure_decay_rate << '.' << std::endl;
 
 		// Count the number of active wavespawns.
 		// We'll use this to scale pressure based on how many concurrent wavespawns are occurring.
 		int active_wavespawns = 0;
-
-		/*
-		int tanks = 0;
-		while (rand_chance(tank_chance) && tanks < 137)
-		{
-			++tanks;
-			if (tank_chance >= 1.0f)
-			{
-				break;
-			}
-		}
-		if (tanks != 0)
-		{
-			class_icons.emplace("tank");
-
-			float absolute_end_time = max_time * 0.8f;
-			float first_tank_time = rand_float(0, absolute_end_time * 0.8f);
-			float remaining_time = absolute_end_time - first_tank_time;
-			float time_between_spawns = remaining_time / (tanks + 1);
-			float speed = rand_float(10, 100);
-			int health = static_cast<int>(ceil((rand_float(5, 12) * 100000 / speed) / 1000) * 1000);
-			
-			wavespawn ws;
-			std::stringstream wsname;
-			wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
-			ws.name = wsname.str();
-			ws.total_count = tanks;
-			ws.wait_before_starting = first_tank_time;
-			ws.wait_between_spawns = time_between_spawns;
-			ws.time_until_next_spawn = ws.wait_before_starting;
-			ws.spawns_remaining = ws.total_count;
-			ws.effective_pressure = static_cast<float>(health);
-			ws.time_to_kill = ws.effective_pressure / pressure_decay_rate;
-			ws.type_of_spawned = wavespawn::type::tank;
-			ws.tnk.speed = speed;
-			ws.tnk.health = health;
-			wavespawns.emplace_back(ws);
-		}
-
-		std::cout << "Generated " << tanks << " tank(s)." << std::endl;
-		*/
 
 		// This loop generates all of the WaveSpawns.
 		while (t < max_time && wavespawns.size() < max_wavespawns && class_icons.size() < max_icons)
@@ -316,7 +300,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				int health = rand_int(1, 100) * 1000;
 
-				float speed_pressure = ((speed - 10.0f) * 0.2f) + 1.0f;
+				const float speed_factor = 0.2f;
+				float speed_pressure = ((speed - 10.0f) * speed_factor) + 1.0f;
 
 				// How long it should take to kill the theoretical bot.
 				float time_to_kill;
@@ -364,7 +349,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.spawns_remaining = ws.total_count - 1;
 				ws.effective_pressure = effective_pressure; // *0.2f;
-				ws.time_to_kill = time_to_kill; // *0.2f;
+				ws.time_to_kill = time_to_kill / speed_pressure; // *0.2f;
 				ws.type_of_spawned = wavespawn::type::tank;
 				ws.tnk.speed = speed;
 				ws.tnk.health = health;
@@ -702,6 +687,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 			}
 			else if (ws.type_of_spawned == wavespawn::type::tank)
 			{
+				// Choose a random path to start on.
+				std::string path_start_node;
+				int path_index = rand_int(0, tank_path_starting_points.size());
+				path_start_node = tank_path_starting_points.at(path_index);
+
 				write_blank();
 				block_start("FirstSpawnOutput");
 				write("Target", "boss_spawn_relay");
@@ -712,7 +702,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				write("Health", ws.tnk.health);
 				write("Speed", ws.tnk.speed);
 				write("Name", "\"tankboss\"");
-				write("StartingPathTrackNode", "\"boss_path_a1\"");
+				write("StartingPathTrackNode", path_start_node);
 				block_start("OnKilledOutput");
 				write("Target", "boss_dead_relay");
 				write("Action", "Trigger");

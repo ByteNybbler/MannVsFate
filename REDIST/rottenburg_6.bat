@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_rottenburg -name gen -fixedrespawnwavetime -players 6
