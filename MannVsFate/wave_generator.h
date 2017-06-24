@@ -36,6 +36,8 @@ public:
 	void set_giant_chance(float in);
 	void set_boss_chance(float in);
 	void set_currency_spread(int in);
+	void set_use_wacky_sounds(int in);
+	void set_wacky_sound_vo_ratio(float in);
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
 
@@ -92,6 +94,13 @@ private:
 	float tank_chance = 0.03f;
 	// The maximum number of seconds that a TFBot WaveSpawn can last.
 	int max_tfbot_wavespawn_time = 120;
+	// Bitfield for randomly generated Wavespawn warning sounds.
+	// 0: Do not use randomized sounds at all.
+	// 1: Use randomized sounds for wavespawns.
+	// 2: Play a randomized sound every second.
+	int use_wacky_sounds = 0;
+	// The ratio of voiceover sounds to standard sounds for the randomized sounds.
+	float wacky_sound_vo_ratio = 0.1f;
 
 	// Write a number of indents based on the indentation level.
 	void write_indents();

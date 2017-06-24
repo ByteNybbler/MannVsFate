@@ -200,6 +200,18 @@ int main(int argc, char** argv)
 					gen.set_currency_spread(toint(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-wackysounds") == 0)
+				{
+					++i;
+					gen.set_use_wacky_sounds(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-wackyvoratio") == 0)
+				{
+					++i;
+					gen.set_wacky_sound_vo_ratio(tofloat(argv[i]));
+					continue;
+				}
 			}
 		}
 

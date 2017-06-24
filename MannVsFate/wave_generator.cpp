@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.3.5";
+const std::string wave_generator::version = "0.3.6";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -123,6 +123,16 @@ void wave_generator::set_currency_spread(int in)
 	currency_spread = in;
 }
 
+void wave_generator::set_use_wacky_sounds(int in)
+{
+	use_wacky_sounds = in;
+}
+
+void wave_generator::set_wacky_sound_vo_ratio(float in)
+{
+	wacky_sound_vo_ratio = in;
+}
+
 void wave_generator::generate_mission(int argc, char** argv)
 {
 	std::stringstream filename;
@@ -205,17 +215,19 @@ void wave_generator::generate_mission(int argc, char** argv)
 	// Whether enemy engineers can spawn on this map.
 	bool engies_enabled = true;
 
-	// Bigrock.
 	if (map_name == "mvm_bigrock")
 	{
 		spawnbots.emplace_back("spawnbot");
-		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
+		tank_path_starting_points.emplace_back("\"boss_path_1\""); // boss_path_25 is the final node on Bigrock.
+		//tank_path_starting_points.emplace_back("\"boss_path_a1\"");
 	}
 	else if (map_name == "mvm_rottenburg")
 	{
 		bot_path_length = 0.7f;
 		wave_start_relay = "wave_start_relay_classic";
 		spawnbots.emplace_back("spawnbot");
+		spawnbots.emplace_back("flankers");
+		spawnbots.emplace_back("spawnbot_chief");
 		tank_path_starting_points.emplace_back("\"tank_path_a_10\"");
 		tank_path_starting_points.emplace_back("\"tank_path_b_10\"");
 	}
@@ -224,6 +236,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 		bot_path_length = 0.5f;
 		spawnbots.emplace_back("spawnbot");
 		spawnbots.emplace_back("spawnbot_invasion");
+		spawnbots.emplace_back("spawnbot_left");
+		spawnbots.emplace_back("spawnbot_right");
+		spawnbots.emplace_back("spawnbot_single_flag");
+		spawnbots.emplace_back("spawnbot_mission_sniper");
 		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
 		tank_path_starting_points.emplace_back("\"boss_path_b1\"");
 	}
@@ -237,11 +253,37 @@ void wave_generator::generate_mission(int argc, char** argv)
 		spawnbots.emplace_back("spawnbot_lower");
 		spawnbots.emplace_back("spawnbot_left");
 		spawnbots.emplace_back("spawnbot_right");
+		spawnbots.emplace_back("spawnbot_mission_sniper");
 		tank_path_starting_points.emplace_back("\"boss_path_1\"");
 		tank_path_starting_points.emplace_back("\"boss_path2_1\"");
 	}
+	else if (map_name == "mvm_coaltown")
+	{
+		bot_path_length = 0.6f;
+		engies_enabled = false;
+		spawnbots.emplace_back("spawnbot");
+		spawnbots.emplace_back("spawnbot_giant");
+		spawnbots.emplace_back("spawnbot_invasion");
+		tank_path_starting_points.emplace_back("\"boss_path_a1\"");
+	}
+	else if (map_name == "mvm_mannhattan")
+	{
+		bot_path_length = 0.7f;
+		spawnbots.emplace_back("spawnbot_main0");
+		spawnbots.emplace_back("spawnbot_mission_sniper0");
+		// Mannhattan has no support for tanks, hence there are no tank path starting points.
+	}
 
 	botgen.set_engies_enabled(engies_enabled);
+
+	list_reader random_sound_reader;
+	const std::string file_sounds_standard = "data/sounds.txt";
+	const std::string file_sounds_vo = "data/sounds_vo.txt";
+	if (use_wacky_sounds != 0)
+	{
+		random_sound_reader.load(file_sounds_standard);
+		random_sound_reader.load(file_sounds_vo);
+	}
 
 	// Generate the actual waves!
 	while (current_wave < waves)
@@ -298,6 +340,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// We'll use this to scale pressure based on how many concurrent wavespawns are occurring.
 		int active_wavespawns = 0;
 
+		// The last second the Wavespawns ran for.
+		int last_t = 0;
+
 		// This loop generates all of the WaveSpawns.
 		while (t < max_time && wavespawns.size() < max_wavespawns && class_icons.size() < max_icons)
 		{
@@ -314,7 +359,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			std::cout << "Generating new wavespawn at t = " << t << '.' << std::endl;
 
-			if (rand_chance(tank_chance))
+			if (rand_chance(tank_chance) && tank_path_starting_points.size() != 0)
 			{
 				// Generate a new tank WaveSpawn.
 
@@ -559,6 +604,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			std::cout << "wave_generator pressure: " << pressure << std::endl;
 
+			last_t = t;
+
 			// An empty second is a second that occurs without a single new WaveSpawn.
 			// To prevent boredom, this amount of time is capped.
 			//int empty_seconds = 0;
@@ -647,6 +694,19 @@ void wave_generator::generate_mission(int argc, char** argv)
 		{
 			block_start("WaveSpawn");
 			write("Name", ws.name);
+			if (use_wacky_sounds & 1)
+			{
+				std::string sound;
+				if (rand_chance(wacky_sound_vo_ratio))
+				{
+					sound = random_sound_reader.get_random(file_sounds_vo);
+				}
+				else
+				{
+					sound = random_sound_reader.get_random(file_sounds_standard);
+				}
+				write("FirstSpawnWarningSound", '\"' + sound + '\"');
+			}
 			write("TotalCount", ws.total_count);
 			write("WaitBeforeStarting", ws.wait_before_starting);
 			write("WaitBetweenSpawns", ws.wait_between_spawns);
@@ -683,7 +743,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 				}
 				if (ws.bot.cl == player_class::engineer)
 				{
-					write("TeleportWhere", "spawnbot");
+					for (const std::string& spawnbot : spawnbots)
+					{
+						write("TeleportWhere", spawnbot);
+					}
 				}
 
 				// Write all Attributes.
@@ -751,6 +814,31 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			block_end(); // WaveSpawn
 		}
+
+		// Write randomized sound WaveSpawns each second, if applicable.
+		if (use_wacky_sounds & 2)
+		{
+			int t = 0;
+			while (t < last_t)
+			{
+				block_start("WaveSpawn");
+				std::string sound;
+				if (rand_chance(wacky_sound_vo_ratio))
+				{
+					sound = random_sound_reader.get_random(file_sounds_vo);
+				}
+				else
+				{
+					sound = random_sound_reader.get_random(file_sounds_standard);
+				}
+				write("FirstSpawnWarningSound", '\"' + sound + '\"');
+				write("WaitBeforeStarting", t);
+				write("WaitBetweenSpawns", 1);
+				block_end(); // WaveSpawn
+				++t;
+			}
+		}
+
 		block_end(); // Wave
 	}
 

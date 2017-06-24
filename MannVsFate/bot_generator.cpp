@@ -4,7 +4,7 @@
 #include <algorithm>
 
 bot_generator::bot_generator()
-	: random_names("names/verbs.txt", "names/titles.txt", "names/adjectives.txt", "names/nouns.txt")
+	: random_names("data/names/verbs.txt", "data/names/titles.txt", "data/names/adjectives.txt", "data/names/nouns.txt")
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
@@ -90,8 +90,8 @@ tfbot_meta bot_generator::generate_bot()
 
 	// Give the bot items here, prior to any chance of becoming a giant!
 	list_reader item_reader;
-	const std::string initial_path = "items/" + item_class_icon + '/';
-	const std::string initial_path_bot = "items/" + bot.class_icon + '/';
+	const std::string initial_path = "data/items/" + item_class_icon + '/';
+	const std::string initial_path_bot = "data/items/" + bot.class_icon + '/';
 
 	const std::string file_secondary = initial_path + "secondary.txt";
 	const std::string file_melee = initial_path + "melee.txt";

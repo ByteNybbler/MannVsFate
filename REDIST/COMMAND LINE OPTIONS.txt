@@ -22,3 +22,5 @@ Open the example.bat file in a text editor to see how command line arguments are
 -difficulty [a floating point number determing how difficult the mission should be; higher number means higher difficulty; it is 3.0 by default]
 -giantchance [the chance that standard robots have of initially being upgraded into giants]
 -bosschance [the chance that some giants have of initially being upgraded into bosses]
+-wackysounds [bitfield; 1 enables randomized sounds for all wavespawns; 2 enables randomized sounds every second]
+-wackyvoratio [the ratio of voiceover sounds to standard sounds for the randomized sounds]

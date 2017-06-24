@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_mannhattan -name gen -fixedrespawnwavetime -players 1 -wackysounds 3 -wackyvoratio 0.1
