@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.3.2";
+const std::string wave_generator::version = "0.3.3";
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -455,8 +455,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 					}
 					else if (time_to_kill < 1.0f)
 					{
-						if (rand_chance(0.9f))
-						{
+						//if (rand_chance(0.9f))
+						//{
 							if (bot_meta.is_giant)
 							{
 								bot.health *= 2;
@@ -470,7 +470,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 								bot.health *= 2;
 							}
 							max_count = 0;
-						}
+						//}
 					}
 					else if (bot_meta.is_boss || bot.health <= 25)
 					{
