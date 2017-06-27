@@ -126,3 +126,7 @@ Maximum
 Minimum
 Opposite
 Not
+Scummy
+Scum
+[...]
+Okay

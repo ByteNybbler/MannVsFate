@@ -30,7 +30,7 @@ Master
 Mistress
 Officer
 Sam and
-YOU ARE A
+You Are a
 King
 Emperor
 Squire
@@ -43,3 +43,4 @@ You and
 Mom and Dad and
 The Black
 The White
+[...]
