@@ -190,3 +190,4 @@ Scum
 Scumbag
 Bag
 [...]
+Civilian
