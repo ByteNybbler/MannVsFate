@@ -23,7 +23,7 @@ random_name_generator::random_name_generator(const std::string& verbs, const std
 
 std::string random_name_generator::get_random_name() const
 {
-	std::ss = "";
+	std::string ss = "";
 	std::string verb, title, adjective, noun1, noun2;
 	while (ss == "") {
 		if (rand_int(0, 2) == 0)
