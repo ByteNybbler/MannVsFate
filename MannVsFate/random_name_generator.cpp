@@ -23,26 +23,33 @@ random_name_generator::random_name_generator(const std::string& verbs, const std
 
 std::string random_name_generator::get_random_name() const
 {
-	std::string verb, title, adjective, noun1, noun2;
-	if (rand_int(0, 2) == 0)
-	{
-		verb = lr.get_random(verbs) + ' ';
-		title = "the ";
+	string ss = "";
+	while (ss == "") {
+		std::string verb, title, adjective, noun1, noun2;
+		if (rand_int(0, 2) == 0)
+		{
+			verb = lr.get_random(verbs) + ' ';
+			title = "the ";
+		}
+		if (rand_int(0, 2) == 0)
+		{
+			title = lr.get_random(titles) + ' ';
+		}
+		if (rand_int(0, 2) == 0)
+		{
+			adjective = lr.get_random(adjectives) + ' ';
+		}
+		if (rand_int(0, 2) == 0)
+		{
+			noun1 = lr.get_random(nouns) + ' ';
+		}
+		// Always have at least a noun no matter what.
+		noun2 = lr.get_random(nouns);
+		ss = verb + title + adjective + noun1 + noun2;
+		if (ss.length() >= 32) {
+			ss = "";
+		}
 	}
-	if (rand_int(0, 2) == 0)
-	{
-		title = lr.get_random(titles) + ' ';
-	}
-	if (rand_int(0, 2) == 0)
-	{
-		adjective = lr.get_random(adjectives) + ' ';
-	}
-	if (rand_int(0, 2) == 0)
-	{
-		noun1 = lr.get_random(nouns) + ' ';
-	}
-	// Always have at least a noun no matter what.
-	noun2 = lr.get_random(nouns);
 
 #if RANDOM_NAME_DEBUG == 1
 	if (verb != "")
