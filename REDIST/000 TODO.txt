@@ -1,0 +1,3 @@
+do wavespawn giant for giants in coaltown
+
+heavy hitscan projectile override tweak...

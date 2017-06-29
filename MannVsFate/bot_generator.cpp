@@ -259,7 +259,7 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.class_icon = "scout_bonk";
 			bot.items.emplace_back("Bonk Helm");
-			bot_meta.pressure *= 2.5f;
+			bot_meta.pressure *= 4.0f;
 			// Make sure that we can never have giant Bonk Scouts...
 			bot_meta.perma_small = true;
 		}
@@ -372,13 +372,11 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 
-	/*
 	if (bot.cl == player_class::spy)
 	{
 		//chanceMult *= 3.0f;
-		bot_meta.pressure *= 1.2f;
+		bot_meta.pressure *= 1.4f;
 	}
-	*/
 
 	// A bot has a chance to be a giant.
 	if (!bot_meta.is_giant && !bot_meta.perma_small && rand_chance(giant_chance))
@@ -625,9 +623,10 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	if (
 		//!is_giant &&
-		rand_chance(0.15f * chanceMult))
+		rand_chance(0.15f))
 	{
-		bot.scale = rand_float(0.3f, 1.6f);
+		// Giants are scale 1.75 by default.
+		bot.scale = rand_float(0.3f, 1.75f);
 		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
 	}
 
@@ -676,6 +675,10 @@ tfbot_meta bot_generator::generate_bot()
 				// No reloading means Heavy's minigun shoots bullets at an insane rate.
 				// Same for Sniper's rifles.
 				bot_meta.pressure *= 5.0f;
+				if (bot.cl == player_class::sniper)
+				{
+					bot_meta.pressure *= 5.0f;
+				}
 			}
 			else
 			{

@@ -130,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_generator.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="list_reader.h" />
     <ClInclude Include="player_class.h" />
     <ClInclude Include="random_name_generator.h" />

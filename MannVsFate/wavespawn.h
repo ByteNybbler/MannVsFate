@@ -14,6 +14,7 @@ struct wavespawn
 	};
 
 	std::string name;
+	std::string location;
 	int total_count = 1;
 	int max_active = 1;
 	int spawn_count = 1;
@@ -22,12 +23,13 @@ struct wavespawn
 	tfbot bot;
 	tank tnk;
 	type type_of_spawned;
+	bool support = false;
 
 	// Variables for assistance with calculating pressure.
 
 	float effective_pressure;
 
-	// How long the bot should theoretically take to kill, in seconds.
+	// How long each spawn should theoretically take to kill, in seconds.
 	float time_to_kill;
 	
 	float time_until_next_spawn = 0.0f;
