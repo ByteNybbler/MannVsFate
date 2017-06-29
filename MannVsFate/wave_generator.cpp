@@ -171,9 +171,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 	bool engies_enabled = true;
 	// The biggest scale that an enemy can possibly have when navigating through a map.
 	// Does not take certain spawnbot locations into account.
-	float scale_mega = 1.75f;
+	float scale_mega;
 	// The scale of the doom enemy.
-	float scale_doom = 1.75f;
+	float scale_doom;
 
 	std::ifstream maps_file("data/maps.json");
 	if (!maps_file)
@@ -216,6 +216,24 @@ void wave_generator::generate_mission(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		bot_path_length = 1.0f;
+	}
+
+	try
+	{
+		scale_mega = maps_json.at("scale_mega").get<float>();
+	}
+	catch (const std::exception& e)
+	{
+		scale_mega = 1.75f;
+	}
+
+	try
+	{
+		scale_doom = maps_json.at("scale_doom").get<float>();
+	}
+	catch (const std::exception& e)
+	{
+		scale_doom = scale_mega;
 	}
 
 	try
