@@ -27,6 +27,8 @@ public:
 	bool is_giant = false;
 	// Whether the bot is a boss (i.e. ultra-powerful giant).
 	bool is_boss = false;
+	// Whether the bot is a doombot (i.e. practically invincible giant).
+	bool is_doom = false;
 	// Whether the bot cannot become a boss.
 	bool perma_small = false;
 	// Whether the bot has the AlwaysCrit attribute.

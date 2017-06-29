@@ -32,13 +32,18 @@ void bot_generator::set_engies_enabled(bool in)
 	engies_enabled = in;
 }
 
+void bot_generator::set_scale_mega(float in)
+{
+	scale_mega = in;
+}
+
 tfbot_meta bot_generator::generate_bot()
 {
 	// Let's generate a random TFBot.
 	tfbot_meta bot_meta;
 	tfbot& bot = bot_meta.get_bot();
 
-	chanceMult = 1.0f;
+	chance_mult = 1.0f;
 
 	// If engineers are disabled, remove them from the possible classes vector.
 	if (!engies_enabled)
@@ -144,7 +149,7 @@ tfbot_meta bot_generator::generate_bot()
 			/*
 			if (is_deflector_giant)
 			{
-			make_bot_into_giant(bot, is_giant, move_speed_bonus, chanceMult, bot.pressure, isBoss, isAlwaysCrit);
+			make_bot_into_giant(bot, is_giant, move_speed_bonus, chance_mult, bot.pressure, isBoss, isAlwaysCrit);
 			}
 			else
 			{
@@ -325,7 +330,7 @@ tfbot_meta bot_generator::generate_bot()
 		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
 		{
 			/*
-			if (rand_chance(0.2f * chanceMult))
+			if (rand_chance(0.2f * chance_mult))
 			{
 			bot.attributes.emplace_back("ProjectileShield");
 			bot.pressure *= 3.0f;
@@ -355,9 +360,9 @@ tfbot_meta bot_generator::generate_bot()
 		break;
 	}
 
-	if (bot.cl == player_class::engineer)
+	if (bot.cl == player_class::engineer || bot_meta.is_doom)
 	{
-		// Make it so that engineers cannot pick up the bomb.
+		// Make it so that engineers and doombots cannot pick up the bomb.
 		bot.character_attributes.emplace_back("cannot pick up intelligence", 1);
 	}
 	if (item_class == player_class::sniper)
@@ -374,7 +379,7 @@ tfbot_meta bot_generator::generate_bot()
 
 	if (bot.cl == player_class::spy)
 	{
-		//chanceMult *= 3.0f;
+		//chance_mult *= 3.0f;
 		bot_meta.pressure *= 1.4f;
 	}
 
@@ -387,32 +392,32 @@ tfbot_meta bot_generator::generate_bot()
 	if ((bot_meta.is_giant && rand_chance(0.8f)) || rand_chance(0.5f))
 	{
 		float upper_bound = pressure_decay_rate * 0.007f; // 0.002f;
-		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chanceMult, upper_bound));
+		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chance_mult, upper_bound));
 	}
 
-	if (!bot_meta.is_always_crit && rand_chance(0.05f * chanceMult))
+	if (!bot_meta.is_always_crit && rand_chance(0.05f * chance_mult))
 	{
 		bot.attributes.emplace_back("AlwaysCrit");
 		bot_meta.pressure *= 4.5f;
 		bot_meta.is_always_crit = true;
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		float change = rand_float(0.5f, 3.0f);
 		bot_meta.move_speed_bonus *= change;
 		bot_meta.pressure *= change;
 	}
 
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult) || bot_meta.is_doom)
 	{
 		bot.attributes.emplace_back("Aggressive");
 	}
-	if ((item_class == player_class::medic || item_class == player_class::soldier) && rand_chance(0.5f * chanceMult))
+	if ((item_class == player_class::medic || item_class == player_class::soldier) && rand_chance(0.5f * chance_mult))
 	{
 		bot.attributes.emplace_back("SpawnWithFullCharge");
 		bot_meta.pressure *= 2.5f;
 	}
-	if (rand_chance(0.1f * chanceMult) && !bot_meta.is_always_fire_weapon)
+	if (rand_chance(0.1f * chance_mult) && !bot_meta.is_always_fire_weapon)
 	{
 		if (rand_chance(0.4f) ||
 			(secondary == "The Buff Banner" ||
@@ -431,23 +436,24 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 	/*
+	// Using this attribute may cause the bot to idle in its spawn without moving if there's no bomb.
 	if (rand_chance(0.02f))
 	{
 		bot.attributes.emplace_back("IgnoreFlag");
 	}
 	*/
 	/*
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 	bot.attributes.emplace_back("BulletImmune");
 	bot.pressure *= 2.0f;
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 	bot.attributes.emplace_back("BlastImmune");
 	bot.pressure *= 2.0f;
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 	bot.attributes.emplace_back("FireImmune");
 	bot.pressure *= 2.0f;
@@ -455,7 +461,7 @@ tfbot_meta bot_generator::generate_bot()
 	*/
 	// Parachute does nothing.
 	/*
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 	bot.attributes.emplace_back("Parachute");
 	}
@@ -463,12 +469,12 @@ tfbot_meta bot_generator::generate_bot()
 
 	if (item_class == player_class::demoman)
 	{
-		if (rand_chance(0.3f * chanceMult))
+		if (rand_chance(0.3f * chance_mult))
 		{
 			float charge_increase = rand_float(1.0f, 15.0f);
 
 			bot_meta.pressure *= ((charge_increase - 1.0f) * 0.03f) + 1.0f;
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				charge_increase *= 10000.0f;
 				bot_meta.pressure *= 1.5f;
@@ -481,28 +487,28 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		if (bot.weapon_restrictions != "MeleeOnly" && bot.weapon_restrictions != "SecondaryOnly")
 		{
-			if (rand_chance(0.1f * chanceMult))
+			if (rand_chance(0.1f * chance_mult))
 			{
 				float r = rand_float(-10.0f, 10.0f);
-				if (rand_chance(0.1f * chanceMult))
+				if (rand_chance(0.1f * chance_mult))
 				{
 					r *= 100.0f;
 				}
 				bot.character_attributes.emplace_back("airblast pushback scale", r);
 			}
-			if (rand_chance(0.1f * chanceMult))
+			if (rand_chance(0.1f * chance_mult))
 			{
 				float r = rand_float(-10.0f, 10.0f);
-				if (rand_chance(0.1f * chanceMult))
+				if (rand_chance(0.1f * chance_mult))
 				{
 					r *= 100.0f;
 				}
 				bot.character_attributes.emplace_back("airblast vertical pushback scale", r);
 			}
-			if (rand_chance(0.1f * chanceMult))
+			if (rand_chance(0.1f * chance_mult))
 			{
 				float r = rand_float(0.1f, 10.0f);
-				if (rand_chance(0.1f * chanceMult))
+				if (rand_chance(0.1f * chance_mult))
 				{
 					r *= 100.0f;
 				}
@@ -514,60 +520,60 @@ tfbot_meta bot_generator::generate_bot()
 
 	if (bot.cl == player_class::engineer)
 	{
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.3f, 10.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
 			bot.character_attributes.emplace_back("engy building health bonus", r);
 			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
 		}
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.3f, 5.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
 			bot.character_attributes.emplace_back("engy sentry damage bonus", r);
 			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
 		}
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.1f, 3.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
 			bot.character_attributes.emplace_back("engy sentry fire rate increased", r);
 			bot_meta.pressure /= ((r - 1.0f) * 0.3f) + 1.0f;
 		}
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
 			bot.character_attributes.emplace_back("engy sentry radius increased", r);
 			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
 		}
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
 			bot.character_attributes.emplace_back("engineer sentry build rate multiplier", r);
 			bot_meta.pressure /= ((r - 1.0f) * 0.2f) + 1.0f;
 		}
-		if (rand_chance(0.05f * chanceMult))
+		if (rand_chance(0.05f * chance_mult))
 		{
 			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chanceMult))
+			if (rand_chance(0.01f * chance_mult))
 			{
 				r *= 0.01f;
 			}
@@ -576,7 +582,8 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 
-	if (rand_chance(0.08f * chanceMult))
+	// Doombots will always have a high AutoJump so it can get around obstacles.
+	if (rand_chance(0.08f * chance_mult) || bot_meta.is_doom)
 	{
 		bot.attributes.emplace_back("AutoJump");
 		bot.auto_jump_min = rand_float(0.1f, 5.0f);
@@ -590,9 +597,17 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot_meta.pressure *= 1.2f;
 
-		if (rand_chance(0.5f))
+		if (rand_chance(0.5f) || bot_meta.is_doom)
 		{
-			float increased_jump_height = rand_float(0.1f, 15.0f);
+			float increased_jump_height;
+			if (bot_meta.is_doom)
+			{
+				increased_jump_height = 10.0f;
+			}
+			else
+			{
+				increased_jump_height = rand_float(0.1f, 15.0f);
+			}
 			bot.character_attributes.emplace_back("increased jump height", increased_jump_height);
 			bot.character_attributes.emplace_back("cancel falling damage", 1);
 			if (increased_jump_height > 1.0f)
@@ -602,6 +617,7 @@ tfbot_meta bot_generator::generate_bot()
 				if (rand_chance(0.5f))
 				{
 					bot.items.emplace_back("The B.A.S.E. Jumper");
+
 					bot_meta.pressure *= ((increased_jump_height - 1.0f) * 0.3f) + 1.0f;
 				}
 			}
@@ -614,7 +630,7 @@ tfbot_meta bot_generator::generate_bot()
 
 		if (item_class == player_class::demoman)
 		{
-			if (rand_chance(0.2f * chanceMult))
+			if (rand_chance(0.2f * chance_mult))
 			{
 				bot.attributes.emplace_back("AirChargeOnly");
 				bot_meta.pressure *= 0.9f;
@@ -630,7 +646,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
 	}
 
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		bot.max_vision_range = 30000.0f;
 		if (bot.weapon_restrictions != "MeleeOnly")
@@ -639,7 +655,7 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 	bool instant_reload = false;
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		float fire_rate_bonus = rand_float(0.1f, 2.0f);
 		bot.character_attributes.emplace_back("fire rate bonus", fire_rate_bonus);
@@ -653,7 +669,7 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.pressure /= fire_rate_bonus;
 		}
 	}
-	else if (rand_chance(0.1f * chanceMult))
+	else if (rand_chance(0.1f * chance_mult))
 	{
 		if (rand_chance(0.4f))
 		{
@@ -686,7 +702,7 @@ tfbot_meta bot_generator::generate_bot()
 			}
 		}
 	}
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		float damage_bonus_mod;
 		if (bot_meta.is_giant)
@@ -699,7 +715,7 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot_meta.damage_bonus *= damage_bonus_mod;
 	}
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		float rad;
 		if (bot_meta.is_giant)
@@ -713,7 +729,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot.character_attributes.emplace_back("bullets per shot bonus", rad);
 		bot_meta.pressure *= ((rad - 1.0f) * 0.8f) + 1.0f;
 	}
-	if (rand_chance(0.1f * chanceMult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
+	if (rand_chance(0.1f * chance_mult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
 	{
 		const float change = rand_float(0.01f, 2.0f);
 		bot.character_attributes.emplace_back("effect bar recharge rate increased", change);
@@ -724,13 +740,13 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	//if (bot.weapon_restrictions != "MeleeOnly")
 	//{
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		const float change = rand_float(0.01f, 10.0f);
 		bot.character_attributes.emplace_back("projectile speed increased", change);
 		bot_meta.pressure *= ((change - 1.0f) * 0.2f) + 1.0f;
 	}
-	if (rand_chance(0.1f * chanceMult))
+	if (rand_chance(0.1f * chance_mult))
 	{
 		int change = 3;
 		while (rand_chance(0.5f) && change < 360)
@@ -739,7 +755,7 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot.character_attributes.emplace_back("projectile spread angle penalty", change);
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		int change = 3;
 		bot_meta.pressure *= 1.05f;
@@ -751,7 +767,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot.character_attributes.emplace_back("weapon spread bonus", change);
 	}
 	//}
-	if (rand_chance(0.03f * chanceMult))
+	if (rand_chance(0.03f * chance_mult))
 	{
 		if (rand_chance(0.5f))
 		{
@@ -764,7 +780,7 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot_meta.pressure *= 2.5f;
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		float head_size = 0.001f;
 		while (rand_chance(0.95f) && head_size < 10.0f)
@@ -797,15 +813,15 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
 		{
-			if (instant_reload)
-			{
+			//if (instant_reload)
+			//{
 				projectile_override_crash_risk = true;
-			}
+			//}
 		}
 	}
 	if (!projectile_override_crash_risk)
 	{
-		if (rand_chance(0.2f * chanceMult))
+		if (rand_chance(0.2f * chance_mult))
 		{
 			int proj_type = rand_int(1, 27);
 
@@ -858,18 +874,18 @@ tfbot_meta bot_generator::generate_bot()
 	bot.pressure *= 2.0f;
 	}
 	*/
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		bot.character_attributes.emplace_back("bleeding duration", 5.0f);
 		bot_meta.pressure *= 2.0f;
 	}
-	if (rand_chance(0.04f * chanceMult))
+	if (rand_chance(0.04f * chance_mult))
 	{
 		bot.character_attributes.emplace_back("Set DamageType Ignite", 1);
 		// Add some cool fire particles.
 		bot.character_attributes.emplace_back("attach particle effect static", 13);
 		bot_meta.pressure *= 2.0f;
-		if (rand_chance(0.1f * chanceMult))
+		if (rand_chance(0.1f * chance_mult))
 		{
 			// Burn pretty much forever.
 			bot.character_attributes.emplace_back("weapon burn time increased", 1000.0f);
@@ -892,7 +908,7 @@ tfbot_meta bot_generator::generate_bot()
 			*/
 		}
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		if (rand_chance(0.5f))
 		{
@@ -906,7 +922,7 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.pressure *= 2.0f;
 		}
 	}
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		bot.character_attributes.emplace_back("no self blast dmg", 1);
 	}
@@ -929,7 +945,7 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	else
 	*/
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 		float rad = rand_float(0.1f, 5.0f);
 		bot.character_attributes.emplace_back("Blast radius increased", rad);
@@ -952,14 +968,14 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		bot.character_attributes.emplace_back("hit self on miss", 1);
 	}
-	if (rand_chance(0.02f * chanceMult))
+	if (rand_chance(0.02f * chance_mult))
 	{
 		float r = rand_float(-10000.0f, 10000.0f);
 		bot.character_attributes.emplace_back("apply z velocity on damage", r);
 		bot_meta.pressure *= 2.0f;
 	}
 	/*
-	if (rand_chance(0.05f * chanceMult))
+	if (rand_chance(0.05f * chance_mult))
 	{
 	bot.character_attributes.emplace_back("projectile penetration", 1);
 	bot.pressure *= 1.1f;
@@ -1071,10 +1087,9 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		bot_meta.move_speed_bonus *= 0.5;
 		bot_meta.pressure *= 0.5;
 		bot.attributes.emplace_back("UseBossHealthBar");
-		chanceMult *= 4.0f;
+		chance_mult *= 4.0f;
 
-		// Bot scale of 1.9 may be a bit too large...
-		//bot.scale = 1.9f;
+		bot.scale = scale_mega;
 
 		bot.character_attributes.emplace_back("attach particle effect static", rand_int(1, 48));
 

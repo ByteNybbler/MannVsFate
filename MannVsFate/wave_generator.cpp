@@ -161,10 +161,19 @@ void wave_generator::generate_mission(int argc, char** argv)
 	std::vector<std::string> spawnbots;
 	// This is the collection of possible starting points for each large robot spawn.
 	std::vector<std::string> spawnbots_giant;
+	// This is the collection of possible starting points for each boss/mega robot spawn.
+	std::vector<std::string> spawnbots_mega;
+	// This is the collection of possible starting points for each doom robot spawn.
+	std::vector<std::string> spawnbots_doom;
 	// This is the collection of starting points for each tank path.
 	std::vector<std::string> tank_path_starting_points;
 	// Whether enemy engineers can spawn on this map.
 	bool engies_enabled = true;
+	// The biggest scale that an enemy can possibly have when navigating through a map.
+	// Does not take certain spawnbot locations into account.
+	float scale_mega = 1.75f;
+	// The scale of the doom enemy.
+	float scale_doom = 1.75f;
 
 	std::ifstream maps_file("data/maps.json");
 	if (!maps_file)
@@ -252,6 +261,24 @@ void wave_generator::generate_mission(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		spawnbots_giant = spawnbots;
+	}
+
+	try
+	{
+		spawnbots_mega = maps_json.at("spawnmegas").get<std::vector<std::string>>();
+	}
+	catch (const std::exception& e)
+	{
+		spawnbots_mega = spawnbots_giant;
+	}
+
+	try
+	{
+		spawnbots_doom = maps_json.at("spawndooms").get<std::vector<std::string>>();
+	}
+	catch (const std::exception& e)
+	{
+		spawnbots_doom = spawnbots_mega;
 	}
 
 	try
@@ -640,7 +667,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Decide on the possible locations at which to spawn based on the size of the robot.
 				// Large robots get stuck in some wavespawns, so those wavespawns must be omitted.
 				std::vector<std::string>* possible_locations;
-				if (bot_meta.is_giant || bot.scale > 1.0f)
+				if (bot_meta.is_boss)
+				{
+					possible_locations = &spawnbots_mega;
+				}
+				else if (bot_meta.is_giant || bot.scale > 1.0f)
 				{
 					possible_locations = &spawnbots_giant;
 				}

@@ -13,6 +13,13 @@ struct wavespawn
 		tank
 	};
 
+	enum class support_type
+	{
+		not,
+		unlimited,
+		limited
+	};
+
 	std::string name;
 	std::string location;
 	int total_count = 1;
@@ -20,10 +27,12 @@ struct wavespawn
 	int spawn_count = 1;
 	float wait_before_starting = 0.0f;
 	float wait_between_spawns = 0.0f;
+	support_type support = support_type::not;
+
 	tfbot bot;
 	tank tnk;
+	// The type of entity spawned: TFBot or Tank.
 	type type_of_spawned;
-	bool support = false;
 
 	// Variables for assistance with calculating pressure.
 

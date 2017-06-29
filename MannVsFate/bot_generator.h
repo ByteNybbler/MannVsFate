@@ -19,6 +19,7 @@ public:
 	void set_giant_chance(float in);
 	void set_boss_chance(float in);
 	void set_engies_enabled(bool in);
+	void set_scale_mega(float in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -33,7 +34,7 @@ private:
 	// The random name generator.
 	const random_name_generator random_names;
 
-	// The possible classes that the wave generator can choose from.
+	// The possible classes that the bot generator can choose from.
 	std::vector<player_class> possible_classes = {
 		player_class::scout,
 		player_class::soldier,
@@ -47,7 +48,7 @@ private:
 	};
 
 	// The multiplier on most random chance calls. A higher value here means more of the random chances will likely return true.
-	float chanceMult;
+	float chance_mult;
 
 	// The pressure decay rate.
 	float pressure_decay_rate;
@@ -58,6 +59,8 @@ private:
 	float boss_chance = 0.15f;
 	// Whether engineers are enabled or not. Map-specific.
 	bool engies_enabled = true;
+	// Maximum boss scale.
+	float scale_mega = 1.75f;
 };
 
 #endif
