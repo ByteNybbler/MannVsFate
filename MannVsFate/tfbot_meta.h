@@ -25,9 +25,9 @@ public:
 	float damage_bonus = 1.0f;
 	// Whether the bot is a giant.
 	bool is_giant = false;
-	// Whether the bot is a boss (i.e. ultra-powerful giant).
+	// Whether the bot is a boss (i.e. unusually strong giant).
 	bool is_boss = false;
-	// Whether the bot is a doombot (i.e. practically invincible giant).
+	// Whether the bot is a doombot (i.e. enormous giant).
 	bool is_doom = false;
 	// Whether the bot cannot become a boss.
 	bool perma_small = false;

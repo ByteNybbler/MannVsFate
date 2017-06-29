@@ -189,7 +189,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		maps_file >> maps_json;
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		throw "maps.json exception: JSON parse error.";
 	}
@@ -201,7 +201,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		maps_json = maps_json.at(map_name);
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		const std::string exstr = "maps.json exception: Couldn't find an entry for " + map_name + '!';
 		throw std::exception(exstr.c_str());
@@ -213,7 +213,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		bot_path_length = maps_json.at("bot_path_length").get<float>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		bot_path_length = 1.0f;
 	}
@@ -222,7 +222,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		scale_mega = maps_json.at("scale_mega").get<float>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		scale_mega = 1.75f;
 	}
@@ -231,7 +231,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		scale_doom = maps_json.at("scale_doom").get<float>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		scale_doom = scale_mega;
 	}
@@ -240,7 +240,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		engies_enabled = maps_json.at("engies").get<bool>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		engies_enabled = true;
 	}
@@ -249,7 +249,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		wave_start_relay = maps_json.at("wave_start_relay").get<std::string>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		wave_start_relay = "wave_start_relay";
 	}
@@ -258,7 +258,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		wave_finished_relay = maps_json.at("wave_finished_relay").get<std::string>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		wave_finished_relay = "wave_finished_relay";
 	}
@@ -267,7 +267,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		spawnbots = maps_json.at("spawnbots").get<std::vector<std::string>>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		spawnbots.emplace_back("spawnbot");
 	}
@@ -276,7 +276,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		spawnbots_giant = maps_json.at("spawngiants").get<std::vector<std::string>>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		spawnbots_giant = spawnbots;
 	}
@@ -285,7 +285,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		spawnbots_mega = maps_json.at("spawnmegas").get<std::vector<std::string>>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		spawnbots_mega = spawnbots_giant;
 	}
@@ -294,7 +294,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		spawnbots_doom = maps_json.at("spawndooms").get<std::vector<std::string>>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		spawnbots_doom = spawnbots_mega;
 	}
@@ -303,7 +303,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	{
 		tank_path_starting_points = maps_json.at("spawntanks").get<std::vector<std::string>>();
 	}
-	catch (const std::exception& e)
+	catch (const std::exception&)
 	{
 		// If there are no tank spawn points provided, just assume this map has no tanks.
 	}
@@ -453,37 +453,46 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				class_icons.emplace("tank");
 
+				// Cache the recipricol of the pressure decay rate.
+				const float recip_pressure_decay_rate = 1 / pressure_decay_rate;
+				//std::cout << "recip_pressure_decay_rate: " << recip_pressure_decay_rate << '.' << std::endl;
+
 				// 500 is around the maximum amount of speed a tank can have without risking getting stuck,
 				// at least on mvm_bigrock.
-				float speed = rand_float(10, 150);
+				float speed = rand_float(20.0f, 150.0f);
 				if (rand_chance(0.2f))
 				{
 					speed *= 3.3f;
 				}
 
-				int health = rand_int(1, 100) * 1000;
+				// The faster the tank moves, the smaller its health should be to account for its speed.
+				// Let's make the health both dependent on and inversely proportional to the speed.
+				int health = static_cast<int>(pressure_decay_rate * 1500.0f / speed);
+				// Round the tank health to the nearest 1000.
+				health = static_cast<int>(std::ceil(static_cast<float>(health) / 1000) * 1000);
 
-				const float speed_factor = 0.4f;
-				float speed_pressure = ((speed - 10.0f) * speed_factor) + 1.0f;
+				float effective_pressure = static_cast<float>(health);
+				// How long it should take to kill the theoretical tank.
+				float time_to_kill = effective_pressure * recip_pressure_decay_rate;
 
-				// How long it should take to kill the theoretical bot.
-				float time_to_kill;
+				//int health = rand_int(1, 100) * 1000;
 
-				// Cache the recipricol of the pressure decay rate.
-				const float recip_pressure_decay_rate = 1 / pressure_decay_rate;
+				//const float speed_factor = 0.4f;
+				//float speed_pressure = ((speed - 10.0f) * speed_factor) + 1.0f;
 
-				float effective_pressure;
-				float wait_between_spawns;
-				int max_count = 0;
+				float wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f);
+				int max_count = static_cast<int>(floor((max_time - t) / (wait_between_spawns)));
 
+				/*
 				while (max_count == 0)
 				{
 					effective_pressure = health * 0.1f; // 0.2f;
 					time_to_kill = effective_pressure * recip_pressure_decay_rate;
-					wait_between_spawns = time_to_kill * speed_pressure * rand_float(1.0f, 5.0f);
+					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f);
 					max_count = static_cast<int>(floor((max_time - t) / (wait_between_spawns)));
 
 					// If the max count is too low, it means the tank may be too strong.
+					// Additionally, the tank being too fast with too much health will prove to be problematic.
 					if (max_count == 0)
 					{
 						if (health > 1000)
@@ -496,11 +505,12 @@ void wave_generator::generate_mission(int argc, char** argv)
 						}
 					}
 				}
+				*/
 
-				//health = static_cast<int>(static_cast<float>(health) * 2.5f);
-
-				// Round the tank health to the nearest 1000.
-				health = static_cast<int>(std::ceil(static_cast<float>(health) / 1000) * 1000);
+				std::cout << "Tank speed / health: " << speed << " / " << health << std::endl;
+				std::cout << "Tank effective pressure: " << effective_pressure << std::endl;
+				std::cout << "Tank time to kill: " << time_to_kill << std::endl;
+				//std::getchar();
 
 				// Add the tank WaveSpawn to the wavespawns vector.
 				wavespawn ws;
@@ -642,6 +652,12 @@ void wave_generator::generate_mission(int argc, char** argv)
 					bot.scale = 1.3f;
 				}
 
+				// Increase the doombot's health a lot.
+				if (bot_meta.is_doom)
+				{
+					bot.health *= static_cast<int>(max_time * 0.2f);
+				}
+
 				//max_count = ceil(static_cast<float>(max_count) * 0.7f);
 
 				std::cout << "TotalCount calculation complete." << std::endl;
@@ -649,6 +665,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::cout << "The bot's effective pressure (with health): " << effective_pressure << std::endl;
 				std::cout << "TotalCount (pre-write): " << max_count << std::endl;
 				std::cout << "WaitBetweenSpawns: " << wait_between_spawns << std::endl;
+				std::cout << "TFBot time to kill: " << time_to_kill << std::endl;
 
 				class_icons.emplace(bot.class_icon);
 
@@ -675,7 +692,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.wait_before_starting = static_cast<float>(t);
 				ws.wait_between_spawns = wait_between_spawns;
 				ws.bot = bot;
-				ws.effective_pressure = effective_pressure;
+				if (bot_meta.is_doom)
+				{
+					ws.effective_pressure = 0.0f;
+				}
+				else
+				{
+					ws.effective_pressure = effective_pressure;
+				}
 				ws.time_to_kill = time_to_kill;
 				ws.spawns_remaining = ws.total_count - 1;
 				ws.type_of_spawned = wavespawn::type::tfbot;
@@ -685,7 +709,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Decide on the possible locations at which to spawn based on the size of the robot.
 				// Large robots get stuck in some wavespawns, so those wavespawns must be omitted.
 				std::vector<std::string>* possible_locations;
-				if (bot_meta.is_boss)
+				if (bot_meta.is_doom)
+				{
+					possible_locations = &spawnbots_doom;
+				}
+				else if (bot_meta.is_boss)
 				{
 					possible_locations = &spawnbots_mega;
 				}
@@ -716,7 +744,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			// Time to do any final work before the next loop iteration (if there is one).
 
-			std::cout << "wave_generator pressure: " << pressure << std::endl;
+			std::cout << "wave_generator pressure (prior to pressure loop): " << pressure << std::endl;
 
 			last_t = t;
 
@@ -790,7 +818,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 			//++t;
 
-			std::cout << "t = " << t << std::endl;
+			std::cout << "t = " << t << " (wave " << current_wave << '/' << waves << ')' << std::endl;
 		}
 
 		std::cout << "Wave generation complete. Writing to popfile..." << std::endl;

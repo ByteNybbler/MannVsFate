@@ -45,6 +45,9 @@ struct wavespawn
 	int spawns_remaining = 0;
 	// How long until the time to kill expires.
 	float time_to_kill_expires = 0.0f;
+
+	// Ignore this WaveSpawn's effective pressure.
+	//bool ignore_pressure = false;
 };
 
 #endif
