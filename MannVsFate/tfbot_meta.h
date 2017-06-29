@@ -19,6 +19,14 @@ public:
 	// Make this bot into a giant.
 	void make_giant();
 
+	// Update the bot's class icon based on the base class icon and the giants and crits statuses.
+	void update_class_icon();
+
+	// Set the bot's base class icon (excluding crits and giant). Also updates the wrapped bot's icon accordingly.
+	void set_base_class_icon(const std::string& new_base_class_icon);
+
+	std::string get_base_class_icon();
+
 	// The move speed bonus of the bot.
 	float move_speed_bonus = 1.0f;
 	// The damage bonus of the bot.
@@ -39,6 +47,8 @@ public:
 private:
 	// The bot being wrapped.
 	tfbot bot;
+	// The base class icon of the bot, not including the giant or crits components.
+	std::string base_class_icon = "";
 };
 
 #endif // TFBOT_META_H

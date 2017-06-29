@@ -73,7 +73,7 @@ private:
 	// The base pressure decay rate, measured per player, pre-multiplication.
 	int base_pressure_decay_rate = 50;
 	// The pressure decay rate multiplier.
-	float pressure_decay_rate_multiplier = 0.03f; // 0.1f;
+	float pressure_decay_rate_multiplier = 0.025f; // 0.03f;
 	// The amount by which the pressure decay rate is multiplied when stepping through time.
 	// This is effectively the main variable that determines the difficulty of the mission.
 	float pressure_decay_rate_multiplier_in_time = 3.0f;

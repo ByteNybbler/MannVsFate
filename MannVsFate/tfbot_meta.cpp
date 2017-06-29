@@ -45,3 +45,27 @@ void tfbot_meta::make_giant()
 		throw std::exception("tfbot_meta::make_giant exception: Invalid player_class.");
 	}
 }
+
+void tfbot_meta::update_class_icon()
+{
+	bot.class_icon = base_class_icon;
+	if (is_always_crit)
+	{
+		bot.class_icon += "_crit";
+	}
+	if (is_giant)
+	{
+		bot.class_icon += "_giant";
+	}
+}
+
+void tfbot_meta::set_base_class_icon(const std::string& new_base_class_icon)
+{
+	base_class_icon = new_base_class_icon;
+	update_class_icon();
+}
+
+std::string tfbot_meta::get_base_class_icon()
+{
+	return base_class_icon;
+}

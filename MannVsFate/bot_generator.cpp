@@ -90,7 +90,7 @@ tfbot_meta bot_generator::generate_bot()
 	bot.health = get_class_default_health(bot.cl);
 
 	// Get the bot's class icon.
-	bot.class_icon = get_class_icon(bot.cl);
+	bot_meta.set_base_class_icon(get_class_icon(bot.cl));
 	const std::string item_class_icon = get_class_icon(item_class);
 
 	// Give the bot items here, prior to any chance of becoming a giant!
@@ -146,17 +146,7 @@ tfbot_meta bot_generator::generate_bot()
 		if (rand_chance(0.1f))
 		{
 			bot.character_attributes.emplace_back("attack projectiles", 1);
-			/*
-			if (is_deflector_giant)
-			{
-			make_bot_into_giant(bot, is_giant, move_speed_bonus, chance_mult, bot.pressure, isBoss, isAlwaysCrit);
-			}
-			else
-			{
-			permaSmall = true;
-			}
-			*/
-			bot.class_icon = "heavy_deflector";
+			bot_meta.set_base_class_icon("heavy_deflector");
 			bot_meta.pressure *= 2.5f;
 		}
 	}
@@ -171,11 +161,22 @@ tfbot_meta bot_generator::generate_bot()
 				melee == "The Scotsman's Skullcutter" ||
 				melee == "The Horseless Headless Horseman's Headtaker" ||
 				melee == "The Claidheamohmor" ||
-				melee == "The Half-Zatoichi" ||
 				melee == "The Persian Persuader" ||
 				melee == "Festive Eyelander")
 			{
-				bot.class_icon = "demoknight";
+				bot_meta.set_base_class_icon("demoknight");
+			}
+			else if (melee == "The Half-Zatoichi")
+			{
+				bot_meta.set_base_class_icon("demoknight_samurai");
+			}
+		}
+		else if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+		{
+			if (primary == "The Loose Cannon")
+			{
+				// Bots don't know how to use the loose cannon.
+				bot_meta.pressure *= 0.5f;
 			}
 		}
 		break;
@@ -185,22 +186,22 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			if (melee == "The Killing Gloves of Boxing")
 			{
-				bot.class_icon = "heavy_champ";
+				bot_meta.set_base_class_icon("heavy_champ");
 			}
 			else if (melee == "Gloves of Running Urgently" ||
 				melee == "Festive Gloves of Running Urgently")
 			{
-				bot.class_icon = "heavy_gru";
+				bot_meta.set_base_class_icon("heavy_gru");
 			}
 			else if (melee == "The Holiday Punch")
 			{
-				bot.class_icon = "heavy_mittens";
 				bot.attributes.emplace_back("AlwaysCrit");
 				bot_meta.is_always_crit = true;
+				bot_meta.set_base_class_icon("heavy_mittens");
 			}
 			else if (melee == "Fists of Steel")
 			{
-				bot.class_icon = "heavy_steelfist";
+				bot_meta.set_base_class_icon("heavy_steelfist");
 			}
 		}
 		else if (bot.weapon_restrictions == "SecondaryOnly")
@@ -210,14 +211,14 @@ tfbot_meta bot_generator::generate_bot()
 				secondary == "Festive Shotgun 2014" ||
 				secondary == "Panic Attack Shotgun")
 			{
-				bot.class_icon = "heavy_shotgun";
+				bot_meta.set_base_class_icon("heavy_shotgun");
 			}
 		}
 		else if (bot.weapon_restrictions != "MeleeOnly")
 		{
 			if (primary == "The Huo Long Heatmaker")
 			{
-				bot.class_icon = "heavy_heater";
+				bot_meta.set_base_class_icon("heavy_heater");
 			}
 		}
 		break;
@@ -231,7 +232,7 @@ tfbot_meta bot_generator::generate_bot()
 				secondary == "The Detonator" ||
 				secondary == "The Manmelter")
 			{
-				bot.class_icon = "pyro_flare";
+				bot_meta.set_base_class_icon("pyro_flare");
 			}
 		}
 		break;
@@ -242,27 +243,27 @@ tfbot_meta bot_generator::generate_bot()
 			if (melee == "TF_WEAPON_BAT" ||
 				melee == "Festive Bat 2011")
 			{
-				bot.class_icon = "scout_bat";
+				bot_meta.set_base_class_icon("scout_bat");
 			}
 			else if (melee == "The Sandman")
 			{
-				bot.class_icon = "scout_stun";
+				bot_meta.set_base_class_icon("scout_stun");
 			}
 			else if (melee == "The Holy Mackerel")
 			{
-				bot.class_icon = "scout_fish";
+				bot_meta.set_base_class_icon("scout_fish");
 			}
 		}
 		else
 		{
 			if (primary == "The Shortstop")
 			{
-				bot.class_icon = "scout_shortstop";
+				bot_meta.set_base_class_icon("scout_shortstop");
 			}
 		}
 		if (secondary == "Bonk! Atomic Punch" || secondary == "Festive Bonk 2014")
 		{
-			bot.class_icon = "scout_bonk";
+			bot_meta.set_base_class_icon("scout_bonk");
 			bot.items.emplace_back("Bonk Helm");
 			bot_meta.pressure *= 4.0f;
 			// Make sure that we can never have giant Bonk Scouts...
@@ -271,11 +272,15 @@ tfbot_meta bot_generator::generate_bot()
 		break;
 
 	case player_class::sniper:
+		if (secondary == "The Cozy Camper")
+		{
+			bot_meta.set_base_class_icon("sniper_camper");
+		}
 		if (bot.weapon_restrictions == "SecondaryOnly")
 		{
 			if (secondary == "Jarate" || secondary == "Festive Jarate")
 			{
-				bot.class_icon = "sniper_jarate";
+				bot_meta.set_base_class_icon("sniper_jarate");
 			}
 		}
 		else
@@ -283,17 +288,17 @@ tfbot_meta bot_generator::generate_bot()
 			if (primary == "The Huntsman" ||
 				primary == "Festive Huntsman")
 			{
-				bot.class_icon = "sniper_bow";
+				bot_meta.set_base_class_icon("sniper_bow");
 			}
 			else if (primary == "The Sydney Sleeper")
 			{
-				bot.class_icon = "sniper_sydneysleeper";
+				bot_meta.set_base_class_icon("sniper_sydneysleeper");
 			}
 			else if (primary == "The Classic" || primary == "The Machina")
 			{
 				// Sniper bots don't know how to fire The Classic and The Machina.
 				// If they're using that weapon, that effectively makes them wimps.
-				bot_meta.pressure *= 0.2f;
+				bot_meta.pressure *= 0.5f;
 			}
 		}
 		break;
@@ -304,25 +309,25 @@ tfbot_meta bot_generator::generate_bot()
 			if (primary == "The Black Box" ||
 				primary == "Festive Black Box")
 			{
-				bot.class_icon = "soldier_blackbox";
+				bot_meta.set_base_class_icon("soldier_blackbox");
 			}
 			else if (primary == "The Liberty Launcher")
 			{
-				bot.class_icon = "soldier_libertylauncher";
+				bot_meta.set_base_class_icon("soldier_libertylauncher");
 			}
 		}
 		if (secondary == "The Battalion's Backup")
 		{
-			bot.class_icon = "soldier_backup";
+			bot_meta.set_base_class_icon("soldier_backup");
 		}
 		else if (secondary == "The Buff Banner" ||
 			secondary == "Festive Buff Banner")
 		{
-			bot.class_icon = "soldier_buff";
+			bot_meta.set_base_class_icon("soldier_buff");
 		}
 		else if (secondary == "The Concheror")
 		{
-			bot.class_icon = "soldier_conch";
+			bot_meta.set_base_class_icon("soldier_conch");
 		}
 		break;
 
@@ -343,19 +348,26 @@ tfbot_meta bot_generator::generate_bot()
 				{
 				case 0:
 					bot.attributes.emplace_back("VaccinatorBullets");
-					bot.class_icon = "medic_vaccinator_bullet";
+					bot_meta.set_base_class_icon("medic_vaccinator_bullet");
 					break;
 				case 1:
 					bot.attributes.emplace_back("VaccinatorBlast");
-					bot.class_icon = "medic_vaccinator_blast";
+					bot_meta.set_base_class_icon("medic_vaccinator_blast");
 					break;
 				case 2:
 					bot.attributes.emplace_back("VaccinatorFire");
-					bot.class_icon = "medic_vaccinator_fire";
+					bot_meta.set_base_class_icon("medic_vaccinator_fire");
 					break;
 				}
 				//bot_meta.pressure *= 1.1f;
 			}
+		}
+		break;
+
+	case player_class::spy:
+		if (melee == "Conniver's Kunai")
+		{
+			bot_meta.set_base_class_icon("spy_kunai");
 		}
 		break;
 	}
@@ -368,7 +380,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (item_class == player_class::sniper)
 	{
 		if ((bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly") && !bot_meta.is_always_fire_weapon &&
-			bot.class_icon != "sniper_bow"
+			bot_meta.get_base_class_icon() != "sniper_bow"
 			//&& primary != "The Classic"
 			)
 		{
@@ -400,12 +412,29 @@ tfbot_meta bot_generator::generate_bot()
 		bot.attributes.emplace_back("AlwaysCrit");
 		bot_meta.pressure *= 4.5f;
 		bot_meta.is_always_crit = true;
+		bot_meta.update_class_icon();
 	}
 	if (rand_chance(0.05f * chance_mult))
 	{
 		float change = rand_float(0.5f, 3.0f);
 		bot_meta.move_speed_bonus *= change;
 		bot_meta.pressure *= change;
+
+		switch (bot.cl)
+		{
+		case player_class::scout:
+			if (bot_meta.get_base_class_icon() == "scout")
+			{
+				bot_meta.set_base_class_icon("scout_fast");
+			}
+			break;
+
+		case player_class::spy:
+			if (change < 1.0f)
+			{
+				bot_meta.set_base_class_icon("spy_slow");
+			}
+		}
 	}
 
 	if (rand_chance(0.1f * chance_mult) || bot_meta.is_doom)
@@ -618,7 +647,7 @@ tfbot_meta bot_generator::generate_bot()
 				{
 					bot.items.emplace_back("The B.A.S.E. Jumper");
 
-					bot_meta.pressure *= ((increased_jump_height - 1.0f) * 0.3f) + 1.0f;
+					bot_meta.pressure *= ((increased_jump_height - 1.0f) * 0.7f) + 1.0f;
 				}
 			}
 		}
@@ -642,7 +671,7 @@ tfbot_meta bot_generator::generate_bot()
 		rand_chance(0.15f))
 	{
 		// Giants are scale 1.75 by default.
-		bot.scale = rand_float(0.3f, 1.75f);
+		bot.scale = rand_float(0.6f, 1.75f);
 		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
 	}
 
@@ -667,6 +696,23 @@ tfbot_meta bot_generator::generate_bot()
 		else
 		{
 			bot_meta.pressure /= fire_rate_bonus;
+
+			switch (bot.cl)
+			{
+			case player_class::soldier:
+				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+				{
+					bot_meta.set_base_class_icon("soldier_spammer");
+				}
+				break;
+
+			case player_class::sniper:
+				if (bot_meta.get_base_class_icon() == "sniper_bow")
+				{
+					bot_meta.set_base_class_icon("sniper_bow_multi");
+				}
+				break;
+			}
 		}
 	}
 	else if (rand_chance(0.1f * chance_mult))
@@ -680,6 +726,26 @@ tfbot_meta bot_generator::generate_bot()
 			}
 			bot.character_attributes.emplace_back("faster reload rate", change);
 			bot_meta.pressure /= ((change - 1.0f) * 0.3f) + 1.0f;
+
+			if (change < 1.0f)
+			{
+				switch (bot.cl)
+				{
+				case player_class::soldier:
+					if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+					{
+						bot_meta.set_base_class_icon("soldier_barrage");
+					}
+					break;
+
+				case player_class::sniper:
+					if (bot_meta.get_base_class_icon() == "sniper_bow")
+					{
+						bot_meta.set_base_class_icon("sniper_bow_multi");
+					}
+					break;
+				}
+			}
 		}
 		else
 		{
@@ -699,6 +765,23 @@ tfbot_meta bot_generator::generate_bot()
 			else
 			{
 				bot_meta.pressure *= 1.4f;
+			}
+
+			switch (bot.cl)
+			{
+			case player_class::soldier:
+				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+				{
+					bot_meta.set_base_class_icon("soldier_spammer");
+				}
+				break;
+
+			case player_class::sniper:
+				if (bot_meta.get_base_class_icon() == "sniper_bow")
+				{
+					bot_meta.set_base_class_icon("sniper_bow_multi");
+				}
+				break;
 			}
 		}
 	}
@@ -1051,23 +1134,8 @@ void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 		}
 	}
 
-	// Modify the bot class icon.
-	bot.class_icon += "_giant";
-	switch (bot.cl)
-	{
-	case player_class::scout:
-		if (bot.class_icon != "scout_bonk_giant" && bot_meta.move_speed_bonus > 1.0f)
-		{
-			bot.class_icon = "scout_giant_fast";
-		}
-		break;
-
-	case player_class::soldier:
-		if (bot_meta.is_always_crit && bot.class_icon == "soldier_giant")
-		{
-			bot.class_icon = "soldier_crit";
-		}
-	}
+	// Update the bot class icon.
+	bot_meta.update_class_icon();
 }
 
 void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
@@ -1097,51 +1165,44 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		switch (bot.cl)
 		{
 		case player_class::demoman:
-			//if (bot.class_icon == "demo_giant")
 			if (bot.weapon_restrictions == "PrimaryOnly")
 			{
-				bot.class_icon = "demo_bomber";
+				bot_meta.set_base_class_icon("demo_bomber");
 				bot.items.emplace_back("Prince Tavish's Crown");
-			}
-			else if (bot.class_icon == "demoknight_giant")
-			{
-				bot.class_icon = "demoknight_samurai";
 			}
 			break;
 
 		case player_class::heavyweapons:
 			if (bot.weapon_restrictions == "PrimaryOnly")
 			{
-				bot.class_icon = "heavy_chief";
+				bot_meta.set_base_class_icon("heavy_chief");
 				bot.items.emplace_back("War Head");
 			}
-			else if (bot.class_icon == "heavy_gru_giant")
+			else if (bot_meta.get_base_class_icon() == "heavy_gru")
 			{
-				bot.class_icon = "heavy_urgent";
+				bot_meta.set_base_class_icon("heavy_urgent");
 			}
 			break;
 
 		case player_class::scout:
-			if (bot.class_icon == "scout_stun_giant")
+			/*
+			if (bot_meta.get_base_class_icon() == "scout_stun")
 			{
 				bot.class_icon = "scout_stun_giant_armored";
 			}
+			*/
 			break;
 
 		case player_class::soldier:
 			if (bot.weapon_restrictions == "MeleeOnly")
 			{
-				bot.class_icon = "soldier_major_crits";
+				bot_meta.set_base_class_icon("soldier_major_crits");
 				bot.items.emplace_back("Full Metal Drill Hat");
 			}
 			else if (bot.weapon_restrictions == "SecondaryOnly")
 			{
-				bot.class_icon = "soldier_sergeant_crits";
+				bot_meta.set_base_class_icon("soldier_sergeant_crits");
 				bot.items.emplace_back("Tyrant's Helm");
-			}
-			else
-			{
-				bot.class_icon = "soldier_barrage";
 			}
 			break;
 		}
