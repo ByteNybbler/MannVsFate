@@ -67,7 +67,7 @@ private:
 	float sentry_buster_cooldown = 35.0f;
 
 	// The total number of waves.
-	int waves = 7;
+	int waves = 9; // 7;
 	// How many players the mission is intended for.
 	int players = 4;
 	// The base pressure decay rate, measured per player, pre-multiplication.

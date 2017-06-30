@@ -13,6 +13,7 @@
 		"bot_path_length" : 0.6,
 		"engies" : false,
 		"spawnbots" : ["spawnbot", "spawnbot_giant", "spawnbot_invasion", "spawnbot_mission_sniper"],
+		"spawngiants" : ["spawnbot_giant", "spawnbot_mission_spy", "spawnbot_mission_sniper"],
 		"spawntanks" : ["boss_path_a1"],
 		"scale_mega" : 1.8,
 		"scale_doom" : 4.4,
