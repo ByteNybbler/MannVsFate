@@ -672,7 +672,14 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		// Giants are scale 1.75 by default.
 		bot.scale = rand_float(0.6f, 1.75f);
-		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
+		if (bot.scale < 1.0f)
+		{
+			bot_meta.pressure /= bot.scale;
+		}
+		else
+		{
+			bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
+		}
 	}
 
 	if (rand_chance(0.1f * chance_mult))
@@ -759,7 +766,7 @@ tfbot_meta bot_generator::generate_bot()
 				bot_meta.pressure *= 5.0f;
 				if (bot.cl == player_class::sniper)
 				{
-					bot_meta.pressure *= 5.0f;
+					bot_meta.pressure *= 7.0f;
 				}
 			}
 			else

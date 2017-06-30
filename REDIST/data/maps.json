@@ -20,7 +20,7 @@
 	},
 	"mvm_mannworks" :
 	{
-		"bot_path_length" : 0.7,
+		"bot_path_length" : 0.55,
 		"engies" : false,
 		"wave_start_relay" : "bombpath_arrows_clear_relay",
 		"wave_finished_relay" : "bombpath_wavefinished",
