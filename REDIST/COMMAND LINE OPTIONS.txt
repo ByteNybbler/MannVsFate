@@ -2,16 +2,18 @@ Open the example.bat file in a text editor to see how command line arguments are
 
 -map [name of the map the mission is intended for]
 -name [name of the popfile that comes after the map name and underscore]
--startingcurrency [how many credits the mission begins with]
--wavecurrency [how much currency is given in each wave]
--currencyspread [the range of currency per wave in each direction; for example, 2500 wavecurrency with a currencyspread of 250 will yield between 2250 and 2750 currency per wave inclusive]
 -waves [how many waves will be in the mission]
+-startingcurrency [how many credits the mission begins with]
+-wavecurrency [how much currency is given in each wave, spread equally across all wavespawns]
+-currencyspread [the range of currency per wave in each direction; for example, 2500 wavecurrency with a currencyspread of 250 will yield between 2250 and 2750 currency per wave inclusive]
+-wavespawncurrency [how much currency is given by each wavespawn; this is calculated IN ADDITION to the standard wave currency; this also causes a wave to get slightly harder as it progresses depending on the quantity of money dropped; default = 0]
+-wavespawncurrencyspread [like currencyspread, but it varies the wavespawncurrency for each wavespawn]
 -halloween <no arguments; enables halloween mode for the mission>
 -fixedrespawnwavetime <no arguments; makes it so that the respawn time doesn't change over the course of the mission>
 -busterdamagethreshold [how much damage an engineer can deal before a sentry buster spawns]
 -busterkillthreshold [how many kills an engineer can get before a sentry buster spawns]
 -botspawnattack <no arguments; allows bots to attack within the spawn area>
--bustercooldown [how many seconds must occur between each sentry buster spawn per engineer]
+-bustercooldown [multiplier for how many seconds must occur between each sentry buster spawn per engineer]
 -players [how many players the mission is intended for; this directly affects the mission difficulty]
 -time [the maximum number of seconds that each wave should last]
 -tankchance [the chance a wavespawn has of being a tank instead of a robot]

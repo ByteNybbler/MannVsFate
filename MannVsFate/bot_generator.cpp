@@ -112,16 +112,22 @@ tfbot_meta bot_generator::generate_bot()
 	if (bot.cl == player_class::spy)
 	{
 		// Spies have some extra weapon slots.
+		// pda2 = Cloaks
+		// building = Sappers
 
 		const std::string file_pda2 = initial_path_bot + "pda2.txt";
 		item_reader.load(file_pda2);
 		const std::string pda2 = item_reader.get_random(file_pda2);
 		bot.items.emplace_back(pda2);
 
+		// Changing a Spy's sapper makes them incapable of sapping for some reason.
+		// At this point in time, sapper swaps are disabled.
+		/*
 		const std::string file_building = initial_path_bot + "building.txt";
 		item_reader.load(file_building);
 		const std::string building = item_reader.get_random(file_building);
 		bot.items.emplace_back(building);
+		*/
 	}
 	else if (item_class != player_class::spy)
 	{
@@ -1054,9 +1060,43 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
 		}
 	}
-	if (rand_chance(0.03f))
+	if (item_class == player_class::spy)
 	{
-		bot.character_attributes.emplace_back("hit self on miss", 1);
+		// Wacky sapper-specific stuff.
+		if (rand_chance(0.2f))
+		{
+			float change = rand_float(0.1f, 1.0f);
+			if (rand_chance(0.1f))
+			{
+				change *= rand_float(0.1f, 10.0f);
+			}
+			if (rand_chance(0.02f))
+			{
+				change *= -1.0f;
+			}
+			bot.character_attributes.emplace_back("sapper damage bonus", change);
+		}
+		if (rand_chance(0.2f))
+		{
+			float change = rand_float(0.01f, 2.0f);
+			if (rand_chance(0.1f))
+			{
+				change *= 5.0f;
+			}
+			bot.character_attributes.emplace_back("sapper health bonus", change);
+		}
+		if (rand_chance(0.5f))
+		{
+			bot.character_attributes.emplace_back("sapper degenerates buildings", 1);
+		}
+	}
+	if (bot.weapon_restrictions == "MeleeOnly")
+	{
+		if (rand_chance(0.1f))
+		{
+			bot.character_attributes.emplace_back("hit self on miss", 1);
+			bot_meta.pressure *= 0.9f;
+		}
 	}
 	if (rand_chance(0.02f * chance_mult))
 	{
@@ -1095,14 +1135,10 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= ((bot_meta.damage_bonus - 1.0f) * 0.2f) + 1.0f;
 	}
 
-	std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;
-
 	if (bot.health <= 0)
 	{
 		throw std::exception("bot_generator::generate_bot exception: Non-positive bot health!");
 	}
-
-	std::cout << "Pre-TotalCount loop bot pressure (without health): " << bot_meta.pressure << std::endl;
 
 	if (bot_meta.pressure < 0.0f)
 	{

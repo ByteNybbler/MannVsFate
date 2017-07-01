@@ -8,11 +8,6 @@
 class tfbot_meta
 {
 public:
-	// This is the multiplier for calculating the bot's threat level by multiplying its health.
-	// The multiplier is adjusted based on a variety of factors.
-	// A higher multiplier means the bot is harder to deal with.
-	float pressure = 1.0f;
-
 	// Access the bot.
 	tfbot& get_bot();
 
@@ -25,8 +20,19 @@ public:
 	// Set the bot's base class icon (excluding crits and giant). Also updates the wrapped bot's icon accordingly.
 	void set_base_class_icon(const std::string& new_base_class_icon);
 
-	std::string get_base_class_icon();
+	// Get the base class icon of the bot, excluding crits and giant status.
+	std::string get_base_class_icon() const;
 
+	// Returns the effective pressure of the bot.
+	float calculate_effective_pressure() const;
+
+	// Returns how long it should take to kill the theoretical bot based on the current pressure decay rate.
+	float calculate_time_to_kill(float recip_pressure_decay_rate) const;
+
+	// This is the multiplier for calculating the bot's threat level by multiplying its health.
+	// The multiplier is adjusted based on a variety of factors.
+	// A higher multiplier means the bot is harder to deal with.
+	float pressure = 1.0f;
 	// The move speed bonus of the bot.
 	float move_speed_bonus = 1.0f;
 	// The damage bonus of the bot.

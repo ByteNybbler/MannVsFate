@@ -65,7 +65,17 @@ void tfbot_meta::set_base_class_icon(const std::string& new_base_class_icon)
 	update_class_icon();
 }
 
-std::string tfbot_meta::get_base_class_icon()
+std::string tfbot_meta::get_base_class_icon() const
 {
 	return base_class_icon;
+}
+
+float tfbot_meta::calculate_effective_pressure() const
+{
+	return pressure * bot.health;
+}
+
+float tfbot_meta::calculate_time_to_kill(float recip_pressure_decay_rate) const
+{
+	return calculate_effective_pressure() * recip_pressure_decay_rate;
 }

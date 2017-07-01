@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 				}
 				if (std::strcmp(argv[i], "-botspawnattack") == 0)
 				{
-					gen.set_can_bots_attack_while_in_spawn_room(1);
+					gen.set_can_bots_attack_while_in_spawn_room(true);
 					continue;
 				}
 				if (std::strcmp(argv[i], "-bustercooldown") == 0)
@@ -210,6 +210,18 @@ int main(int argc, char** argv)
 				{
 					++i;
 					gen.set_wacky_sound_vo_ratio(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-wavespawncurrency") == 0)
+				{
+					++i;
+					gen.set_currency_per_wavespawn(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-wavespawncurrencyspread") == 0)
+				{
+					++i;
+					gen.set_currency_per_wavespawn_spread(toint(argv[i]));
 					continue;
 				}
 			}
