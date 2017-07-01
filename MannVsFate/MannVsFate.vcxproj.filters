@@ -39,6 +39,9 @@
     <ClCompile Include="tfbot_meta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="popfile_writer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="random_name_generator.h">
@@ -72,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="popfile_writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mission.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

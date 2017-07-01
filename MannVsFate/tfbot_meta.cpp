@@ -72,6 +72,7 @@ std::string tfbot_meta::get_base_class_icon() const
 
 float tfbot_meta::calculate_effective_pressure() const
 {
+	//float muted_pressure = ((pressure - 1.0f) * 0.5f) + 1.0f;
 	return pressure * bot.health;
 }
 

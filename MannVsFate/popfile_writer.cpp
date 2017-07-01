@@ -1,10 +1,5 @@
 #include "popfile_writer.h"
 
-popfile_writer::popfile_writer(const std::string& filename)
-{
-	popfile_open(filename);
-}
-
 void popfile_writer::popfile_open(const std::string& filename)
 {
 	popfile.open(filename);
@@ -22,7 +17,7 @@ void popfile_writer::popfile_close()
 
 void popfile_writer::popfile_copy_write(const std::string& filename)
 {
-	std::ifstream in(filename, std::ios_base::binary);
+	std::ifstream in(filename);//, std::ios_base::binary);
 	popfile << in.rdbuf();
 }
 

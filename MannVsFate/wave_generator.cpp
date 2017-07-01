@@ -322,8 +322,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 	filename << map_name << '_' << players << "p_" << mission_name << ".pop";
 	const std::string popfile_name = filename.str();
 
-	const std::string tempdir = "temp/";
-	writer.popfile_open(tempdir + 'h');
+	const std::string tempdir = "temp_";
+	const std::string tempext = ".popt";
+	writer.popfile_open(tempdir + 'h' + tempext);
 
 	// Write the popfile header.
 	writer.write_popfile_header(version, argc, argv);
@@ -366,11 +367,11 @@ void wave_generator::generate_mission(int argc, char** argv)
 		std::cout << "Generating wave " << current_wave << '/' << waves << '.' << std::endl;
 
 		std::stringstream filename_wave;
-		filename_wave << tempdir << 'w' << current_wave;
+		filename_wave << tempdir << 'w' << current_wave << tempext;
 		std::stringstream filename_mission;
-		filename_mission << tempdir << 'm' << current_wave;
+		filename_mission << tempdir << 'm' << current_wave << tempext;
 
-		std::cout << "Wrote wave header, starting actual WaveSpawn generation..." << std::endl;
+		std::cout << "Wrote wave header." << std::endl;
 
 		// How much pressure is currently being placed on the theoretical players of the mission.
 		// More pressure means the players are having a harder time.
@@ -403,6 +404,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 		tfbot_meta bot_meta = botgen.generate_bot();
 		tfbot& bot = bot_meta.get_bot();
 
+		if (rand_chance(0.95f) && !bot_meta.is_giant)
+		{
+			botgen.make_bot_into_giant(bot_meta);
+		}
+
+		bot.class_icon = "sentry_buster";
+
 		int spawnbot_index = rand_int(0, spawnbots_mega.size());
 		std::string location = spawnbots_mega.at(spawnbot_index);
 
@@ -413,6 +421,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 		mis.begin_at_wave = current_wave;
 		mis.run_for_this_many_waves = 1;
 		mis.cooldown_time = bot_meta.calculate_time_to_kill(recip_pressure_decay_rate) * sentry_buster_cooldown;
+		mis.bot = bot;
 
 		writer.popfile_open(filename_mission.str());
 
@@ -439,6 +448,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// This only counts wavespawn currency.
 		// We use this to fix roundoff error caused by integer division.
 		int approximated_additional_currency = 0;
+
+		std::cout << "Starting actual WaveSpawn generation..." << std::endl;
 
 		// This loop generates all of the WaveSpawns.
 		while (t < max_time && wavespawns.size() < max_wavespawns && class_icons.size() < max_icons)
@@ -688,8 +699,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 				class_icons.emplace(bot.class_icon);
 
 				std::cout << "Total class icons so far: " << class_icons.size() << '.' << std::endl;
-
-				bot.character_attributes.emplace_back("move speed bonus", bot_meta.move_speed_bonus);
 
 				// It's time to pass all of this information to the actual wavespawn.
 
@@ -943,21 +952,26 @@ void wave_generator::generate_mission(int argc, char** argv)
 		writer.popfile_close();
 	}
 
+	std::cout << "Write complete. Concatenating pieces..." << std::endl;
+
 	// Concatenate all of the pieces into a single file!
 	writer.popfile_open(popfile_name);
-	writer.popfile_copy_write(tempdir + 'h');
+
+	const std::string hfile = tempdir + 'h' + tempext;
+	writer.popfile_copy_write(hfile);
+	std::remove(hfile.c_str());
 
 	for (int i = 1; i <= waves; ++i)
 	{
 		std::stringstream filename_mission;
-		filename_mission << tempdir << 'm' << i;
+		filename_mission << tempdir << 'm' << i << tempext;
 		writer.popfile_copy_write(filename_mission.str());
 		std::remove(filename_mission.str().c_str());
 	}
 	for (int i = 1; i <= waves; ++i)
 	{
 		std::stringstream filename_wave;
-		filename_wave << tempdir << 'w' << i;
+		filename_wave << tempdir << 'w' << i << tempext;
 		writer.popfile_copy_write(filename_wave.str());
 		std::remove(filename_wave.str().c_str());
 	}
@@ -965,7 +979,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	writer.block_end(); // WaveSchedule
 	writer.popfile_close();
 
-	std::cout << "Write complete." << std::endl;
+	std::cout << "Concatenation complete." << std::endl;
 }
 
 /*

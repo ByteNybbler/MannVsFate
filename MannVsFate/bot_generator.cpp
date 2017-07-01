@@ -54,6 +54,7 @@ tfbot_meta bot_generator::generate_bot()
 	// Give the bot a random name!
 	bot.name = random_names.get_random_name();
 	// Randomize the bot's class.
+	//std::cout << "Number of possible classes: " << possible_classes.size() << std::endl;
 	bot.cl = possible_classes.at(rand_int(0, possible_classes.size()));
 	player_class item_class = bot.cl;
 
@@ -146,16 +147,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot.items.emplace_back(primary);
 	}
 
-	// If the bot is a Heavy, possibly set deflector properties.
-	if (bot.cl == player_class::heavyweapons)
-	{
-		if (rand_chance(0.1f))
-		{
-			bot.character_attributes.emplace_back("attack projectiles", 1);
-			bot_meta.set_base_class_icon("heavy_deflector");
-			bot_meta.pressure *= 2.5f;
-		}
-	}
+	bool is_buff_soldier = false;
 
 	// Choose a class icon based on the weapons chosen.
 	switch (bot.cl)
@@ -325,15 +317,18 @@ tfbot_meta bot_generator::generate_bot()
 		if (secondary == "The Battalion's Backup")
 		{
 			bot_meta.set_base_class_icon("soldier_backup");
+			is_buff_soldier = true;
 		}
 		else if (secondary == "The Buff Banner" ||
 			secondary == "Festive Buff Banner")
 		{
 			bot_meta.set_base_class_icon("soldier_buff");
+			is_buff_soldier = true;
 		}
 		else if (secondary == "The Concheror")
 		{
 			bot_meta.set_base_class_icon("soldier_conch");
+			is_buff_soldier = true;
 		}
 		break;
 
@@ -424,7 +419,6 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		float change = rand_float(0.5f, 3.0f);
 		bot_meta.move_speed_bonus *= change;
-		bot_meta.pressure *= change;
 
 		switch (bot.cl)
 		{
@@ -447,18 +441,28 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		bot.attributes.emplace_back("Aggressive");
 	}
-	if ((item_class == player_class::medic || item_class == player_class::soldier) && rand_chance(0.5f * chance_mult))
+	if (rand_chance(0.5f * chance_mult))
 	{
-		bot.attributes.emplace_back("SpawnWithFullCharge");
-		bot_meta.pressure *= 2.5f;
+		if (item_class == player_class::medic)
+		{
+			if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
+			{
+				bot.attributes.emplace_back("SpawnWithFullCharge");
+				bot_meta.pressure *= 2.5f;
+			}
+		}
+		else if (item_class == player_class::soldier)
+		{
+			if (is_buff_soldier)
+			{
+				bot.attributes.emplace_back("SpawnWithFullCharge");
+				bot_meta.pressure *= 1.2f;
+			}
+		}
 	}
 	if (rand_chance(0.1f * chance_mult) && !bot_meta.is_always_fire_weapon)
 	{
-		if (rand_chance(0.4f) ||
-			(secondary == "The Buff Banner" ||
-				secondary == "Festive Buff Banner" ||
-				secondary == "The Battalion's Backup" ||
-				secondary == "The Concheror"))
+		if (rand_chance(0.4f) || is_buff_soldier)
 		{
 			bot.attributes.emplace_back("HoldFireUntilFullReload");
 			bot_meta.pressure *= 1.1f;
@@ -548,7 +552,7 @@ tfbot_meta bot_generator::generate_bot()
 					r *= 100.0f;
 				}
 				bot.character_attributes.emplace_back("deflection size multiplier", r);
-				bot_meta.pressure *= 1.3f;
+				//bot_meta.pressure *= 1.3f;
 			}
 		}
 	}
@@ -678,14 +682,6 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		// Giants are scale 1.75 by default.
 		bot.scale = rand_float(0.6f, 1.75f);
-		if (bot.scale < 1.0f)
-		{
-			bot_meta.pressure /= bot.scale;
-		}
-		else
-		{
-			bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
-		}
 	}
 
 	if (rand_chance(0.1f * chance_mult))
@@ -693,7 +689,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot.max_vision_range = 30000.0f;
 		if (bot.weapon_restrictions != "MeleeOnly")
 		{
-			bot_meta.pressure *= 2.0f;
+			bot_meta.pressure *= 1.2f;
 		}
 	}
 	bool instant_reload = false;
@@ -1057,7 +1053,7 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			const float rad = rand_float(0.1f, 20.0f);
 			bot.character_attributes.emplace_back("increase buff duration", rad);
-			bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
+			//bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
 		}
 	}
 	if (item_class == player_class::spy)
@@ -1088,6 +1084,19 @@ tfbot_meta bot_generator::generate_bot()
 		if (rand_chance(0.5f))
 		{
 			bot.character_attributes.emplace_back("sapper degenerates buildings", 1);
+		}
+	}
+	if (item_class == player_class::heavyweapons)
+	{
+		// If the Heavy is inclined to use its minigun...
+		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+		{
+			if (rand_chance(0.1f))
+			{
+				bot.character_attributes.emplace_back("attack projectiles", 1);
+				bot_meta.set_base_class_icon("heavy_deflector");
+				bot_meta.pressure *= 2.5f;
+			}
 		}
 	}
 	if (bot.weapon_restrictions == "MeleeOnly")
@@ -1124,7 +1133,6 @@ tfbot_meta bot_generator::generate_bot()
 	float skill_pressure = (skill_index * 0.4f) + 1.0f;
 	bot_meta.pressure *= skill_pressure;
 
-	bot.character_attributes.emplace_back("damage bonus", bot_meta.damage_bonus);
 	if (bot_meta.damage_bonus >= 1.0f)
 	{
 		bot_meta.pressure *= bot_meta.damage_bonus;
@@ -1133,6 +1141,38 @@ tfbot_meta bot_generator::generate_bot()
 	else
 	{
 		bot_meta.pressure *= ((bot_meta.damage_bonus - 1.0f) * 0.2f) + 1.0f;
+	}
+	//if (bot_meta.damage_bonus != 1.0f)
+	//{
+		bot.character_attributes.emplace_back("damage bonus", bot_meta.damage_bonus);
+	//}
+
+	const float min_speed = 0.15f;
+	if (bot_meta.move_speed_bonus < min_speed)
+	{
+		bot_meta.move_speed_bonus = min_speed;
+	}
+	bot_meta.pressure *= bot_meta.move_speed_bonus;
+
+	bot.character_attributes.emplace_back("move speed bonus", bot_meta.move_speed_bonus);
+
+	if (bot.scale < 0.0f)
+	{
+		// Negative scale implies that the bot is normal-sized.
+		// In the case of standard non-giant robots, do nothing.
+		if (bot_meta.is_giant)
+		{
+			// Giants have a scale of 1.75.
+			bot_meta.pressure /= ((1.75f - 1.0f) * 0.3f) + 1.0f;
+		}
+	}
+	else if (bot.scale < 1.0f)
+	{
+		bot_meta.pressure /= bot.scale;
+	}
+	else
+	{
+		bot_meta.pressure /= ((bot.scale - 1.0f) * 0.3f) + 1.0f;
 	}
 
 	if (bot.health <= 0)
@@ -1168,12 +1208,10 @@ void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 		if (bot.cl == player_class::spy)
 		{
 			bot_meta.move_speed_bonus *= 0.75f;
-			bot_meta.pressure *= 0.75f;
 		}
 		else
 		{
 			bot_meta.move_speed_bonus *= 0.5f;
-			bot_meta.pressure *= 0.5f;
 		}
 	}
 
@@ -1196,7 +1234,6 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		bot_meta.is_boss = true;
 		bot.health *= 5;
 		bot_meta.move_speed_bonus *= 0.5;
-		bot_meta.pressure *= 0.5;
 		bot.attributes.emplace_back("UseBossHealthBar");
 		chance_mult *= 4.0f;
 

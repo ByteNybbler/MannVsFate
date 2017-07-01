@@ -9,9 +9,6 @@
 class popfile_writer
 {
 public:
-	// Constructor.
-	popfile_writer(const std::string& filename);
-
 	// -=- File functions -=-
 
 	// Open a popfile for writing.

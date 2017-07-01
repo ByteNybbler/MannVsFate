@@ -123,6 +123,7 @@
     <ClCompile Include="list_reader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player_class.cpp" />
+    <ClCompile Include="popfile_writer.cpp" />
     <ClCompile Include="random_name_generator.cpp" />
     <ClCompile Include="rand_util.cpp" />
     <ClCompile Include="tfbot_meta.cpp" />
@@ -132,7 +133,9 @@
     <ClInclude Include="bot_generator.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="list_reader.h" />
+    <ClInclude Include="mission.h" />
     <ClInclude Include="player_class.h" />
+    <ClInclude Include="popfile_writer.h" />
     <ClInclude Include="random_name_generator.h" />
     <ClInclude Include="rand_util.h" />
     <ClInclude Include="tank.h" />
