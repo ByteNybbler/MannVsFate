@@ -20,6 +20,7 @@ public:
 	void set_boss_chance(float in);
 	void set_engies_enabled(bool in);
 	void set_scale_mega(float in);
+	void set_generating_doombot(bool in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -51,7 +52,9 @@ private:
 	float chance_mult;
 
 	// The pressure decay rate.
-	float pressure_decay_rate;
+	float pressure_decay_rate = 0.1f;
+	// Whether a doombot is being generated.
+	bool generating_doombot = false;
 
 	// The chance that a standard robot will end up being a giant.
 	float giant_chance = 0.1f;

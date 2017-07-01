@@ -72,11 +72,26 @@ std::string tfbot_meta::get_base_class_icon() const
 
 float tfbot_meta::calculate_effective_pressure() const
 {
-	//float muted_pressure = ((pressure - 1.0f) * 0.5f) + 1.0f;
 	return pressure * bot.health;
+}
+
+float tfbot_meta::calculate_muted_pressure() const
+{
+	constexpr float mute_factor = 0.3f;
+	return ((pressure - 1.0f) * mute_factor) + 1.0f;
+}
+
+float tfbot_meta::calculate_muted_effective_pressure() const
+{
+	return calculate_muted_pressure() * bot.health;
 }
 
 float tfbot_meta::calculate_time_to_kill(float recip_pressure_decay_rate) const
 {
 	return calculate_effective_pressure() * recip_pressure_decay_rate;
+}
+
+float tfbot_meta::calculate_muted_time_to_kill(float recip_pressure_decay_rate) const
+{
+	return calculate_muted_effective_pressure() * recip_pressure_decay_rate;
 }

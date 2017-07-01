@@ -26,8 +26,19 @@ public:
 	// Returns the effective pressure of the bot.
 	float calculate_effective_pressure() const;
 
+	// Returns the raw pressure of the bot, but muted.
+	// This places more emphasis on the bot's health.
+	float calculate_muted_pressure() const;
+
+	// Calculates the effective pressure of the bot using the muted pressure.
+	float calculate_muted_effective_pressure() const;
+
 	// Returns how long it should take to kill the theoretical bot based on the current pressure decay rate.
 	float calculate_time_to_kill(float recip_pressure_decay_rate) const;
+
+	// Calculate the time to kill with more emphasis on health and less emphasis on pressure.
+	// The pressure is muted in the calculation.
+	float calculate_muted_time_to_kill(float recip_pressure_decay_rate) const;
 
 	// This is the multiplier for calculating the bot's threat level by multiplying its health.
 	// The multiplier is adjusted based on a variety of factors.

@@ -176,6 +176,12 @@ int main(int argc, char** argv)
 					gen.set_max_tfbot_wavespawn_time(toint(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-tankmaxtime") == 0)
+				{
+					++i;
+					gen.set_max_tank_wavespawn_time(toint(argv[i]));
+					continue;
+				}
 				if (std::strcmp(argv[i], "-difficulty") == 0)
 				{
 					++i;
@@ -222,6 +228,17 @@ int main(int argc, char** argv)
 				{
 					++i;
 					gen.set_currency_per_wavespawn_spread(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-wavespawncurrencylimit") == 0)
+				{
+					++i;
+					gen.set_currency_per_wavespawn_limit(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-doombot") == 0)
+				{
+					gen.set_doombot_enabled(true);
 					continue;
 				}
 			}

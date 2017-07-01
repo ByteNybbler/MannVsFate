@@ -5,6 +5,7 @@
 
 # TF2 popfiles
 *.pop
+*.popt
 
 # User-specific files
 *.suo

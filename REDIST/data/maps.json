@@ -43,12 +43,12 @@
 	},
 	"mvm_rottenburg" :
 	{
-		"bot_path_length" : 0.7,
+		"bot_path_length" : 0.65,
 		"wave_start_relay" : "wave_start_relay_classic",
 		"spawnbots" : ["spawnbot", "flankers", "spawnbot_chief", "spawnbot_mission_sniper", "spawnbot_mission_sentry_buster"],
 		"spawntanks" : ["tank_path_a_10", "tank_path_b_10"],
 		"scale_mega" : 2.4,
-		"scale_doom" : 5.0,
+		"scale_doom" : 4.7,
 		"spawndooms" : ["spawnbot"]
 	},
 	"mvm_mannhattan" :

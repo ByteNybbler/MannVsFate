@@ -190,6 +190,14 @@ void popfile_writer::write_wavespawn(const wavespawn& ws, const std::vector<std:
 	write("WaitBeforeStarting", ws.wait_before_starting);
 	write("WaitBetweenSpawns", ws.wait_between_spawns);
 	write("TotalCurrency", ws.total_currency);
+	if (ws.support == wavespawn::support_type::unlimited)
+	{
+		write("Support", 1);
+	}
+	else if (ws.support == wavespawn::support_type::limited)
+	{
+		write("Support", "Limited");
+	}
 	if (ws.type_of_spawned == wavespawn::type::tfbot)
 	{
 		write("SpawnCount", ws.spawn_count);
