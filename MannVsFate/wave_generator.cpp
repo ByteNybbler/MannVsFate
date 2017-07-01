@@ -979,6 +979,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 			{
 				ws.total_currency += currency_per_wavespawn;
 			}
+
+			// Calculate the roundoff error from integer division.
+			int approx_sum_currency_per_wavespawn = currency_per_wavespawn * wavespawns.size();
+			int error = currency_per_wave - approx_sum_currency_per_wavespawn;
+
+			// Correct this error by adding some extra currency to the last WaveSpawn.
+			wavespawn& ws = wavespawns.back();
+			ws.total_currency += error;
 		}
 
 		if (approximated_additional_currency != 0)
