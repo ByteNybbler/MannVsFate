@@ -2,6 +2,9 @@ materials/hud/leaderboard_class_boss.vmt
 materials/hud/leaderboard_class_boss_crit.vmt
 materials/hud/leaderboard_class_boss_crit_giant.vmt
 materials/hud/leaderboard_class_boss_giant.vmt
+materials/hud/leaderboard_class_demo_bomber_crit.vmt
+materials/hud/leaderboard_class_demo_bomber_crit_giant.vmt
+materials/hud/leaderboard_class_demo_bomber_giant.vmt
 materials/hud/leaderboard_class_demo_crit.vmt
 materials/hud/leaderboard_class_demo_crit_giant.vmt
 materials/hud/leaderboard_class_demo_burst_crit_giant.vmt

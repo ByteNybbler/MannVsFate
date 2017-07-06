@@ -1027,9 +1027,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			bot.scale = scale_doom;
 			//bot.attributes.emplace_back("IgnoreFlag");
 
-			//bot.health *= last_t * recip_pressure_decay_rate * 0.1f;
-			bot.health = last_t * recip_pressure_decay_rate * 3500.0f; // 5000.0f // 2500.0f
-			//bot.health = last_t * recip_pressure_decay_rate * 500000.0f / bot_meta.pressure;
+			bot.health = last_t * pressure_decay_rate * 0.01f;
 
 			/*
 			if (!bot_meta.is_always_fire_weapon)

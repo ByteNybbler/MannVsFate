@@ -6,7 +6,7 @@
 		"spawntanks" : ["boss_path_a1", "boss_path_b1"],
 		"scale_mega" : 1.8,
 		"scale_doom" : 3.4,
-		"spawndoom" : ["spawnbot_single_flag"]
+		"spawndooms" : ["spawnbot_single_flag"]
 	},
 	"mvm_coaltown" :
 	{
