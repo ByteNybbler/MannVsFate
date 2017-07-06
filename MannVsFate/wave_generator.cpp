@@ -735,11 +735,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 					bot.scale = max_spy_scale;
 				}
 
+				/*
 				// Increase the doombot's health a lot.
 				if (bot_meta.is_doom)
 				{
 					bot.health *= static_cast<int>(max_time * 0.2f);
 				}
+				*/
 
 				//max_count = ceil(static_cast<float>(max_count) * 0.7f);
 
@@ -1026,7 +1028,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 			//bot.attributes.emplace_back("IgnoreFlag");
 
 			//bot.health *= last_t * recip_pressure_decay_rate * 0.1f;
-			bot.health = last_t * recip_pressure_decay_rate * 5000.0f; // 2500.0f
+			bot.health = last_t * recip_pressure_decay_rate * 3500.0f; // 5000.0f // 2500.0f
 			//bot.health = last_t * recip_pressure_decay_rate * 500000.0f / bot_meta.pressure;
 
 			/*
