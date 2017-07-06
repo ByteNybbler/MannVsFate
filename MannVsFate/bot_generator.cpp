@@ -1194,7 +1194,7 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				bot.character_attributes.emplace_back("attack projectiles", 1);
 				bot_meta.set_base_class_icon("heavy_deflector");
-				bot_meta.pressure *= 2.5f;
+				bot_meta.pressure *= 1.5f;
 			}
 		}
 	}

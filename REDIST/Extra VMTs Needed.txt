@@ -16,6 +16,9 @@ materials/hud/leaderboard_class_demoknight_samurai_giant.vmt
 materials/hud/leaderboard_class_engineer_crit.vmt
 materials/hud/leaderboard_class_engineer_crit_giant.vmt
 materials/hud/leaderboard_class_engineer_giant.vmt
+materials/hud/leaderboard_class_heavy_chief_crit.vmt
+materials/hud/leaderboard_class_heavy_chief_crit_giant.vmt
+materials/hud/leaderboard_class_heavy_chief_giant.vmt
 materials/hud/leaderboard_class_heavy_crit_giant.vmt
 materials/hud/leaderboard_class_heavy_deflector_crit.vmt
 materials/hud/leaderboard_class_heavy_deflector_crit_giant.vmt

@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_decoy -name gen -fixedrespawnwavetime -players 3
