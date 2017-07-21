@@ -42,6 +42,15 @@
     <ClCompile Include="popfile_writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pressure_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="virtual_spawn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="currency_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="random_name_generator.h">
@@ -81,6 +90,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mission.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pressure_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="virtual_wavespawn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="virtual_spawn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spawnable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="currency_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

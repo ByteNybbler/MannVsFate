@@ -1,4 +1,7 @@
 #include "popfile_writer.h"
+#include "tfbot.h"
+#include "tank.h"
+#include "spawnable.h"
 
 void popfile_writer::popfile_open(const std::string& filename)
 {
@@ -17,7 +20,7 @@ void popfile_writer::popfile_close()
 
 void popfile_writer::popfile_copy_write(const std::string& filename)
 {
-	std::ifstream in(filename);//, std::ios_base::binary);
+	std::ifstream in(filename);
 	popfile << in.rdbuf();
 }
 
@@ -198,16 +201,17 @@ void popfile_writer::write_wavespawn(const wavespawn& ws, const std::vector<std:
 	{
 		write("Support", "Limited");
 	}
-	if (ws.type_of_spawned == wavespawn::type::tfbot)
+	if (ws.enemy->get_type() == spawnable::type::tfbot)
 	{
 		write("SpawnCount", ws.spawn_count);
 		write("MaxActive", ws.max_active);
 		write("Where", ws.location);
 		write_blank();
-		write_tfbot(ws.bot, spawnbots);
+		write_tfbot(static_cast<tfbot&>(*ws.enemy), spawnbots);
 	}
-	else if (ws.type_of_spawned == wavespawn::type::tank)
+	else if (ws.enemy->get_type() == spawnable::type::tank)
 	{
+		tank& enemy = static_cast<tank&>(*ws.enemy);
 		write_blank();
 		block_start("FirstSpawnOutput");
 		write("Target", "boss_spawn_relay");
@@ -215,8 +219,8 @@ void popfile_writer::write_wavespawn(const wavespawn& ws, const std::vector<std:
 		block_end(); // FirstSpawnOutput
 		write_blank();
 		block_start("Tank");
-		write("Health", ws.tnk.health);
-		write("Speed", ws.tnk.speed);
+		write("Health", enemy.health);
+		write("Speed", enemy.speed);
 		write("Name", "\"tankboss\"");
 		write("StartingPathTrackNode", ws.location);
 		block_start("OnKilledOutput");

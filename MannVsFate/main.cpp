@@ -1,4 +1,7 @@
+#include "bot_generator.h"
 #include "wave_generator.h"
+#include "currency_manager.h"
+#include "pressure_manager.h"
 #include <iostream>
 #include <string>
 
@@ -16,8 +19,11 @@ int main(int argc, char** argv)
 {
 	try
 	{
-		// Instantiate the wave generator.
-		wave_generator gen;
+		// Instantiate the popfile generator and all of its dependencies.
+		currency_manager cm;
+		pressure_manager pm(cm);
+		bot_generator botgen(pm);
+		wave_generator gen(cm, pm, botgen);
 
 		// Interpret command line arguments.
 		if (argc > 1)
@@ -39,7 +45,7 @@ int main(int argc, char** argv)
 				if (std::strcmp(argv[i], "-startingcurrency") == 0)
 				{
 					++i;
-					gen.set_starting_currency(toint(argv[i]));
+					cm.set_currency(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-waves") == 0)
@@ -90,13 +96,13 @@ int main(int argc, char** argv)
 				if (std::strcmp(argv[i], "-players") == 0)
 				{
 					++i;
-					gen.set_players(toint(argv[i]));
+					pm.set_players(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-wavecurrency") == 0)
 				{
 					++i;
-					gen.set_currency_per_wave(toint(argv[i]));
+					cm.set_currency_per_wave(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-time") == 0)
@@ -166,7 +172,7 @@ int main(int argc, char** argv)
 						possible_classes.emplace_back(player_class::spy);
 					}
 
-					gen.set_possible_classes(possible_classes);
+					botgen.set_possible_classes(possible_classes);
 
 					continue;
 				}
@@ -185,25 +191,25 @@ int main(int argc, char** argv)
 				if (std::strcmp(argv[i], "-difficulty") == 0)
 				{
 					++i;
-					gen.set_pressure_decay_rate_multiplier_in_time(tofloat(argv[i]));
+					pm.set_pressure_decay_rate_multiplier_in_time(tofloat(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-giantchance") == 0)
 				{
 					++i;
-					gen.set_giant_chance(tofloat(argv[i]));
+					botgen.set_giant_chance(tofloat(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-bosschance") == 0)
 				{
 					++i;
-					gen.set_boss_chance(tofloat(argv[i]));
+					botgen.set_boss_chance(tofloat(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-currencyspread") == 0)
 				{
 					++i;
-					gen.set_currency_spread(toint(argv[i]));
+					cm.set_currency_per_wave_spread(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-wackysounds") == 0)
@@ -221,19 +227,19 @@ int main(int argc, char** argv)
 				if (std::strcmp(argv[i], "-wavespawncurrency") == 0)
 				{
 					++i;
-					gen.set_currency_per_wavespawn(toint(argv[i]));
+					cm.set_currency_per_wavespawn(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-wavespawncurrencyspread") == 0)
 				{
 					++i;
-					gen.set_currency_per_wavespawn_spread(toint(argv[i]));
+					cm.set_currency_per_wavespawn_spread(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-wavespawncurrencylimit") == 0)
 				{
 					++i;
-					gen.set_currency_per_wavespawn_limit(toint(argv[i]));
+					cm.set_currency_per_wavespawn_limit(toint(argv[i]));
 					continue;
 				}
 				if (std::strcmp(argv[i], "-doombot") == 0)

@@ -2,11 +2,17 @@
 #define TFBOT_H
 
 #include "player_class.h"
+#include "spawnable.h"
 #include <string>
 #include <vector>
 
-struct tfbot
+struct tfbot : public spawnable
 {
+	type get_type() const
+	{
+		return spawnable::type::tfbot;
+	}
+
 	player_class cl;
 	std::string class_icon;
 	int health;

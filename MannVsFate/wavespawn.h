@@ -1,17 +1,32 @@
 #ifndef WAVESPAWN_H
 #define WAVESPAWN_H
 
-#include "tfbot.h"
-#include "tank.h"
+#include "spawnable.h"
 #include <string>
+#include <memory>
 
+// A structure representing a WaveSpawn.
 struct wavespawn
 {
-	enum class type
-	{
-		tfbot,
-		tank
-	};
+	// Copy constructor.
+	// Required due to this class' use of std::unique_ptr.
+	wavespawn(wavespawn& ws)
+		: name(ws.name),
+		location(ws.location),
+		total_count(ws.total_count),
+		max_active(ws.max_active),
+		spawn_count(ws.spawn_count),
+		wait_before_starting(ws.wait_before_starting),
+		wait_between_spawns(ws.wait_between_spawns),
+		support(ws.support),
+		first_spawn_warning_sound(ws.first_spawn_warning_sound),
+		total_currency(ws.total_currency),
+		enemy(std::move(ws.enemy))
+	{}
+
+	// Default constructor.
+	wavespawn()
+	{}
 
 	enum class support_type
 	{
@@ -31,27 +46,8 @@ struct wavespawn
 	std::string first_spawn_warning_sound = "";
 	int total_currency = 0;
 
-	tfbot bot;
-	tank tnk;
-
-	// The type of entity spawned: TFBot or Tank.
-	type type_of_spawned;
-
-	// Variables for assistance with calculating pressure.
-
-	float effective_pressure;
-
-	// How long each spawn should theoretically take to kill, in seconds.
-	float time_to_kill;
-	
-	float time_until_next_spawn = 0.0f;
-	int spawns_remaining = 0;
-	// How long until the time to kill expires.
-	float time_to_kill_expires = 0.0f;
-	int currency_per_spawn = 0;
-
-	// Ignore this WaveSpawn's effective pressure.
-	//bool ignore_pressure = false;
+	// The enemy contained by the WaveSpawn.
+	std::unique_ptr<spawnable> enemy;
 };
 
 #endif

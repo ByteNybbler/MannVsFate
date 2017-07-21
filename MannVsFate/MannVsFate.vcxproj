@@ -120,10 +120,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bot_generator.cpp" />
+    <ClCompile Include="currency_manager.cpp" />
     <ClCompile Include="list_reader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player_class.cpp" />
     <ClCompile Include="popfile_writer.cpp" />
+    <ClCompile Include="virtual_spawn.cpp" />
+    <ClCompile Include="pressure_manager.cpp" />
     <ClCompile Include="random_name_generator.cpp" />
     <ClCompile Include="rand_util.cpp" />
     <ClCompile Include="tfbot_meta.cpp" />
@@ -131,16 +134,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_generator.h" />
+    <ClInclude Include="currency_manager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="list_reader.h" />
     <ClInclude Include="mission.h" />
     <ClInclude Include="player_class.h" />
     <ClInclude Include="popfile_writer.h" />
+    <ClInclude Include="spawnable.h" />
+    <ClInclude Include="virtual_spawn.h" />
+    <ClInclude Include="pressure_manager.h" />
     <ClInclude Include="random_name_generator.h" />
     <ClInclude Include="rand_util.h" />
     <ClInclude Include="tank.h" />
     <ClInclude Include="tfbot.h" />
     <ClInclude Include="tfbot_meta.h" />
+    <ClInclude Include="virtual_wavespawn.h" />
     <ClInclude Include="wavespawn.h" />
     <ClInclude Include="wave_generator.h" />
   </ItemGroup>

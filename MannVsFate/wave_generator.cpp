@@ -2,13 +2,21 @@
 #include "rand_util.h"
 #include "random_name_generator.h"
 #include "mission.h"
+#include "tank.h"
+#include "currency_manager.h"
+#include "pressure_manager.h"
+#include "bot_generator.h"
 #include "json.hpp"
 #include <unordered_set>
 #include <sstream>
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.0";
+const std::string wave_generator::version = "0.4.1";
+
+wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen)
+	: mission_currency(cm), wave_pressure(pm), botgen(botgen)
+{}
 
 void wave_generator::set_map_name(const std::string& in)
 {
@@ -18,11 +26,6 @@ void wave_generator::set_map_name(const std::string& in)
 void wave_generator::set_mission_name(const std::string& in)
 {
 	mission_name = in;
-}
-
-void wave_generator::set_starting_currency(int in)
-{
-	starting_currency = in;
 }
 
 void wave_generator::set_waves(int in)
@@ -65,16 +68,6 @@ void wave_generator::set_sentry_buster_cooldown(float in)
 	sentry_buster_cooldown = in;
 }
 
-void wave_generator::set_players(int in)
-{
-	players = in;
-}
-
-void wave_generator::set_currency_per_wave(int in)
-{
-	currency_per_wave = in;
-}
-
 void wave_generator::set_max_time(int in)
 {
 	max_time = in;
@@ -95,11 +88,6 @@ void wave_generator::set_max_wavespawns(int in)
 	max_wavespawns = in;
 }
 
-void wave_generator::set_possible_classes(const std::vector<player_class>& classes)
-{
-	botgen.set_possible_classes(classes);
-}
-
 void wave_generator::set_max_tfbot_wavespawn_time(int in)
 {
 	max_tfbot_wavespawn_time = in;
@@ -108,26 +96,6 @@ void wave_generator::set_max_tfbot_wavespawn_time(int in)
 void wave_generator::set_max_tank_wavespawn_time(int in)
 {
 	max_tank_wavespawn_time = in;
-}
-
-void wave_generator::set_pressure_decay_rate_multiplier_in_time(float in)
-{
-	pressure_decay_rate_multiplier_in_time = in;
-}
-
-void wave_generator::set_giant_chance(float in)
-{
-	botgen.set_giant_chance(in);
-}
-
-void wave_generator::set_boss_chance(float in)
-{
-	botgen.set_boss_chance(in);
-}
-
-void wave_generator::set_currency_spread(int in)
-{
-	currency_spread = in;
 }
 
 void wave_generator::set_use_wacky_sounds(int in)
@@ -140,21 +108,6 @@ void wave_generator::set_wacky_sound_vo_ratio(float in)
 	wacky_sound_vo_ratio = in;
 }
 
-void wave_generator::set_currency_per_wavespawn(int in)
-{
-	currency_per_wavespawn = in;
-}
-
-void wave_generator::set_currency_per_wavespawn_spread(int in)
-{
-	currency_per_wavespawn_spread = in;
-}
-
-void wave_generator::set_currency_per_wavespawn_limit(int in)
-{
-	currency_per_wavespawn_limit = in;
-}
-
 void wave_generator::set_doombot_enabled(bool in)
 {
 	doombot_enabled = in;
@@ -164,10 +117,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 {
 	// Important MVM properties differ for each map.
 
-	// This is the relative length of the map's bot path.
-	// This is used to help determine pressure decay.
-	// mvm_bigrock is used as a basis, with a length of 1.0f.
-	float bot_path_length = 1.0f;
 	// This is the name of the wave_start_relay entity.
 	std::string wave_start_relay = "wave_start_relay";
 	std::string wave_finished_relay = "wave_finished_relay";
@@ -181,13 +130,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 	std::vector<std::string> spawnbots_doom;
 	// This is the collection of starting points for each tank path.
 	std::vector<std::string> tank_path_starting_points;
-	// Whether enemy engineers can spawn on this map.
-	bool engies_enabled = true;
-	// The biggest scale that an enemy can possibly have when navigating through a map.
-	// Does not take certain spawnbot locations into account.
-	float scale_mega;
-	// The scale of the doom enemy.
-	float scale_doom;
 
 	std::ifstream maps_file("data/maps.json");
 	if (!maps_file)
@@ -225,38 +167,38 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 	try
 	{
-		bot_path_length = maps_json.at("bot_path_length").get<float>();
+		wave_pressure.set_bot_path_length(maps_json.at("bot_path_length").get<float>());
 	}
 	catch (const std::exception&)
 	{
-		bot_path_length = 1.0f;
+		wave_pressure.set_bot_path_length(1.0f);
 	}
 
 	try
 	{
-		scale_mega = maps_json.at("scale_mega").get<float>();
+		botgen.set_scale_mega(maps_json.at("scale_mega").get<float>());
 	}
 	catch (const std::exception&)
 	{
-		scale_mega = 1.75f;
+		botgen.set_scale_mega(1.75f);
 	}
 
 	try
 	{
-		scale_doom = maps_json.at("scale_doom").get<float>();
+		botgen.set_scale_doom(maps_json.at("scale_doom").get<float>());
 	}
 	catch (const std::exception&)
 	{
-		scale_doom = scale_mega;
+		botgen.set_scale_doom(botgen.get_scale_mega());
 	}
 
 	try
 	{
-		engies_enabled = maps_json.at("engies").get<bool>();
+		botgen.set_engies_enabled(maps_json.at("engies").get<bool>());
 	}
 	catch (const std::exception&)
 	{
-		engies_enabled = true;
+		botgen.set_engies_enabled(true);
 	}
 
 	try
@@ -322,8 +264,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// If there are no tank spawn points provided, just assume this map has no tanks.
 	}
 
-	botgen.set_engies_enabled(engies_enabled);
-
 	list_reader random_sound_reader;
 	const std::string file_sounds_standard = "data/sounds.txt";
 	const std::string file_sounds_vo = "data/sounds_vo.txt";
@@ -334,7 +274,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	}
 
 	std::stringstream filename;
-	filename << map_name << '_' << players << "p_" << mission_name << ".pop";
+	filename << map_name << '_' << wave_pressure.get_players() << "p_" << mission_name << ".pop";
 	const std::string popfile_name = filename.str();
 
 	const std::string tempdir = "temp_";
@@ -347,7 +287,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	writer.block_start("WaveSchedule");
 
 	// Write the WaveSchedule universal options.
-	writer.write("StartingCurrency", starting_currency);
+	writer.write("StartingCurrency", mission_currency.get_currency());
 	writer.write("RespawnWaveTime", respawn_wave_time);
 	if (event_popfile != 0)
 	{
@@ -371,13 +311,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 	writer.popfile_close();
 
-	// How much currency the players currently have.
-	int current_currency = starting_currency;
-
 	if (doombot_enabled)
 	{
 		// Provide some leeway since the Doombot will be running around.
-		pressure_decay_rate_multiplier *= 0.8f;
+		wave_pressure.multiply_pressure_decay_rate_multiplier(0.8f);
 	}
 
 	// Generate the actual waves!
@@ -394,34 +331,18 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 		std::cout << "Wrote wave header." << std::endl;
 
-		// How much pressure is currently being placed on the theoretical players of the mission.
-		// More pressure means the players are having a harder time.
-		// We're assuming our players are disposing of the robot baddies over time,
-		// so this pressure value should decay over time if left unattended.
-		// If there's too much pressure, we should ease up on the players.
-		// If there's too little pressure, we should go harder on the players.
-		float pressure = 0.0f;
-
-		// The more currency the players have, the more damage they'll be able to deal.
-		// The more damage the players can deal, the quicker they'll be able to dispose of the enemies.
-		// The number of players also affects how quickly the robots can be dealt with.
-		// Let's have the pressure decay based on this quantity of currency multiplied by the number of players.
-		// This decay rate is measured per second.
-		// Since this decay rate essentially calculates how powerful and capable the RED team is,
-		// it is also used to calculate how powerful the robots should be.
-		float pressure_decay_rate = (current_currency * currency_pressure_multiplier + base_pressure_decay_rate)
-			* players * pressure_decay_rate_multiplier * bot_path_length;
+		wave_pressure.reset_pressure();
+		wave_pressure.calculate_pressure_decay_rate();
 
 		//std::cout << "The pressure decay rate is " << pressure_decay_rate << '.' << std::endl;
 
 		// Cache the recipricol of the pressure decay rate for use in various calculations.
-		float recip_pressure_decay_rate = 1 / pressure_decay_rate;
+		float recip_pressure_decay_rate = 1 / wave_pressure.get_pressure_decay_rate();
 
 		//std::cout << "recip_pressure_decay_rate: " << recip_pressure_decay_rate << '.' << std::endl;
 
 		// Let's generate the Sentry Buster Mission that coincides with this wave.
 
-		botgen.set_pressure_decay_rate(pressure_decay_rate);
 		tfbot_meta bot_meta = botgen.generate_bot();
 		tfbot& bot = bot_meta.get_bot();
 
@@ -463,17 +384,10 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// An unordered set of all of the icons that are part of the wave so far.
 		std::unordered_set<std::string> class_icons;
 
-		// Count the number of active wavespawns.
-		// We'll use this to scale pressure based on how many concurrent wavespawns are occurring.
-		int active_wavespawns = 0;
-		// The last second the Wavespawns ran for.
+		// The last second that the Wavespawns ran for.
 		int last_t = 0;
-		// The approximate amount of currency the players have collected in this wave.
-		// This only counts wavespawn currency.
-		// We use this to fix roundoff error caused by integer division.
-		int approximated_additional_currency = 0;
-		// All WaveSpawn currency accumulated so far.
-		int wavespawn_currency_so_far = 0;
+
+		mission_currency.prepare_for_new_wave();
 
 		std::cout << "Starting actual WaveSpawn generation..." << std::endl;
 
@@ -481,33 +395,24 @@ void wave_generator::generate_mission(int argc, char** argv)
 		while ((t < max_time || max_time == 0) &&
 			(wavespawns.size() < max_wavespawns || max_wavespawns == 0) && 
 			(class_icons.size() < max_icons || max_icons == 0) &&
-			(wavespawn_currency_so_far < currency_per_wavespawn_limit || currency_per_wavespawn_limit == 0))
+			!mission_currency.has_currency_per_wavespawn_hit_limit())
 		{
-			// The rate at which the pressure is decaying when all active wavespawns are taken into consideration.
-			/*
-			float effective_pressure_decay_rate;
-
-			calculate_effective_pressure_decay_rate(pressure_decay_rate, effective_pressure_decay_rate, wavespawns, t);
-
-			while (effective_pressure_decay_rate > 0 && t < max_time && wavespawns.size() < max_wavespawns && class_icons.size() < max_icons)
-			{
-				std::cout << "Effective pressure decay rate > 0." << std::endl;
-				*/
-
-			if (currency_per_wavespawn != 0)
+			if (mission_currency.get_currency_per_wavespawn() != 0)
 			{
 				// Since the amount of total currency can be determined on the fly in this mode,
 				// we can make waves more difficult as they progress!
 
-				pressure_decay_rate = (current_currency * currency_pressure_multiplier + base_pressure_decay_rate)
-					* players * pressure_decay_rate_multiplier * bot_path_length;
+				wave_pressure.calculate_pressure_decay_rate();
 
-				recip_pressure_decay_rate = 1 / pressure_decay_rate;
+				recip_pressure_decay_rate = 1 / wave_pressure.get_pressure_decay_rate();
 			}
 
 			std::cout << "Generating new wavespawn at t = " << t << '.' << std::endl;
 
+			// The WaveSpawn to generate.
 			wavespawn ws;
+			// Virtual representation of the WaveSpawn, to be used in pressure calculations.
+			virtual_wavespawn vws;
 
 			// Whether the WaveSpawn will be a Tank WaveSpawn or not.
 			const bool shall_be_tank = rand_chance(tank_chance) && tank_path_starting_points.size() != 0;
@@ -556,7 +461,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				// The faster the tank moves, the smaller its health should be to account for its speed.
 				// Let's make the health both dependent on and inversely proportional to the speed.
-				int health = static_cast<int>(pressure_decay_rate * 1500.0f / speed);
+				int health = static_cast<int>(wave_pressure.get_pressure_decay_rate() * 1500.0f / speed);
 				// Round the tank health to the nearest 1000.
 				health = static_cast<int>(std::ceil(static_cast<float>(health) / 1000) * 1000);
 
@@ -599,28 +504,17 @@ void wave_generator::generate_mission(int argc, char** argv)
 				std::cout << "Tank speed / health: " << speed << " / " << health << std::endl;
 				std::cout << "Tank effective pressure: " << effective_pressure << std::endl;
 				std::cout << "Tank time to kill: " << time_to_kill << std::endl;
-				//std::getchar();
 
-				// Add the tank WaveSpawn to the wavespawns vector.
-
-				std::stringstream wsname;
-				wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
-				ws.name = wsname.str();
 				ws.total_count = rand_int(1, max_count + 1);
 				ws.wait_before_starting = static_cast<float>(t);
 				ws.wait_between_spawns = wait_between_spawns;
-				ws.spawns_remaining = ws.total_count - 1;
-				ws.effective_pressure = effective_pressure; // *0.2f;
-				ws.time_to_kill = time_to_kill; // *0.2f;
-				ws.type_of_spawned = wavespawn::type::tank;
-				ws.tnk.speed = speed;
-				ws.tnk.health = health;
-				ws.time_until_next_spawn = ws.wait_between_spawns;
-				ws.time_to_kill_expires = ws.time_to_kill;
-
+				ws.enemy = std::make_unique<tank>(health, speed);
 				// Choose a random path to start on.
 				int path_index = rand_int(0, tank_path_starting_points.size());
 				ws.location = '\"' + tank_path_starting_points.at(path_index) + '\"';
+
+				vws.effective_pressure = effective_pressure;
+				vws.time_to_kill = time_to_kill;
 
 				std::cout << "Generated Tank." << std::endl;
 			}
@@ -628,7 +522,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 			{
 				// Generate a new TFBot WaveSpawn.
 
-				botgen.set_pressure_decay_rate(pressure_decay_rate);
 				tfbot_meta bot_meta = botgen.generate_bot();
 				tfbot& bot = bot_meta.get_bot();
 
@@ -643,21 +536,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// How long it should take to kill the theoretical bot.
 				float time_to_kill;
 				//float effective_time_to_kill;
-
-				/*
-				// Will be 0 if there's no pressure.
-				float pressure_compensation = pressure * recip_pressure_decay_rate;
-				if (pressure_compensation < 1.0f)
-				{
-					pressure_compensation = 1.0f;
-				}
-				else
-				{
-					pressure_compensation = ((pressure_compensation - 1.0f) * 0.2f) + 1.0f;
-					std::cout << "Pressure is nonzero (" << pressure << "). Pressure compensation: " << pressure_compensation << '.' << std::endl;
-					std::getchar();
-				}
-				*/
 
 				float effective_pressure;
 				float wait_between_spawns;
@@ -756,11 +634,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				std::cout << "Total class icons so far: " << class_icons.size() << '.' << std::endl;
 
-				// It's time to pass all of this information to the actual wavespawn.
+				// It's time to pass all of this information to the actual WaveSpawn.
 
-				std::stringstream wsname;
-				wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
-				ws.name = wsname.str();
 				if (bot.cl == player_class::engineer || bot.cl == player_class::medic)
 				{
 					// Reduce the total count of engies and medics.
@@ -786,22 +661,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				}
 				ws.wait_before_starting = static_cast<float>(t);
 				ws.wait_between_spawns = wait_between_spawns;
-				ws.bot = bot;
-				if (bot_meta.is_doom)
-				{
-					ws.effective_pressure = 0.0f;
-				}
-				else
-				{
-					ws.effective_pressure = effective_pressure;
-					//ws.effective_pressure = bot_meta.calculate_muted_effective_pressure();
-					//ws.effective_pressure = bot.health;
-				}
-				ws.time_to_kill = time_to_kill;
-				ws.spawns_remaining = ws.total_count - 1;
-				ws.type_of_spawned = wavespawn::type::tfbot;
-				ws.time_until_next_spawn = ws.wait_between_spawns;
-				ws.time_to_kill_expires = ws.time_to_kill;
+				ws.enemy = std::make_unique<tfbot>(bot);
 
 				// Decide on the possible locations at which to spawn based on the size of the robot.
 				// Larger robots get stuck in some wavespawns, so those wavespawns must be omitted.
@@ -840,26 +700,30 @@ void wave_generator::generate_mission(int argc, char** argv)
 					ws.first_spawn_warning_sound = sound;
 				}
 
+				vws.effective_pressure = effective_pressure;
+				vws.time_to_kill = time_to_kill;
+
 				std::cout << "Generated TFBot." << std::endl;
 			}
-			/*
-			// Recalculate the effective pressure decay rate.
-			calculate_effective_pressure_decay_rate(pressure_decay_rate, effective_pressure_decay_rate, wavespawns, t);
-		}
-		*/
 
-			if (currency_per_wavespawn != 0)
+			//std::cout << "Wait between spawns: " << ws.wait_between_spawns;
+			//std::getchar();
+
+			// Give the WaveSpawn a unique name.
+			std::stringstream wsname;
+			wsname << "\"wave" << current_wave << '_' << wavespawns.size() + 1 << '\"';
+			ws.name = wsname.str();
+
+			// Populate some common properties of virtual WaveSpawns.
+			vws.spawns_remaining = ws.total_count - 1;
+			vws.wait_between_spawns = ws.wait_between_spawns;
+			vws.time_until_next_spawn = ws.wait_between_spawns;
+
+			if (mission_currency.get_currency_per_wavespawn() != 0)
 			{
-				int additional_currency = currency_per_wavespawn + rand_int(-currency_per_wavespawn_spread, currency_per_wavespawn_spread);
-				// Make sure this Wavespawn's currency doesn't go above the cap.
-				if (wavespawn_currency_so_far + additional_currency > currency_per_wavespawn_limit)
-				{
-					additional_currency = currency_per_wavespawn_limit - wavespawn_currency_so_far;
-				}
+				int additional_currency = mission_currency.calculate_additional_currency_from_wavespawn();
 				ws.total_currency += additional_currency;
-				ws.currency_per_spawn = additional_currency / ws.total_count;
-				wavespawn_currency_so_far += additional_currency;
-				current_currency += additional_currency;
+				vws.currency_per_spawn = additional_currency / ws.total_count;
 			}
 
 			if (doombot_enabled)
@@ -867,146 +731,29 @@ void wave_generator::generate_mission(int argc, char** argv)
 				ws.support = wavespawn::support_type::limited;
 			}
 
-			++active_wavespawns;
-			pressure += ws.effective_pressure; // *active_wavespawns;
-
-			// Add the wavespawn to the wavespawns vector.
+			// Add the virtual WaveSpawn to the pressure manager.
+			wave_pressure.add_virtual_wavespawn(vws);
+			// Add the actual WaveSpawn to the wavespawns vector.
 			wavespawns.emplace_back(ws);
 
 			// Time to do any final work before the next loop iteration (if there is one).
 
-			std::cout << "wave_generator pressure (prior to pressure loop): " << pressure << std::endl;
+			std::cout << "wave_generator pressure (prior to pressure loop): " << wave_pressure.get_pressure() << std::endl;
 
-			last_t = t;
-
-			// An empty second is a second that occurs without a single new WaveSpawn.
-			// To prevent boredom, this amount of time is capped.
-			//int empty_seconds = 0;
-			while (pressure > 0.0f
-				//&& empty_seconds < 3
-				)
-			{
-				// Increment time.
-				++t;
-				//++empty_seconds;
-
-				float pressure_increase = 0.0f;
-				// Iterate through the wavespawns to update the pressure.
-				for (wavespawn& ws : wavespawns)
-				{
-					// TTKEGTZ: Time To Kill Expires Greater Than 0
-					bool ttkegtz = false;
-					if (ws.time_to_kill_expires > 0.0f)
-					{
-						ttkegtz = true;
-					}
-					ws.time_to_kill_expires -= 1.0f;
-					if (ttkegtz && ws.time_to_kill_expires <= 0.0f)
-					{
-						// A WaveSpawn's theoretical enemy was killed before the next one could spawn.
-						// The WaveSpawn has gone quiet for now.
-						// This does not mean that the WaveSpawn has finished spawning altogether, however!
-						--active_wavespawns;
-						ttkegtz = false;
-					}
-
-					ws.time_until_next_spawn -= 1.0f;
-
-					while (ws.spawns_remaining != 0 && ws.time_until_next_spawn <= 0.0f)
-					{
-						/*
-						if (ws.spawns_remaining == ws.total_count)
-						{
-							++active_wavespawns;
-						}
-						if (ws.spawns_remaining == 0)
-						{
-							--active_wavespawns;
-						}
-						else
-						{
-						*/
-						pressure_increase += ws.effective_pressure;
-						ws.time_until_next_spawn += ws.wait_between_spawns;
-
-						if (!ttkegtz)
-						{
-							++active_wavespawns;
-						}
-						ws.time_to_kill_expires = ws.time_to_kill;
-						ttkegtz = true;
-						//}
-						ws.spawns_remaining -= 1;
-
-						// Since an enemy just died, let's collect its currency.
-						current_currency += ws.currency_per_spawn;
-						approximated_additional_currency += ws.currency_per_spawn;
-
-						// Since something just spawned, reset the empty seconds.
-						//empty_seconds = 0;
-						//std::cout << "Empty seconds reset." << std::endl;
-					}
-				}
-
-				// Modify the pressure.
-				pressure += pressure_increase; // *active_wavespawns;
-				// Since time has passed, reduce the pressure.
-				pressure -= pressure_decay_rate * pressure_decay_rate_multiplier_in_time / (active_wavespawns + 1);
-			}
-
-			//++t;
+			// Step through time if necessary.
+			wave_pressure.step_through_time(t);
 
 			std::cout << "t = " << t << " (wave " << current_wave << '/' << waves << ')' << std::endl;
 		}
 
-		std::cout << "Finished generating wave " << current_wave << ". Writing to popfile..." << std::endl;
+		last_t = t;
 
-		if (currency_per_wave != 0)
-		{
-			// Calculate the effective currency in this wave by factoring in the currency spread.
-			int currency_in_this_wave = currency_per_wave + rand_int(-currency_spread, currency_spread);
-			// Make sure the currency in this wave doesn't dip below 0.
-			if (currency_in_this_wave < 0)
-			{
-				currency_in_this_wave = 0;
-			}
+		std::cout << "Finished generating wave " << current_wave << ". Writing to temporary file..." << std::endl;
 
-			// Increment the total currency accrued so far (not counting bonuses).
-			current_currency += currency_in_this_wave;
+		// Finalize the currency total so far now that the wave is over.
+		mission_currency.add_currency_from_wave(wavespawns);
 
-			// Calculate how much currency each wavespawn will have (after the fact).
-			int currency_per_wavespawn = currency_in_this_wave / wavespawns.size();
-
-			for (wavespawn& ws : wavespawns)
-			{
-				ws.total_currency += currency_per_wavespawn;
-			}
-
-			// Calculate the roundoff error from integer division.
-			int approx_sum_currency_per_wavespawn = currency_per_wavespawn * wavespawns.size();
-			int error = currency_per_wave - approx_sum_currency_per_wavespawn;
-
-			// Correct this error by adding some extra currency to the last WaveSpawn.
-			wavespawn& ws = wavespawns.back();
-			ws.total_currency += error;
-		}
-
-		if (approximated_additional_currency != 0)
-		{
-			// Let's fix the roundoff error of integer division.
-			current_currency -= approximated_additional_currency;
-			if (currency_per_wavespawn_limit == wavespawn_currency_so_far)
-			{
-				current_currency += currency_per_wavespawn_limit;
-			}
-			else
-			{
-				int true_additional_currency = currency_per_wavespawn * wavespawns.size();
-				current_currency += true_additional_currency;
-			}
-		}
-
-		// Time to write the wave.
+		// Time to write the wave to the disk.
 		writer.popfile_open(filename_wave.str());
 
 		writer.write_wave_divider(current_wave);
@@ -1017,17 +764,15 @@ void wave_generator::generate_mission(int argc, char** argv)
 		if (doombot_enabled)
 		{
 			// Generate the doombot!
-			botgen.set_pressure_decay_rate(pressure_decay_rate);
 			botgen.set_generating_doombot(true);
 			tfbot_meta bot_meta = botgen.generate_bot();
 			tfbot& bot = bot_meta.get_bot();
 			botgen.set_generating_doombot(false);
 
 			bot_meta.set_base_class_icon("boss");
-			bot.scale = scale_doom;
 			//bot.attributes.emplace_back("IgnoreFlag");
 
-			bot.health = last_t * pressure_decay_rate * 0.01f;
+			bot.health = static_cast<int>(last_t * wave_pressure.get_pressure_decay_rate() * 0.01f);
 
 			/*
 			if (!bot_meta.is_always_fire_weapon)
@@ -1045,15 +790,18 @@ void wave_generator::generate_mission(int argc, char** argv)
 			ws.total_count = 1;
 			ws.wait_before_starting = 1.0f;
 			ws.wait_between_spawns = 1.0f;
-			ws.spawns_remaining = 0;
-			ws.effective_pressure = 0.0f;
-			ws.time_to_kill = 1.0f;
-			ws.type_of_spawned = wavespawn::type::tfbot;
-			ws.time_until_next_spawn = ws.wait_between_spawns;
-			ws.time_to_kill_expires = ws.time_to_kill;
+			//ws.time_to_kill_expires = ws.time_to_kill;
 			int spawnbot_index = rand_int(0, spawnbots_doom.size());
 			ws.location = spawnbots_doom.at(spawnbot_index);
-			ws.bot = bot;
+			ws.enemy = std::make_unique<tfbot>(bot);
+
+			//virtual_wavespawn vws;
+
+			//vws.spawns_remaining = 0;
+			//vws.effective_pressure = 0.0f;
+			//vws.time_to_kill = 1.0f;
+			//vws.time_until_next_spawn = ws.wait_between_spawns;
+			//vws.wait_between_spawns = ws.wait_between_spawns;
 
 			writer.write_wavespawn(ws, spawnbots);
 		}
@@ -1122,36 +870,5 @@ void wave_generator::generate_mission(int argc, char** argv)
 	writer.popfile_close();
 
 	std::cout << "Concatenation complete." << std::endl;
+	std::cout << "Popfile is ready for play." << std::endl;
 }
-
-/*
-void wave_generator::calculate_effective_pressure_decay_rate
-(const float& pressure_decay_rate, float& effective_pressure_decay_rate, const std::vector<wavespawn>& wavespawns, const int& t)
-{
-	effective_pressure_decay_rate = pressure_decay_rate;
-
-	std::cout << wavespawns.size() << " wavespawns generated thus far." << std::endl;
-
-	for (const wavespawn& ws : wavespawns)
-	{
-
-		float time_of_last_spawn = ws.wait_before_starting + ws.wait_between_spawns * (ws.total_count - 1);
-		float time_of_last_dead = time_of_last_spawn + ws.time_to_kill;
-
-		if (t >= ws.wait_before_starting && t <= time_of_last_dead)
-		{
-			//std::cout << "Wavespawn is active!" << std::endl;
-
-			float wavespawn_pressure_per_second = ws.effective_pressure / ws.wait_between_spawns;
-
-			//std::cout << "Wavespawn's effective pressure: " << ws.effective_pressure << std::endl;
-			//std::cout << "Wavespawn's wait between spawns: " << ws.wait_between_spawns << std::endl;
-			//std::cout << "Wavespawn's pressure per second: " << wavespawn_pressure_per_second << std::endl;
-
-			effective_pressure_decay_rate -= wavespawn_pressure_per_second;
-		}
-	}
-
-	std::cout << "Effective pressure decay rate: " << effective_pressure_decay_rate << std::endl;
-}
-*/

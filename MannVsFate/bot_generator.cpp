@@ -1,20 +1,17 @@
 #include "bot_generator.h"
 #include "rand_util.h"
+#include "pressure_manager.h"
 #include <iostream>
 #include <algorithm>
 
-bot_generator::bot_generator()
-	: random_names("data/names/verbs.txt", "data/names/titles.txt", "data/names/adjectives.txt", "data/names/nouns.txt")
+bot_generator::bot_generator(const pressure_manager& pm)
+	: wave_pressure(pm),
+	random_names("data/names/verbs.txt", "data/names/titles.txt", "data/names/adjectives.txt", "data/names/nouns.txt")
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
 {
 	possible_classes = classes;
-}
-
-void bot_generator::set_pressure_decay_rate(float in)
-{
-	pressure_decay_rate = in;
 }
 
 void bot_generator::set_giant_chance(float in)
@@ -35,6 +32,21 @@ void bot_generator::set_engies_enabled(bool in)
 void bot_generator::set_scale_mega(float in)
 {
 	scale_mega = in;
+}
+
+float bot_generator::get_scale_mega()
+{
+	return scale_mega;
+}
+
+void bot_generator::set_scale_doom(float in)
+{
+	scale_mega = in;
+}
+
+float bot_generator::get_scale_doom()
+{
+	return scale_doom;
 }
 
 void bot_generator::set_generating_doombot(bool in)
@@ -173,6 +185,7 @@ tfbot_meta bot_generator::generate_bot()
 	bool is_buff_soldier = false;
 	bool has_explosives = false;
 	bool demo_can_charge = false;
+	bool does_fire_damage = false;
 	// Only override projectiles if there's no crash risk.
 	bool projectile_override_crash_risk = false;
 
@@ -273,6 +286,10 @@ tfbot_meta bot_generator::generate_bot()
 					has_explosives = true;
 				}
 			}
+		}
+		if (bot.weapon_restrictions != "MeleeOnly")
+		{
+			does_fire_damage = true;
 		}
 		break;
 
@@ -466,7 +483,7 @@ tfbot_meta bot_generator::generate_bot()
 				lower_bound += 0.4f;
 			}
 		}
-		float upper_bound = pressure_decay_rate * 0.007f; // 0.002f;
+		float upper_bound = wave_pressure.get_pressure_decay_rate() * 0.007f; // 0.002f;
 		bot.health = static_cast<int>(static_cast<float>(bot.health) * rand_float(0.2f * chance_mult, upper_bound));
 	}
 
@@ -940,26 +957,6 @@ tfbot_meta bot_generator::generate_bot()
 		bot.character_attributes.emplace_back("weapon spread bonus", change);
 	}
 	//}
-	if (rand_chance(0.03f * chance_mult))
-	{
-		if (rand_chance(0.5f))
-		{
-			bot.character_attributes.emplace_back("damage causes airblast", 1);
-		}
-		else
-		{
-			float look_velocity = rand_float(-10.0f, 10.0f);
-			bot.character_attributes.emplace_back("apply look velocity on damage", look_velocity);
-		}
-		if (bot.weapon_restrictions == "MeleeOnly")
-		{
-			bot_meta.pressure *= 1.1f;
-		}
-		else
-		{
-			bot_meta.pressure *= 2.0f;
-		}
-	}
 	if (rand_chance(0.05f * chance_mult))
 	{
 		float head_size = 0.001f;
@@ -1064,9 +1061,10 @@ tfbot_meta bot_generator::generate_bot()
 		bot.character_attributes.emplace_back("attach particle effect static", 43);
 		bot_meta.pressure *= 2.0f;
 	}
-	if (rand_chance(0.04f * chance_mult))
+	if (!does_fire_damage && rand_chance(0.04f * chance_mult))
 	{
 		bot.character_attributes.emplace_back("Set DamageType Ignite", 1);
+		does_fire_damage = true;
 		// Add some cool fire particles.
 		bot.character_attributes.emplace_back("attach particle effect static", 13);
 		if (item_class != player_class::pyro && bot.cl != player_class::engineer)
@@ -1206,16 +1204,39 @@ tfbot_meta bot_generator::generate_bot()
 			bot_meta.pressure *= 0.9f;
 		}
 	}
-	if (rand_chance(0.02f * chance_mult))
+	if (!does_fire_damage)
 	{
-		float r = rand_float(-10000.0f, 10000.0f);
-		bot.character_attributes.emplace_back("apply z velocity on damage", r);
-		// Cauldron Bubbles particle effect.
-		bot.character_attributes.emplace_back("attach particle effect static", 39);
-		bot_meta.pressure *= 1.5f;
-		if (r < -100.0f)
+		if (rand_chance(0.03f * chance_mult))
 		{
+			if (rand_chance(0.5f))
+			{
+				bot.character_attributes.emplace_back("damage causes airblast", 1);
+			}
+			else
+			{
+				float look_velocity = rand_float(-10.0f, 10.0f);
+				bot.character_attributes.emplace_back("apply look velocity on damage", look_velocity);
+			}
+			if (bot.weapon_restrictions == "MeleeOnly")
+			{
+				bot_meta.pressure *= 1.1f;
+			}
+			else
+			{
+				bot_meta.pressure *= 2.0f;
+			}
+		}
+		if (rand_chance(0.02f * chance_mult))
+		{
+			float r = rand_float(-10000.0f, 10000.0f);
+			bot.character_attributes.emplace_back("apply z velocity on damage", r);
+			// Cauldron Bubbles particle effect.
+			bot.character_attributes.emplace_back("attach particle effect static", 39);
 			bot_meta.pressure *= 1.5f;
+			if (r < -100.0f)
+			{
+				bot_meta.pressure *= 1.5f;
+			}
 		}
 	}
 	/*
@@ -1304,6 +1325,12 @@ tfbot_meta bot_generator::generate_bot()
 	if (bot_meta.pressure < 0.0f)
 	{
 		throw std::exception("bot_generator::generate_bot exception: Negative bot pressure!");
+	}
+
+	// Set doombots to their proper scale.
+	if (bot_meta.is_doom)
+	{
+		bot.scale = scale_doom;
 	}
 
 	return bot_meta;

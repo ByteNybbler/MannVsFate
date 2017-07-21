@@ -7,19 +7,23 @@
 #include "tfbot.h"
 #include "tfbot_meta.h"
 
+class pressure_manager;
+
 class bot_generator
 {
 public:
 	// Constructor.
-	bot_generator();
+	bot_generator(const pressure_manager& pm);
 
 	// Accessors.
 	void set_possible_classes(const std::vector<player_class>& classes);
-	void set_pressure_decay_rate(float in);
 	void set_giant_chance(float in);
 	void set_boss_chance(float in);
 	void set_engies_enabled(bool in);
 	void set_scale_mega(float in);
+	float get_scale_mega();
+	void set_scale_doom(float in);
+	float get_scale_doom();
 	void set_generating_doombot(bool in);
 
 	// Generate a random TFBot.
@@ -32,6 +36,9 @@ public:
 	void make_bot_into_giant(tfbot_meta& bot_meta);
 
 private:
+	// Injected dependencies.
+	const pressure_manager& wave_pressure;
+
 	// The random name generator.
 	const random_name_generator random_names;
 
@@ -51,8 +58,6 @@ private:
 	// The multiplier on most random chance calls. A higher value here means more of the random chances will likely return true.
 	float chance_mult;
 
-	// The pressure decay rate.
-	float pressure_decay_rate = 0.1f;
 	// Whether a doombot is being generated.
 	bool generating_doombot = false;
 
@@ -60,10 +65,14 @@ private:
 	float giant_chance = 0.1f;
 	// The chance that a giant will end up being a boss.
 	float boss_chance = 0.15f;
-	// Whether engineers are enabled or not. Map-specific.
+	// Whether enemy engineers can spawn on the current map.
 	bool engies_enabled = true;
-	// Maximum boss scale.
-	float scale_mega = 1.75f;
+	// The biggest scale that an enemy can possibly have when navigating through a map.
+	// Does not take certain spawnbot locations into account.
+	float scale_mega;
+	// The scale of a doombot (doom robot). This is often too big to navigate all the way through a map.
+	// This is fine though, since the doombots can't pick up flags.
+	float scale_doom;
 };
 
 #endif
