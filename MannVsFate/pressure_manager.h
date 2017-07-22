@@ -53,7 +53,7 @@ private:
 	// so this pressure value should decay over time if left unattended.
 	// If there's too much pressure, we should ease up on the players.
 	// If there's too little pressure, we should go harder on the players.
-	float pressure = 0.0f;
+	float pressure;
 
 	// The more currency the players have, the more damage they'll be able to deal.
 	// The more damage the players can deal, the quicker they'll be able to dispose of the enemies.
@@ -66,22 +66,28 @@ private:
 
 	// How many players the mission is intended for.
 	// The number of players serves as a multiplier for the pressure decay rate.
-	int players = 4;
+	int players;
 
 	// The base pressure decay rate, measured per player, pre-multiplication.
-	int base_pressure_decay_rate = 700;
+	int base_pressure_decay_rate;
 
 	// A flat multiplier for the pressure decay rate.
-	float pressure_decay_rate_multiplier = 0.025f;
+	float pressure_decay_rate_multiplier;
 
 	// The amount by which the pressure decay rate is multiplied when stepping through time.
-	// This is effectively the main variable that determines the difficulty of the mission.
-	float pressure_decay_rate_multiplier_in_time = 3.0f;
+	// This is effectively the main variable that determines the pacing of the mission.
+	float pressure_decay_rate_multiplier_in_time;
 
 	// This is the relative length of the map's bot path.
 	// This is used to help determine pressure decay.
 	// mvm_bigrock is used as a basis, with a length of 1.0f.
-	float bot_path_length = 1.0f;
+	float bot_path_length;
+
+	// This is the multiplier for the initial pressure per second of a TFBot.
+	float pps_factor_tfbot;
+
+	// This is the multiplier for the initial pressure per second of a Tank.
+	float pps_factor_tank;
 };
 
 #endif PRESSURE_MANAGER_H

@@ -206,6 +206,18 @@ int main(int argc, char** argv)
 					botgen.set_boss_chance(tofloat(argv[i]));
 					continue;
 				}
+				if (std::strcmp(argv[i], "-giantchanceincrease") == 0)
+				{
+					++i;
+					botgen.set_giant_chance_increase(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-bosschanceincrease") == 0)
+				{
+					++i;
+					botgen.set_boss_chance_increase(tofloat(argv[i]));
+					continue;
+				}
 				if (std::strcmp(argv[i], "-currencyspread") == 0)
 				{
 					++i;

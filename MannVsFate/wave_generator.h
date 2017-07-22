@@ -52,50 +52,51 @@ private:
 	popfile_writer writer;
 
 	// The current wave being generated.
-	int current_wave = 0;
+	int current_wave;
 
 	// -=- The following are a bunch of settings that end up at the top of the mission file. -=-
 
-	int respawn_wave_time = 2;
-	int event_popfile = 0;
-	bool fixed_respawn_wave_time = false;
-	int add_sentry_buster_when_damage_dealt_exceeds = 3000;
-	int add_sentry_buster_when_kill_count_exceeds = 15;
-	bool can_bots_attack_while_in_spawn_room = false;
+	int respawn_wave_time;
+	int event_popfile;
+	bool fixed_respawn_wave_time;
+	int add_sentry_buster_when_damage_dealt_exceeds;
+	int add_sentry_buster_when_kill_count_exceeds;
+	bool can_bots_attack_while_in_spawn_room;
 
 	// -=- Tuning values. -=-
 
 	// The way that currency is being distributed.
 	//currency_mode current_currency_mode = currency_mode::per_wave;
 	// Multiplier for the Sentry Buster cooldown.
-	float sentry_buster_cooldown = 1.0f; //35.0f;
+	float sentry_buster_cooldown;
 	// The name of the map to generate for.
-	std::string map_name = "mvm_bigrock";
+	std::string map_name;
 	// The name of the mission (excluding the map name).
-	std::string mission_name = "gen";
+	std::string mission_name;
 	// The total number of waves.
-	int waves = 9; // 7;
+	int waves;
 	// The maximum number of wavespawns per wave.
-	unsigned int max_wavespawns = 0;
+	unsigned int max_wavespawns;
 	// The maximum amount of time that a wave can last.
-	int max_time = 300;
-	// The maximum number of unique icons per wave. There can be 23 icons before the HUD starts to look stupid.
-	unsigned int max_icons = 23;
+	int max_time;
+	// The maximum number of unique icons per wave. There can be 23 icons before the HUD starts to look stupid without Support.
+	// With Support, there can be 22(?) icons.
+	unsigned int max_icons;
 	// The chance that a WaveSpawn will be a tank WaveSpawn.
-	float tank_chance = 0.04f;
+	float tank_chance;
 	// The maximum number of seconds that a TFBot WaveSpawn can last.
-	int max_tfbot_wavespawn_time = 120;
+	int max_tfbot_wavespawn_time;
 	// The maximum number of seconds that a Tank WaveSpawn can last.
-	int max_tank_wavespawn_time = 300;
+	int max_tank_wavespawn_time;
 	// Bitfield for randomly generated Wavespawn warning sounds.
 	// 0: Do not use randomized sounds at all.
 	// 1: Use randomized sounds for wavespawns.
 	// 2: Play a randomized sound every second.
-	int use_wacky_sounds = 0;
+	int use_wacky_sounds;
 	// The ratio of voiceover sounds to standard sounds for the randomized sounds.
-	float wacky_sound_vo_ratio = 0.1f;
+	float wacky_sound_vo_ratio;
 	// Whether this mission is a Doombot mission.
-	bool doombot_enabled = false;
+	bool doombot_enabled;
 };
 
 #endif

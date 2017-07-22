@@ -1,6 +1,26 @@
 #include "currency_manager.h"
 #include "rand_util.h"
 
+// Comment out the following line to prevent debug messages about currency pressure.
+//#define CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+
+#ifdef CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+#include <iostream>
+#endif
+
+currency_manager::currency_manager()
+	: current_currency(2000),
+	currency_pressure_multiplier(0.3f),
+	approximated_additional_currency(0),
+	wavespawn_currency_so_far(0),
+	currency_per_wave(1500),
+	currency_per_wave_spread(0),
+	currency_per_wavespawn(0),
+	currency_per_wavespawn_spread(0),
+	currency_per_wavespawn_limit(0),
+	currency_exponent(1.1f)
+{}
+
 void currency_manager::set_currency(int amount)
 {
 	current_currency = amount;
@@ -16,7 +36,7 @@ void currency_manager::add_currency(int amount)
 	current_currency += amount;
 }
 
-float currency_manager::get_currency_pressure_multiplier()
+float currency_manager::get_currency_pressure_multiplier() const
 {
 	return currency_pressure_multiplier;
 }
@@ -36,7 +56,7 @@ void currency_manager::set_currency_per_wavespawn(int in)
 	currency_per_wavespawn = in;
 }
 
-int currency_manager::get_currency_per_wavespawn()
+int currency_manager::get_currency_per_wavespawn() const
 {
 	return currency_per_wavespawn;
 }
@@ -128,4 +148,21 @@ void currency_manager::add_currency_from_wave(std::vector<wavespawn>& wavespawns
 			current_currency += true_additional_currency;
 		}
 	}
+}
+
+int currency_manager::get_multiplied_currency() const
+{
+	return current_currency * currency_pressure_multiplier;
+}
+
+float currency_manager::get_currency_pressure() const
+{
+	const float return_value = powf(get_multiplied_currency(), currency_exponent);
+#ifdef CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+	std::cout << "currency_manager current_currency: " << current_currency << std::endl;
+	std::cout << "currency_manager get_multiplied_currency: " << get_multiplied_currency() << std::endl;
+	std::cout << "currency_manager get_currency_pressure return_value: " << return_value << std::endl;
+	std::getchar();
+#endif
+	return return_value;
 }

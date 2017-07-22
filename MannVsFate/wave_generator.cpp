@@ -12,10 +12,30 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.1";
+const std::string wave_generator::version = "0.4.2";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen)
-	: mission_currency(cm), wave_pressure(pm), botgen(botgen)
+	: mission_currency(cm), wave_pressure(pm), botgen(botgen),
+	current_wave(0),
+	respawn_wave_time(2),
+	event_popfile(0),
+	fixed_respawn_wave_time(false),
+	add_sentry_buster_when_damage_dealt_exceeds(3000),
+	add_sentry_buster_when_kill_count_exceeds(15),
+	can_bots_attack_while_in_spawn_room(false),
+	sentry_buster_cooldown(1.0f),
+	map_name("mvm_bigrock"),
+	mission_name("gen"),
+	waves(9),
+	max_wavespawns(0),
+	max_time(300),
+	max_icons(23),
+	tank_chance(0.05f),
+	max_tfbot_wavespawn_time(120),
+	max_tank_wavespawn_time(300),
+	use_wacky_sounds(0),
+	wacky_sound_vo_ratio(0.1f),
+	doombot_enabled(false)
 {}
 
 void wave_generator::set_map_name(const std::string& in)
@@ -414,8 +434,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 			// Virtual representation of the WaveSpawn, to be used in pressure calculations.
 			virtual_wavespawn vws;
 
-			// Whether the WaveSpawn will be a Tank WaveSpawn or not.
+			// Randomly choose whether the WaveSpawn will be a Tank WaveSpawn or not.
 			const bool shall_be_tank = rand_chance(tank_chance) && tank_path_starting_points.size() != 0;
+			vws.is_tank = shall_be_tank;
 
 			// The amount of time the WaveSpawn can fill.
 			int time_left;
@@ -457,6 +478,13 @@ void wave_generator::generate_mission(int argc, char** argv)
 				if (rand_chance(0.2f))
 				{
 					speed *= 2.88f;
+				}
+
+				// If the wave is almost over...
+				if (max_time - t <= 20)
+				{
+					// Make the tank faster!
+					speed = std::min(speed * 2.88f, 500.0f);
 				}
 
 				// The faster the tank moves, the smaller its health should be to account for its speed.
@@ -753,6 +781,9 @@ void wave_generator::generate_mission(int argc, char** argv)
 		// Finalize the currency total so far now that the wave is over.
 		mission_currency.add_currency_from_wave(wavespawns);
 
+		// Allow the bot generator to perform some preparations for the next wave.
+		botgen.wave_ended();
+
 		// Time to write the wave to the disk.
 		writer.popfile_open(filename_wave.str());
 
@@ -794,14 +825,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 			int spawnbot_index = rand_int(0, spawnbots_doom.size());
 			ws.location = spawnbots_doom.at(spawnbot_index);
 			ws.enemy = std::make_unique<tfbot>(bot);
-
-			//virtual_wavespawn vws;
-
-			//vws.spawns_remaining = 0;
-			//vws.effective_pressure = 0.0f;
-			//vws.time_to_kill = 1.0f;
-			//vws.time_until_next_spawn = ws.wait_between_spawns;
-			//vws.wait_between_spawns = ws.wait_between_spawns;
 
 			writer.write_wavespawn(ws, spawnbots);
 		}

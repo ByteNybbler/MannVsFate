@@ -270,3 +270,17 @@ FUNE
 Humorous
 Outer
 Inner
+Soupy
+Male
+Female
+Androgynous
+Rich
+Poor
+Wealthy
+Affluent
+Infernal
+Hellish
+Angelic
+Demonic
+Weak
+Strong

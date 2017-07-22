@@ -29,8 +29,8 @@ Commander
 Master
 Mistress
 Officer
-Sam and
-You Are a
+Sam And
+You Are A
 King
 Emperor
 Empress
@@ -40,8 +40,8 @@ Monarch
 Your
 My
 Our
-You and
-Mom and Dad and
+You And
+Mom And Dad And
 The Black
 The White
 [...]
@@ -54,10 +54,12 @@ Uncle
 Aunt
 Sans Is
 Lady
-Game Theory: I'm a
-Game Theory: There's a
-Game Theory: You're a
+Game Theory: I'm A
+Game Theory: There's A
+Game Theory: You're A
 Game Theory: Sans Is
 Game Theory:
 BREAKING NEWS:
 Senator
+Steven's
+Phil's

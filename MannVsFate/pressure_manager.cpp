@@ -2,7 +2,15 @@
 #include "currency_manager.h"
 
 pressure_manager::pressure_manager(currency_manager& cm)
-	: mission_currency(cm)
+	: mission_currency(cm),
+	pressure(0.0f),
+	players(4),
+	base_pressure_decay_rate(600), // 700
+	pressure_decay_rate_multiplier(0.025f),
+	pressure_decay_rate_multiplier_in_time(3.0f),
+	bot_path_length(1.0f),
+	pps_factor_tfbot(1.0f),
+	pps_factor_tank(0.2f)
 {}
 
 float pressure_manager::get_pressure() const
@@ -49,8 +57,16 @@ void pressure_manager::step_through_time(int& t)
 {
 	// This loop will increment time until there's no pressure left.
 	// When there's no pressure left, we can either generate more WaveSpawns or end the wave.
-	while (pressure > 0.0f)
+
+	// In order to prevent multiple WaveSpawns from beginning at the same time, we can let at least one second pass.
+	//bool starting_loop = true;
+
+	while (pressure > 0.0f
+		//|| starting_loop
+		)
 	{
+		//starting_loop = false;
+
 		// Increment time.
 		++t;
 
@@ -140,8 +156,11 @@ void pressure_manager::step_through_time(int& t)
 		}
 
 		// Since time has passed, reduce the pressure.
+
+		//pressure -= pressure_decay_rate * pressure_decay_rate_multiplier_in_time;
+
 		unsigned int active_spawns = spawns.size();
-		pressure -= pressure_decay_rate * pressure_decay_rate_multiplier_in_time / (active_spawns + 1);
+		pressure -= pressure_decay_rate * pressure_decay_rate_multiplier_in_time / (active_spawns * 0.2f + 1);
 	}
 }
 
@@ -153,19 +172,37 @@ void pressure_manager::add_virtual_wavespawn(const virtual_wavespawn& ws)
 
 void pressure_manager::add_virtual_spawn(const virtual_wavespawn& ws)
 {
+	// Perform some preliminary calculations for the virtual spawn.
 	const int rounded_time_to_kill = static_cast<int>(std::ceil(ws.time_to_kill));
 	const float pressure_per_second = ws.effective_pressure / rounded_time_to_kill;
-	spawns.emplace_back(
-		rounded_time_to_kill,
-		pressure_per_second,
-		ws.currency_per_spawn
-	);
-	pressure += pressure_per_second;
+
+	// No pressure per second per second.
+
+	//virtual_spawn spawn(rounded_time_to_kill, pressure_per_second, ws.currency_per_spawn);
+
+	// Pressure per second per second is active.
+
+	float pps_multiplier;
+	if (ws.is_tank)
+	{
+		pps_multiplier = pps_factor_tank;
+	}
+	else
+	{
+		pps_multiplier = pps_factor_tfbot;
+	}
+
+	virtual_spawn spawn(rounded_time_to_kill, pressure_per_second * pps_multiplier, ws.effective_pressure, ws.currency_per_spawn);
+
+	// Add the spawn to the spawns collection.
+	spawns.emplace_back(spawn);
+
+	// Add the initial pressure of the spawn.
+	pressure += spawn.get_pressure_per_second();
 }
 
 void pressure_manager::calculate_pressure_decay_rate()
 {
-	pressure_decay_rate = (mission_currency.get_currency() *
-		mission_currency.get_currency_pressure_multiplier() + base_pressure_decay_rate)
+	pressure_decay_rate = (mission_currency.get_currency_pressure() + base_pressure_decay_rate)
 		* players * pressure_decay_rate_multiplier * bot_path_length;
 }

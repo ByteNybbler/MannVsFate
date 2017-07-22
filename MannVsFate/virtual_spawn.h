@@ -6,12 +6,17 @@
 class virtual_spawn
 {
 public:
-	// Constructor.
-	virtual_spawn(int time_to_kill, float pressure_per_second, int currency);
-	// Decrement the time.
+	// Constructors.
+
+	virtual_spawn(int time_to_kill, float pressure_per_second, int currency, float pressure_per_second_per_second = 0.0f);
+	// Calculates the pressure_per_second_per_second automatically.
+	virtual_spawn(int time_to_kill, float initial_pressure_per_second, float total_pressure, int currency);
+
+	// Decrement the time and change the pressure per second (if applicable).
 	void decrement_time();
 	// Returns true if the virtual spawn is dead (i.e. there is no time remaining).
 	bool is_dead();
+
 	// Accessors.
 	int get_currency() const;
 	float get_pressure_per_second() const;
@@ -21,6 +26,8 @@ private:
 	int seconds_remaining;
 	// How much pressure is given per second.
 	float pressure_per_second;
+	// How much the pressure per second increases... per second.
+	float pressure_per_second_per_second;
 	// How much currency is contained by this enemy.
 	int currency;
 };

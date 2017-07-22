@@ -6,7 +6,22 @@
 
 bot_generator::bot_generator(const pressure_manager& pm)
 	: wave_pressure(pm),
-	random_names("data/names/verbs.txt", "data/names/titles.txt", "data/names/adjectives.txt", "data/names/nouns.txt")
+	random_names("data/names/verbs.txt", "data/names/titles.txt", "data/names/adjectives.txt", "data/names/nouns.txt"),
+	giant_chance(0.1f),
+	boss_chance(0.15f),
+	giant_chance_increase(0.05f),
+	boss_chance_increase(0.01f),
+	engies_enabled(true),
+	generating_doombot(false),
+	possible_classes{player_class::scout,
+	player_class::soldier,
+	player_class::pyro,
+	player_class::demoman,
+	player_class::heavyweapons,
+	player_class::engineer,
+	player_class::medic,
+	player_class::sniper,
+	player_class::spy}
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
@@ -22,6 +37,16 @@ void bot_generator::set_giant_chance(float in)
 void bot_generator::set_boss_chance(float in)
 {
 	boss_chance = in;
+}
+
+void bot_generator::set_giant_chance_increase(float in)
+{
+	giant_chance_increase = in;
+}
+
+void bot_generator::set_boss_chance_increase(float in)
+{
+	boss_chance_increase = in;
 }
 
 void bot_generator::set_engies_enabled(bool in)
@@ -41,7 +66,7 @@ float bot_generator::get_scale_mega()
 
 void bot_generator::set_scale_doom(float in)
 {
-	scale_mega = in;
+	scale_doom = in;
 }
 
 float bot_generator::get_scale_doom()
@@ -449,6 +474,9 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			bot.attributes.emplace_back("AlwaysFireWeapon");
 			bot_meta.is_always_fire_weapon = true;
+			// Snipers are able to hit players from basically anywhere with their rifles.
+			// This fact combined with their obvious aimbot makes them very deadly.
+			bot_meta.pressure *= 1.5f;
 		}
 	}
 
@@ -551,9 +579,9 @@ tfbot_meta bot_generator::generate_bot()
 			}
 		}
 	}
-	if ((rand_chance(0.1f * chance_mult) || bot_meta.is_doom) && !bot_meta.is_always_fire_weapon)
+	if ((rand_chance(0.1f * chance_mult) || bot_meta.is_doom) && !bot_meta.is_always_fire_weapon && !is_buff_soldier)
 	{
-		if (rand_chance(0.4f) || is_buff_soldier)
+		if (rand_chance(0.4f))
 		{
 			bot.attributes.emplace_back("HoldFireUntilFullReload");
 			//bot_meta.pressure *= 1.1f;
@@ -716,7 +744,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (rand_chance(0.08f * chance_mult) || bot_meta.is_doom)
 	{
 		bot.attributes.emplace_back("AutoJump");
-		bot.auto_jump_min = rand_float(0.1f, 5.0f);
+		bot.auto_jump_min = rand_float(0.1f, 5.0f); // (0.1f, 5.0f);
 		if (rand_chance(0.5f))
 		{
 			bot.auto_jump_max = bot.auto_jump_min;
@@ -747,6 +775,14 @@ tfbot_meta bot_generator::generate_bot()
 				if (rand_chance(0.5f))
 				{
 					bot.items.emplace_back("The B.A.S.E. Jumper");
+
+					// If necessary, make the bot jump more often. Otherwise, it will take FOREVER to get out of spawn.
+					if (bot.auto_jump_min < 1.0f)
+					{
+						const float difference = 1.0f - bot.auto_jump_min;
+						bot.auto_jump_min += difference;
+						bot.auto_jump_max += difference;
+					}
 
 					bot_meta.pressure *= ((increased_jump_height - 1.0f) * 0.7f) + 1.0f;
 				}
@@ -977,6 +1013,11 @@ tfbot_meta bot_generator::generate_bot()
 
 	if (item_class == player_class::demoman)
 	{
+		// Having projectile overrides on Demomen that have sticky launchers causes
+		// crashes, even if it's not the weapon that they're restricted to?
+		// For now, all Demomen are blacklisted from getting projectile overrides.
+		projectile_override_crash_risk = true;
+		/*
 		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
 		{
 			if (primary == "The Loose Cannon")
@@ -988,6 +1029,7 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			projectile_override_crash_risk = true;
 		}
+		*/
 	}
 	if (item_class == player_class::heavyweapons)
 	{
@@ -1123,14 +1165,6 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= 50.0f;
 	}
 	*/
-	/*
-	if (rand_chance(0.02f))
-	{
-		bot.character_attributes.emplace_back("use large smoke explosion", 1);
-		bot_meta.pressure *= 1.2f;
-	}
-	else
-	*/
 	if (rand_chance(0.05f * chance_mult))
 	{
 		if (has_explosives)
@@ -1138,7 +1172,7 @@ tfbot_meta bot_generator::generate_bot()
 			float rad = rand_float(0.1f, 5.0f);
 			bot.character_attributes.emplace_back("Blast radius increased", rad);
 			bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
-			if (rad > 1.0f)
+			if (rad > 4.0f)
 			{
 				bot.character_attributes.emplace_back("use large smoke explosion", 1);
 			}
@@ -1256,7 +1290,7 @@ tfbot_meta bot_generator::generate_bot()
 	std::vector<std::string> skills({ "Easy", "Normal", "Hard", "Expert" });
 	int skill_index = rand_int(0, skills.size());
 	bot.skill = skills.at(skill_index);
-	float skill_pressure = (skill_index * 0.5f) + 1.0f;
+	float skill_pressure = (skill_index * 0.5f) + 1.0f; // skill_index * 0.5f
 	bot_meta.pressure *= skill_pressure;
 
 	if (bot_meta.damage_bonus >= 1.0f)
@@ -1435,4 +1469,10 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 			break;
 		}
 	}
+}
+
+void bot_generator::wave_ended()
+{
+	giant_chance += giant_chance_increase;
+	boss_chance += boss_chance_increase;
 }

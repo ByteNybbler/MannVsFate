@@ -27,7 +27,7 @@ std::string random_name_generator::get_random_name() const
 	if (rand_int(0, 2) == 0)
 	{
 		verb = lr.get_random(verbs) + ' ';
-		title = "the ";
+		title = "The ";
 	}
 	if (rand_int(0, 2) == 0)
 	{

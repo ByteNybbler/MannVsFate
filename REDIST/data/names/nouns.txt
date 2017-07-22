@@ -385,8 +385,14 @@ Art
 Music
 Song
 Track
-Photography
+Photo
 Photograph
+Photography
+Photon
+Electron
+Proton
+Neutron
+Particle
 Life
 Afterlife
 Walt Disney
@@ -477,6 +483,7 @@ Bigot
 Tumblr
 SJW
 Loli
+Lolicon
 Comic
 Webcomic
 Plot
@@ -577,3 +584,27 @@ Outer Space
 Belly
 Stomach
 Bozo
+RED
+BLU
+Soup
+Document
+Text
+Appearance
+Sample
+Holocaust
+Mario
+Luigi
+Peace
+Frog
+Pepe
+Chin
+Trick
+Chin Trick
+Wall
+King
+Queen
+Kingdom
+Empire
+Prank
+Ruse
+Jokester

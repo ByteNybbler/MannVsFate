@@ -16,6 +16,8 @@ struct virtual_wavespawn
 	int spawns_remaining;
 	// How much currency is given per spawn.
 	int currency_per_spawn;
+	// Whether the WaveSpawn is for Tanks or not.
+	bool is_tank;
 };
 
 #endif
