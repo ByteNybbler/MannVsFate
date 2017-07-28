@@ -1,4 +1,4 @@
-TF_WEAPON_BUILDER_SPY
+tf_weapon_sapper
 The Red-Tape Recorder
 The Ap-Sap
 Festive Sapper

@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="bot_generator.cpp" />
     <ClCompile Include="currency_manager.cpp" />
+    <ClCompile Include="json_reader_weapon.cpp" />
     <ClCompile Include="list_reader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player_class.cpp" />
@@ -131,11 +132,14 @@
     <ClCompile Include="rand_util.cpp" />
     <ClCompile Include="tfbot_meta.cpp" />
     <ClCompile Include="wave_generator.cpp" />
+    <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="weapon_restrictions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_generator.h" />
     <ClInclude Include="currency_manager.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="json_reader_weapon.h" />
     <ClInclude Include="list_reader.h" />
     <ClInclude Include="mission.h" />
     <ClInclude Include="player_class.h" />
@@ -151,6 +155,8 @@
     <ClInclude Include="virtual_wavespawn.h" />
     <ClInclude Include="wavespawn.h" />
     <ClInclude Include="wave_generator.h" />
+    <ClInclude Include="weapon.h" />
+    <ClInclude Include="weapon_restrictions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

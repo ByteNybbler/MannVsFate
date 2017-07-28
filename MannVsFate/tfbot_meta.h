@@ -4,10 +4,16 @@
 #define TFBOT_META_H
 
 #include "tfbot.h"
+#include "weapon.h"
+
+class json_reader_weapon;
 
 class tfbot_meta
 {
 public:
+	// Constructor.
+	tfbot_meta();
+
 	// Access the bot.
 	tfbot& get_bot();
 
@@ -40,32 +46,39 @@ public:
 	// The pressure is muted in the calculation.
 	float calculate_muted_time_to_kill(float recip_pressure_decay_rate) const;
 
+	// Add a weapon to the bot and return the weapon.
+	weapon& add_weapon(const std::string& weapon_name, const json_reader_weapon& weapon_reader);
+
 	// This is the multiplier for calculating the bot's threat level by multiplying its health.
 	// The multiplier is adjusted based on a variety of factors.
 	// A higher multiplier means the bot is harder to deal with.
-	float pressure = 1.0f;
+	float pressure;
 	// The move speed bonus of the bot.
-	float move_speed_bonus = 1.0f;
+	float move_speed_bonus;
 	// The damage bonus of the bot.
-	float damage_bonus = 1.0f;
+	float damage_bonus;
 	// Whether the bot is a giant.
-	bool is_giant = false;
+	bool is_giant;
 	// Whether the bot is a boss (i.e. unusually strong giant).
-	bool is_boss = false;
+	bool is_boss;
 	// Whether the bot is a doombot (i.e. enormous giant).
-	bool is_doom = false;
+	bool is_doom;
 	// Whether the bot cannot become a boss.
-	bool perma_small = false;
+	bool perma_small;
 	// Whether the bot has the AlwaysCrit attribute.
-	bool is_always_crit = false;
+	bool is_always_crit;
 	// Whether the bot has the AlwaysFireWeapon attribute.
-	bool is_always_fire_weapon = false;
+	bool is_always_fire_weapon;
+	// Whether a projectile override may cause a crash on this bot.
+	bool projectile_override_crash_risk;
 
 private:
 	// The bot being wrapped.
 	tfbot bot;
 	// The base class icon of the bot, not including the giant or crits components.
-	std::string base_class_icon = "";
+	std::string base_class_icon;
+	// A vector of the bot's weapons.
+	std::vector<weapon> weapons;
 };
 
 #endif // TFBOT_META_H

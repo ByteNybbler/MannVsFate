@@ -1,4 +1,4 @@
-TF_WEAPON_PISTOL
+tf_weapon_pistol
 The Wrangler
 TTG Max Pistol
 The Short Circuit

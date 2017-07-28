@@ -1,4 +1,5 @@
-TF_WEAPON_GRENADELAUNCHER
+tf_weapon_grenadelauncher
+Ali Baba's Wee Booties
 The Loch-n-Load
 The Bootlegger
 The Loose Cannon

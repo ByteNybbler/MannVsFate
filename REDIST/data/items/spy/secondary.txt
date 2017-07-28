@@ -1,4 +1,4 @@
-TF_WEAPON_REVOLVER
+tf_weapon_revolver
 The Ambassador
 TTG Sam Revolver
 L'Etranger

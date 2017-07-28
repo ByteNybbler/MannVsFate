@@ -1,4 +1,4 @@
-TF_WEAPON_WRENCH
+tf_weapon_wrench
 The Gunslinger
 The Southern Hospitality
 Golden Wrench

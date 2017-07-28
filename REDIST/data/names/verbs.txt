@@ -139,6 +139,8 @@ Oh No!
 Oh!
 Wow!
 Look!
+Caution!
+Beware!
 [...]
 Um...
 Uh...
@@ -211,3 +213,13 @@ Sampling
 Texting
 Dating
 Tiring
+Becoming
+Translating
+Transmitting
+Planting
+Planning
+Messaging
+Massaging
+Teaching
+Educating
+Curing

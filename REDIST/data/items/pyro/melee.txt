@@ -1,4 +1,4 @@
-TF_WEAPON_FIREAXE
+tf_weapon_fireaxe
 The Neon Annihilator
 The Axtinguisher
 The Powerjack

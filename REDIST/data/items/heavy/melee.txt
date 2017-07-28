@@ -1,4 +1,4 @@
-TF_WEAPON_FISTS
+tf_weapon_fists
 Gloves of Running Urgently
 The Killing Gloves of Boxing
 Frying Pan

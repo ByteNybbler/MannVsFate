@@ -3,8 +3,10 @@
 
 #include "player_class.h"
 #include "spawnable.h"
+#include "weapon_restrictions.h"
 #include <string>
-#include <vector>
+#include <unordered_set>
+#include <map>
 
 struct tfbot : public spawnable
 {
@@ -19,13 +21,14 @@ struct tfbot : public spawnable
 	float scale = -1.0f;
 	std::string name = "ROBOT!!!";
 	std::string skill = "Easy";
-	std::string weapon_restrictions = "";
+	weapon_restrictions weapon_restriction = weapon_restrictions::none;
 	float max_vision_range = -1.0f;
-	std::vector<std::string> attributes;
-	std::vector<std::pair<std::string, float>> character_attributes;
+	std::unordered_set<std::string> attributes;
+	std::map<std::string, float> character_attributes;
 	float auto_jump_min = 0.0f;
 	float auto_jump_max = 0.0f;
-	std::vector<std::string> items;
+	std::unordered_set<std::string> items;
+	std::map<std::string, std::map<std::string, float>> item_attributes;
 };
 
 #endif

@@ -1,4 +1,4 @@
-TF_WEAPON_FLAMETHROWER
+tf_weapon_flamethrower
 The Backburner
 The Degreaser
 The Phlogistinator

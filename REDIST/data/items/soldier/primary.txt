@@ -1,4 +1,4 @@
-TF_WEAPON_ROCKETLAUNCHER
+tf_weapon_rocketlauncher
 The Black Box
 The Direct Hit
 Rocket Jumper

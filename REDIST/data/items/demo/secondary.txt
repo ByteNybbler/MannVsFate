@@ -1,4 +1,4 @@
-TF_WEAPON_PIPEBOMBLAUNCHER
+tf_weapon_pipebomblauncher
 The Scottish Resistance
 The Chargin' Targe
 Stickybomb Jumper

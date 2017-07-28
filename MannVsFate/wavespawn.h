@@ -30,7 +30,7 @@ struct wavespawn
 
 	enum class support_type
 	{
-		not,
+		not_support,
 		unlimited,
 		limited
 	};
@@ -42,7 +42,7 @@ struct wavespawn
 	int spawn_count = 1;
 	float wait_before_starting = 0.0f;
 	float wait_between_spawns = 0.0f;
-	support_type support = support_type::not;
+	support_type support = support_type::not_support;
 	std::string first_spawn_warning_sound = "";
 	int total_currency = 0;
 

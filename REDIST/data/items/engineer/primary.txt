@@ -1,4 +1,4 @@
-TF_WEAPON_SHOTGUN_PRIMARY
+tf_weapon_shotgun_primary
 The Frontier Justice
 The Widowmaker
 The Pomson 6000

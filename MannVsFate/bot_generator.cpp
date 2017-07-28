@@ -1,8 +1,14 @@
 #include "bot_generator.h"
 #include "rand_util.h"
 #include "pressure_manager.h"
-#include <iostream>
 #include <algorithm>
+
+// Set to 0 to disable debug messages for the bot generator.
+#define BOT_GENERATOR_DEBUG 0
+
+#if BOT_GENERATOR_DEBUG
+#include <iostream>
+#endif
 
 bot_generator::bot_generator(const pressure_manager& pm)
 	: wave_pressure(pm),
@@ -81,6 +87,10 @@ void bot_generator::set_generating_doombot(bool in)
 
 tfbot_meta bot_generator::generate_bot()
 {
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Started generating new TFBot." << std::endl;
+#endif
+
 	// Let's generate a random TFBot.
 	tfbot_meta bot_meta;
 	tfbot& bot = bot_meta.get_bot();
@@ -118,34 +128,9 @@ tfbot_meta bot_generator::generate_bot()
 		possible_classes.emplace_back(player_class::spy);
 	}
 
-	// Choose a weapon restriction.
-	//if (bot.cl != player_class::engineer)
-	//{
-	// Restricting Spies' weapons may cause them to not be able to sap?
-	if (!bot_meta.is_doom && bot.cl != player_class::spy)
-	{
-		if (rand_chance(0.3f))
-		{
-			std::vector<std::string> restrictions;
-
-			// Spies do not have primary weapons.
-			if (bot.cl != player_class::spy)
-			{
-				restrictions.emplace_back("PrimaryOnly");
-			}
-			restrictions.emplace_back("SecondaryOnly");
-			restrictions.emplace_back("MeleeOnly");
-			bot.weapon_restrictions = restrictions.at(rand_int(0, restrictions.size()));
-		}
-	}
-	//}
-
-	/*
-	if (rand_chance(0.1f))
-	{
-	item_class = possible_classes.at(rand_int(0, possible_classes.size()));
-	}
-	*/
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Chose bot class." << std::endl;
+#endif
 
 	// Set the bot's health based on its class.
 	bot.health = get_class_default_health(bot.cl);
@@ -157,348 +142,489 @@ tfbot_meta bot_generator::generate_bot()
 	// Give the bot items here, prior to any chance of becoming a giant!
 	list_reader item_reader;
 	const std::string initial_path = "data/items/" + item_class_icon + '/';
-	const std::string initial_path_bot = "data/items/" + bot.class_icon + '/';
+	//const std::string initial_path_bot = "data/items/" + bot.class_icon + '/';
 
 	const std::string file_secondary = initial_path + "secondary.txt";
 	const std::string file_melee = initial_path + "melee.txt";
 	item_reader.load(file_secondary);
 	item_reader.load(file_melee);
-	const std::string secondary = item_reader.get_random(file_secondary);
-	const std::string melee = item_reader.get_random(file_melee);
-	bot.items.emplace_back(secondary);
-	bot.items.emplace_back(melee);
+	const std::string secondary_name = item_reader.get_random(file_secondary);
+	const std::string melee_name = item_reader.get_random(file_melee);
+	//bot.items.emplace_back(secondary);
+	//bot.items.emplace_back(melee);
+	weapon& secondary = bot_meta.add_weapon(secondary_name, weapon_reader);
+	weapon& melee = bot_meta.add_weapon(melee_name, weapon_reader);
 
-	std::string primary;
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Loaded and added secondary and melee weapons." << std::endl;
+	std::cout << "Number of names owned by secondary: " << secondary.names.size() << std::endl;
+	std::cout << "First name of secondary: " << secondary.first_name() << std::endl;
+#endif
 
-	if (bot.cl == player_class::spy)
+	randomize_weapon(secondary, bot_meta);
+	randomize_weapon(melee, bot_meta);
+
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Finished randomizing secondary and melee weapons." << std::endl;
+#endif
+
+	if (item_class == player_class::spy)
 	{
 		// Spies have some extra weapon slots.
 		// pda2 = Cloaks
 		// building = Sappers
 
-		const std::string file_pda2 = initial_path_bot + "pda2.txt";
+		const std::string file_pda2 = initial_path + "pda2.txt";
 		item_reader.load(file_pda2);
-		const std::string pda2 = item_reader.get_random(file_pda2);
-		bot.items.emplace_back(pda2);
+		const std::string pda2_name = item_reader.get_random(file_pda2);
+		//bot.items.emplace_back(pda2);
+		weapon& pda2 = bot_meta.add_weapon(pda2_name, weapon_reader);
 
 		// Changing a Spy's sapper makes them incapable of sapping for some reason.
 		// At this point in time, sapper swaps are disabled.
 		/*
-		const std::string file_building = initial_path_bot + "building.txt";
+		const std::string file_building = initial_path + "building.txt";
 		item_reader.load(file_building);
 		const std::string building = item_reader.get_random(file_building);
 		bot.items.emplace_back(building);
 		*/
+
+		if (melee.is_a("Conniver's Kunai"))
+		{
+			bot_meta.set_base_class_icon("spy_kunai");
+		}
 	}
-	else if (item_class != player_class::spy)
+	else
 	{
 		// Spies do not have primary weapons.
 
 		const std::string file_primary = initial_path + "primary.txt";
 		item_reader.load(file_primary);
-		primary = item_reader.get_random(file_primary);
-		bot.items.emplace_back(primary);
-	}
-	else
-	{
-		const std::string file_primary = initial_path_bot + "primary.txt";
-		item_reader.load(file_primary);
-		primary = item_reader.get_random(file_primary);
-		bot.items.emplace_back(primary);
-	}
+		const std::string primary_name = item_reader.get_random(file_primary);
+		//bot.items.emplace_back(primary);
+		weapon& primary = bot_meta.add_weapon(primary_name, weapon_reader);
 
-	bool is_buff_soldier = false;
-	bool has_explosives = false;
-	bool demo_can_charge = false;
-	bool does_fire_damage = false;
-	// Only override projectiles if there's no crash risk.
-	bool projectile_override_crash_risk = false;
+		randomize_weapon(primary, bot_meta);
 
-	// Choose a class icon based on the weapons chosen.
-	switch (bot.cl)
-	{
-	case player_class::demoman:
-		if (bot.weapon_restrictions == "MeleeOnly")
+		// Choose a weapon restriction.
+		// Restricting Spies' weapons may cause them to not be able to sap buildings.
+		if (!bot_meta.is_doom)
 		{
-			if (melee == "The Eyelander" ||
-				melee == "The Scotsman's Skullcutter" ||
-				melee == "The Horseless Headless Horseman's Headtaker" ||
-				melee == "The Claidheamohmor" ||
-				melee == "The Persian Persuader" ||
-				melee == "Festive Eyelander")
-			{
-				bot_meta.set_base_class_icon("demoknight");
-			}
-			else if (melee == "The Half-Zatoichi")
-			{
-				bot_meta.set_base_class_icon("demoknight_samurai");
-			}
-		}
-		else if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
-		{
-			if (primary == "The Loose Cannon")
-			{
-				// Bots don't know how to use the loose cannon.
-				bot_meta.pressure *= 0.7f;
-			}
-			if (primary != "The Bootlegger")
-			{
-				has_explosives = true;
-			}
-		}
-		if (secondary == "The Chargin' Targe" ||
-			secondary == "The Splendid Screen" ||
-			secondary == "The Tide Turner")
-		{
-			demo_can_charge = true;
-		}
-		break;
+#if BOT_GENERATOR_DEBUG
+			std::cout << "Choosing weapon restriction." << std::endl;
+#endif
 
-	case player_class::heavyweapons:
-		if (bot.weapon_restrictions == "MeleeOnly")
-		{
-			if (melee == "The Killing Gloves of Boxing")
+			if (rand_chance(0.3f))
 			{
-				bot_meta.set_base_class_icon("heavy_champ");
+				std::vector<weapon_restrictions> restrictions;
+
+				// Spies do not have primary weapons.
+				if (bot.cl != player_class::spy)
+				{
+					restrictions.emplace_back(weapon_restrictions::primary);
+				}
+				restrictions.emplace_back(weapon_restrictions::secondary);
+				restrictions.emplace_back(weapon_restrictions::melee);
+				bot.weapon_restriction = restrictions.at(rand_int(0, restrictions.size()));
+
+				if (bot.weapon_restriction == weapon_restrictions::secondary)
+				{
+					if (!secondary.can_be_switched_to)
+					{
+						// Choose a weapon restriction that's NOT SecondaryOnly.
+						restrictions.erase(std::remove(restrictions.begin(), restrictions.end(),
+							weapon_restrictions::secondary), restrictions.end());
+						bot.weapon_restriction = restrictions.at(rand_int(0, restrictions.size()));
+					}
+				}
+				if (bot.weapon_restriction == weapon_restrictions::primary)
+				{
+					if (!primary.can_be_switched_to)
+					{
+						// Choose a weapon restriction that's NOT SecondaryOnly.
+						restrictions.erase(std::remove(restrictions.begin(), restrictions.end(),
+							weapon_restrictions::primary), restrictions.end());
+						bot.weapon_restriction = restrictions.at(rand_int(0, restrictions.size()));
+				}
+				// Check secondary again in case primary was hit first.
+				if (bot.weapon_restriction == weapon_restrictions::secondary)
+				{
+					if (!secondary.can_be_switched_to)
+					{
+						// Choose a weapon restriction that's NOT SecondaryOnly.
+						restrictions.erase(std::remove(restrictions.begin(), restrictions.end(),
+							weapon_restrictions::secondary), restrictions.end());
+						bot.weapon_restriction = restrictions.at(rand_int(0, restrictions.size()));
+					}
+				}
 			}
-			else if (melee == "Gloves of Running Urgently" ||
-				melee == "Festive Gloves of Running Urgently")
-			{
-				bot_meta.set_base_class_icon("heavy_gru");
 			}
-			else if (melee == "The Holiday Punch")
-			{
-				bot.attributes.emplace_back("AlwaysCrit");
-				bot_meta.is_always_crit = true;
-				bot_meta.set_base_class_icon("heavy_mittens");
-			}
-			else if (melee == "Fists of Steel")
-			{
-				bot_meta.set_base_class_icon("heavy_steelfist");
-			}
+
+#if BOT_GENERATOR_DEBUG
+			std::cout << "Chose weapon restriction." << std::endl;
+#endif
 		}
-		else if (bot.weapon_restrictions == "SecondaryOnly")
+
+		if (bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::primary)
 		{
-			if (secondary == "TF_WEAPON_SHOTGUN_PRIMARY" ||
-				secondary == "The Family Business" ||
-				secondary == "Festive Shotgun 2014" ||
-				secondary == "Panic Attack Shotgun")
-			{
-				bot_meta.set_base_class_icon("heavy_shotgun");
-			}
-		}
-		else if (bot.weapon_restrictions != "MeleeOnly")
-		{
-			if (primary == "The Huo Long Heatmaker")
+			if (primary.is_a("The Huo Long Heatmaker"))
 			{
 				bot_meta.set_base_class_icon("heavy_heater");
 			}
-		}
-		break;
-
-	case player_class::pyro:
-		if (bot.weapon_restrictions == "SecondaryOnly")
-		{
-			if (secondary == "The Flare Gun" ||
-				secondary == "The Scorch Shot" ||
-				secondary == "Festive Flare Gun" ||
-				secondary == "The Detonator" ||
-				secondary == "The Manmelter")
-			{
-				bot_meta.set_base_class_icon("pyro_flare");
-				if (secondary == "The Detonator")
-				{
-					has_explosives = true;
-				}
-			}
-		}
-		if (bot.weapon_restrictions != "MeleeOnly")
-		{
-			does_fire_damage = true;
-		}
-		break;
-
-	case player_class::scout:
-		if (bot.weapon_restrictions == "MeleeOnly")
-		{
-			if (melee == "TF_WEAPON_BAT" ||
-				melee == "Festive Bat 2011")
-			{
-				bot_meta.set_base_class_icon("scout_bat");
-			}
-			else if (melee == "The Sandman")
-			{
-				bot_meta.set_base_class_icon("scout_stun");
-			}
-			else if (melee == "The Holy Mackerel")
-			{
-				bot_meta.set_base_class_icon("scout_fish");
-			}
-		}
-		else
-		{
-			if (primary == "The Shortstop")
+			else if (primary.is_a("The Shortstop"))
 			{
 				bot_meta.set_base_class_icon("scout_shortstop");
 			}
-		}
-		if (secondary == "Bonk! Atomic Punch" || secondary == "Festive Bonk 2014")
-		{
-			bot_meta.set_base_class_icon("scout_bonk");
-			bot.items.emplace_back("Bonk Helm");
-			bot_meta.pressure *= 4.0f;
-			// Make sure that we can never have giant Bonk Scouts...
-			bot_meta.perma_small = true;
-		}
-		break;
-
-	case player_class::sniper:
-		if (secondary == "The Cozy Camper")
-		{
-			bot_meta.set_base_class_icon("sniper_camper");
-		}
-		if (bot.weapon_restrictions == "SecondaryOnly")
-		{
-			if (secondary == "Jarate" || secondary == "Festive Jarate")
-			{
-				bot_meta.set_base_class_icon("sniper_jarate");
-			}
-		}
-		else
-		{
-			if (primary == "The Huntsman" ||
-				primary == "Festive Huntsman")
+			else if (primary.is_a("The Huntsman"))
 			{
 				bot_meta.set_base_class_icon("sniper_bow");
 			}
-			else if (primary == "The Sydney Sleeper")
+			else if (primary.is_a("The Sydney Sleeper"))
 			{
 				bot_meta.set_base_class_icon("sniper_sydneysleeper");
 			}
-			else if (primary == "The Classic" || primary == "The Machina")
-			{
-				// Sniper bots don't know how to fire The Classic and The Machina.
-				// If they're using that weapon, that effectively makes them wimps.
-				bot_meta.pressure *= 0.7f;
-			}
-		}
-		break;
-
-	case player_class::soldier:
-		if (bot.weapon_restrictions != "MeleeOnly")
-		{
-			if (bot.weapon_restrictions != "SecondaryOnly")
-			{
-				has_explosives = true;
-			}
-			if (primary == "The Black Box" ||
-				primary == "Festive Black Box")
+			else if (primary.is_a("The Black Box"))
 			{
 				bot_meta.set_base_class_icon("soldier_blackbox");
 			}
-			else if (primary == "The Liberty Launcher")
+			else if (primary.is_a("The Liberty Launcher"))
 			{
 				bot_meta.set_base_class_icon("soldier_libertylauncher");
 			}
-		}
-		if (secondary == "The Battalion's Backup")
-		{
-			bot_meta.set_base_class_icon("soldier_backup");
-			is_buff_soldier = true;
-		}
-		else if (secondary == "The Buff Banner" ||
-			secondary == "Festive Buff Banner")
-		{
-			bot_meta.set_base_class_icon("soldier_buff");
-			is_buff_soldier = true;
-		}
-		else if (secondary == "The Concheror")
-		{
-			bot_meta.set_base_class_icon("soldier_conch");
-			is_buff_soldier = true;
-		}
-		break;
 
-	case player_class::medic:
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
-		{
-			/*
-			if (rand_chance(0.2f * chance_mult))
+			if (primary.bots_too_dumb_to_use)
 			{
-			bot.attributes.emplace_back("ProjectileShield");
-			bot.pressure *= 3.0f;
+				bot_meta.pressure *= 0.7f;
 			}
-			*/
-			if (secondary == "The Vaccinator MVM")
+			if (primary.is_a("tf_weapon_sniperrifle"))
 			{
-				const int type = rand_int(0, 3);
-				switch (type)
+				bot.attributes.emplace("AlwaysFireWeapon");
+				bot_meta.is_always_fire_weapon = true;
+				// Snipers are able to hit players from basically anywhere with their rifles.
+				// This fact combined with their obvious aimbot makes them very deadly.
+				if (!primary.bots_too_dumb_to_use)
 				{
-				case 0:
-					bot.attributes.emplace_back("VaccinatorBullets");
-					bot_meta.set_base_class_icon("medic_vaccinator_bullet");
-					break;
-				case 1:
-					bot.attributes.emplace_back("VaccinatorBlast");
-					bot_meta.set_base_class_icon("medic_vaccinator_blast");
-					break;
-				case 2:
-					bot.attributes.emplace_back("VaccinatorFire");
-					bot_meta.set_base_class_icon("medic_vaccinator_fire");
-					break;
+					bot_meta.pressure *= 1.5f;
 				}
-				//bot_meta.pressure *= 1.1f;
+			}
+			if (primary.is_a("tf_weapon_flamethrower"))
+			{
+				if (rand_chance(0.1f * chance_mult))
+				{
+					float r = rand_float(-10.0f, 10.0f);
+					if (rand_chance(0.1f * chance_mult))
+					{
+						r *= 100.0f;
+					}
+					bot.character_attributes["airblast pushback scale"] = r;
+				}
+				if (rand_chance(0.1f * chance_mult))
+				{
+					float r = rand_float(-10.0f, 10.0f);
+					if (rand_chance(0.1f * chance_mult))
+					{
+						r *= 100.0f;
+					}
+					bot.character_attributes["airblast vertical pushback scale"] = r;
+				}
+				if (rand_chance(0.1f * chance_mult))
+				{
+					float r = rand_float(0.1f, 10.0f);
+					if (rand_chance(0.1f * chance_mult))
+					{
+						r *= 100.0f;
+					}
+					bot.character_attributes["deflection size multiplier"] = r;
+					//bot_meta.pressure *= 1.3f;
+				}
+			}
+			if (primary.is_a("tf_weapon_minigun"))
+			{
+				if (rand_chance(0.1f))
+				{
+					bot.character_attributes["attack projectiles"] = 1;
+					bot_meta.set_base_class_icon("heavy_deflector");
+					bot_meta.pressure *= 1.5f;
+				}
 			}
 		}
-		break;
+	}
 
-	case player_class::spy:
-		if (melee == "Conniver's Kunai")
+	if (bot.weapon_restriction == weapon_restrictions::melee)
+	{
+		bot_meta.pressure *= 0.7f;
+
+		if (melee.is_a("tf_weapon_sword"))
 		{
-			bot_meta.set_base_class_icon("spy_kunai");
+			bot_meta.set_base_class_icon("demoknight");
 		}
-		break;
-	}
-
-	if (bot.cl == player_class::engineer || bot_meta.is_doom)
-	{
-		// Make it so that engineers and doombots cannot pick up the bomb.
-		bot.character_attributes.emplace_back("cannot pick up intelligence", 1);
-	}
-	if (item_class == player_class::sniper)
-	{
-		if ((bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly") && !bot_meta.is_always_fire_weapon &&
-			bot_meta.get_base_class_icon() != "sniper_bow"
-			//&& primary != "The Classic"
-			)
+		else if (melee.is_a("tf_weapon_katana"))
 		{
-			bot.attributes.emplace_back("AlwaysFireWeapon");
-			bot_meta.is_always_fire_weapon = true;
-			// Snipers are able to hit players from basically anywhere with their rifles.
-			// This fact combined with their obvious aimbot makes them very deadly.
-			bot_meta.pressure *= 1.5f;
+			bot_meta.set_base_class_icon("demoknight_samurai");
+		}
+		else if (melee.is_a("The Killing Gloves of Boxing"))
+		{
+			bot_meta.set_base_class_icon("heavy_champ");
+		}
+		else if (melee.is_a("Gloves of Running Urgently"))
+		{
+			bot_meta.set_base_class_icon("heavy_gru");
+		}
+		else if (melee.is_a("The Holiday Punch"))
+		{
+			bot.attributes.emplace("AlwaysCrit");
+			bot_meta.is_always_crit = true;
+			bot_meta.set_base_class_icon("heavy_mittens");
+		}
+		else if (melee.is_a("Fists of Steel"))
+		{
+			bot_meta.set_base_class_icon("heavy_steelfist");
+		}
+		else if (melee.is_a("The Sandman"))
+		{
+			bot_meta.set_base_class_icon("scout_stun");
+		}
+		else if (melee.is_a("The Holy Mackerel"))
+		{
+			bot_meta.set_base_class_icon("scout_fish");
+		}
+		else if (melee.is_a("tf_weapon_bat"))
+		{
+			bot_meta.set_base_class_icon("scout_bat");
+		}
+
+		if (!bot_meta.is_always_fire_weapon && rand_chance(0.1f))
+		{
+			bot.character_attributes["hit self on miss"] = 1;
+			bot_meta.pressure *= 0.8f;
+		}
+	}
+	else if (bot.weapon_restriction == weapon_restrictions::secondary)
+	{
+		if (secondary.is_a("tf_weapon_shotgun"))
+		{
+			bot_meta.set_base_class_icon("heavy_shotgun");
+		}
+		else if (secondary.is_a("tf_weapon_flaregun"))
+		{
+			bot_meta.set_base_class_icon("pyro_flare");
+		}
+		else if (secondary.is_a("Jarate"))
+		{
+			bot_meta.set_base_class_icon("sniper_jarate");
 		}
 	}
 
-	if (bot.cl == player_class::spy)
+	if (secondary.is_a("Bonk! Atomic Punch"))
 	{
-		//chance_mult *= 3.0f;
-		bot_meta.pressure *= 3.5f;
+		bot_meta.set_base_class_icon("scout_bonk");
+		bot.items.emplace("Bonk Helm");
+		bot_meta.pressure *= 4.0f;
+		// Make sure that we can never have giant Bonk Scouts...
+		bot_meta.perma_small = true;
 	}
-	else if (bot.cl == player_class::engineer)
+	else if (secondary.is_a("The Cozy Camper"))
 	{
-		bot_meta.pressure *= 1.5f;
+		bot_meta.set_base_class_icon("sniper_camper");
 	}
-	else if (bot.cl == player_class::medic)
+	else if (secondary.is_a("The Battalion's Backup"))
 	{
-		bot_meta.pressure *= 1.1f;
+		bot_meta.set_base_class_icon("soldier_backup");
 	}
+	else if (secondary.is_a("The Buff Banner"))
+	{
+		bot_meta.set_base_class_icon("soldier_buff");
+	}
+	else if (secondary.is_a("The Concheror"))
+	{
+		bot_meta.set_base_class_icon("soldier_conch");
+	}
+	else if (secondary.is_a("The Vaccinator MVM"))
+	{
+		const int type = rand_int(0, 3);
+		switch (type)
+		{
+		case 0:
+			bot.attributes.emplace("VaccinatorBullets");
+			bot_meta.set_base_class_icon("medic_vaccinator_bullet");
+			break;
+		case 1:
+			bot.attributes.emplace("VaccinatorBlast");
+			bot_meta.set_base_class_icon("medic_vaccinator_blast");
+			break;
+		case 2:
+			bot.attributes.emplace("VaccinatorFire");
+			bot_meta.set_base_class_icon("medic_vaccinator_fire");
+			break;
+		}
+		//bot_meta.pressure *= 1.1f;
+	}
+
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Done choosing first class icons." << std::endl;
+#endif
 
 	// A bot has a chance to be a giant.
 	if ((!bot_meta.is_giant && !bot_meta.perma_small && rand_chance(giant_chance)) || bot_meta.is_doom)
 	{
 		make_bot_into_giant(bot_meta);
 	}
+
+	// tf_wearable_demoshield allows Demoman to charge.
+	if (secondary.is_a("tf_wearable_demoshield"))
+	{
+		bot_meta.pressure *= 1.1f;
+
+		if (rand_chance(0.3f * chance_mult))
+		{
+			float charge_increase = rand_float(1.0f, 15.0f);
+
+			bot_meta.pressure *= ((charge_increase - 1.0f) * 0.03f) + 1.0f;
+			if (rand_chance(0.01f * chance_mult))
+			{
+				charge_increase *= 10000.0f;
+				bot_meta.pressure *= 1.2f;
+			}
+
+			bot.character_attributes["charge time increased"] = charge_increase;
+
+			if (rand_chance(0.2f * chance_mult))
+			{
+				bot.attributes.emplace("AirChargeOnly");
+				bot_meta.pressure *= 0.9f;
+			}
+		}
+	}
+
+	if (bot_meta.is_doom)
+	{
+		bot.character_attributes["cannot pick up intelligence"] = 1;
+	}
+	if (bot.cl == player_class::engineer)
+	{
+		bot_meta.pressure *= 1.5f;
+
+		// Make it so that engineers cannot pick up the bomb.
+		bot.character_attributes["cannot pick up intelligence"] = 1;
+
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.3f, 10.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engy building health bonus"] = r;
+			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.3f, 5.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engy sentry damage bonus"] = r;
+			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.1f, 3.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engy sentry fire rate increased"] = r;
+			bot_meta.pressure /= ((r - 1.0f) * 0.3f) + 1.0f;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.01f, 5.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engy sentry radius increased"] = r;
+			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.01f, 5.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engineer sentry build rate multiplier"] = r;
+			bot_meta.pressure /= ((r - 1.0f) * 0.2f) + 1.0f;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float r = rand_float(0.01f, 5.0f);
+			if (rand_chance(0.01f * chance_mult))
+			{
+				r *= 0.01f;
+			}
+			bot.character_attributes["engineer teleporter build rate multiplier"] = r;
+			bot_meta.pressure /= ((r - 1.0f) * 0.2f) + 1.0f;
+		}
+	}
+	else if (bot.cl == player_class::spy)
+	{
+		bot_meta.pressure *= 3.5f;
+
+		// Wacky sapper-specific stuff.
+		if (rand_chance(0.2f))
+		{
+			float change = rand_float(0.1f, 1.0f);
+			if (rand_chance(0.1f))
+			{
+				change *= rand_float(0.1f, 10.0f);
+			}
+			if (rand_chance(0.02f))
+			{
+				change *= -1.0f;
+			}
+			bot.character_attributes["sapper damage bonus"] = change;
+		}
+		if (rand_chance(0.2f))
+		{
+			float change = rand_float(0.01f, 2.0f);
+			if (rand_chance(0.1f))
+			{
+				change *= 5.0f;
+			}
+			bot.character_attributes["sapper health bonus"] = change;
+		}
+		if (rand_chance(0.5f))
+		{
+			bot.character_attributes["sapper degenerates buildings"] = 1;
+		}
+	}
+	else if (bot.cl == player_class::medic)
+	{
+		bot_meta.pressure *= 1.1f;
+	}
+
+	if (rand_chance(0.1f * chance_mult) || bot_meta.is_doom)
+	{
+		bot.attributes.emplace("Aggressive");
+	}
+
+	if ((rand_chance(0.1f * chance_mult) || bot_meta.is_doom) && !bot_meta.is_always_fire_weapon)
+	{
+		if (rand_chance(0.4f))
+		{
+			bot.attributes.emplace("HoldFireUntilFullReload");
+			//bot_meta.pressure *= 1.1f;
+		}
+		else
+		{
+			bot.attributes.emplace("AlwaysFireWeapon");
+			bot_meta.pressure *= 1.5f;
+			bot_meta.is_always_fire_weapon = true;
+		}
+	}
+
 	// Have a chance to tweak the health value.
 	if (rand_chance(0.5f) || (bot_meta.is_giant && rand_chance(0.8f)))
 	{
@@ -517,15 +643,15 @@ tfbot_meta bot_generator::generate_bot()
 
 	if (!bot_meta.is_always_crit && rand_chance(0.05f * chance_mult))
 	{
-		bot.attributes.emplace_back("AlwaysCrit");
+		bot.attributes.emplace("AlwaysCrit");
 		bot_meta.is_always_crit = true;
 		bot_meta.update_class_icon();
 
 		if (bot.cl != player_class::engineer)
 		{
-			if (bot.weapon_restrictions == "MeleeOnly")
+			if (bot.weapon_restriction == weapon_restrictions::melee)
 			{
-				bot_meta.pressure *= 1.5f;
+				bot_meta.pressure *= 1.2f;
 			}
 			else
 			{
@@ -555,44 +681,6 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 
-	if (rand_chance(0.1f * chance_mult) || bot_meta.is_doom)
-	{
-		bot.attributes.emplace_back("Aggressive");
-	}
-	
-	if (rand_chance(0.5f * chance_mult))
-	{
-		if (item_class == player_class::medic)
-		{
-			if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
-			{
-				bot.attributes.emplace_back("SpawnWithFullCharge");
-				bot_meta.pressure *= 2.5f;
-			}
-		}
-		else if (item_class == player_class::soldier)
-		{
-			if (is_buff_soldier)
-			{
-				bot.attributes.emplace_back("SpawnWithFullCharge");
-				bot_meta.pressure *= 1.2f;
-			}
-		}
-	}
-	if ((rand_chance(0.1f * chance_mult) || bot_meta.is_doom) && !bot_meta.is_always_fire_weapon && !is_buff_soldier)
-	{
-		if (rand_chance(0.4f))
-		{
-			bot.attributes.emplace_back("HoldFireUntilFullReload");
-			//bot_meta.pressure *= 1.1f;
-		}
-		else
-		{
-			bot.attributes.emplace_back("AlwaysFireWeapon");
-			bot_meta.pressure *= 1.5f;
-			bot_meta.is_always_fire_weapon = true;
-		}
-	}
 	/*
 	// Using this attribute may cause the bot to idle in its spawn without moving if there's no bomb.
 	if (rand_chance(0.02f))
@@ -625,125 +713,10 @@ tfbot_meta bot_generator::generate_bot()
 	}
 	*/
 
-	if (item_class == player_class::demoman)
-	{
-		if (demo_can_charge && rand_chance(0.3f * chance_mult))
-		{
-			float charge_increase = rand_float(1.0f, 15.0f);
-
-			bot_meta.pressure *= ((charge_increase - 1.0f) * 0.03f) + 1.0f;
-			if (rand_chance(0.01f * chance_mult))
-			{
-				charge_increase *= 10000.0f;
-				bot_meta.pressure *= 1.2f;
-			}
-
-			bot.character_attributes.emplace_back("charge time increased", charge_increase);
-		}
-	}
-	else if (item_class == player_class::pyro)
-	{
-		if (bot.weapon_restrictions != "MeleeOnly" && bot.weapon_restrictions != "SecondaryOnly")
-		{
-			if (rand_chance(0.1f * chance_mult))
-			{
-				float r = rand_float(-10.0f, 10.0f);
-				if (rand_chance(0.1f * chance_mult))
-				{
-					r *= 100.0f;
-				}
-				bot.character_attributes.emplace_back("airblast pushback scale", r);
-			}
-			if (rand_chance(0.1f * chance_mult))
-			{
-				float r = rand_float(-10.0f, 10.0f);
-				if (rand_chance(0.1f * chance_mult))
-				{
-					r *= 100.0f;
-				}
-				bot.character_attributes.emplace_back("airblast vertical pushback scale", r);
-			}
-			if (rand_chance(0.1f * chance_mult))
-			{
-				float r = rand_float(0.1f, 10.0f);
-				if (rand_chance(0.1f * chance_mult))
-				{
-					r *= 100.0f;
-				}
-				bot.character_attributes.emplace_back("deflection size multiplier", r);
-				//bot_meta.pressure *= 1.3f;
-			}
-		}
-	}
-
-	if (bot.cl == player_class::engineer)
-	{
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.3f, 10.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engy building health bonus", r);
-			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
-		}
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.3f, 5.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engy sentry damage bonus", r);
-			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
-		}
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.1f, 3.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engy sentry fire rate increased", r);
-			bot_meta.pressure /= ((r - 1.0f) * 0.3f) + 1.0f;
-		}
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engy sentry radius increased", r);
-			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
-		}
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engineer sentry build rate multiplier", r);
-			bot_meta.pressure /= ((r - 1.0f) * 0.2f) + 1.0f;
-		}
-		if (rand_chance(0.05f * chance_mult))
-		{
-			float r = rand_float(0.01f, 5.0f);
-			if (rand_chance(0.01f * chance_mult))
-			{
-				r *= 0.01f;
-			}
-			bot.character_attributes.emplace_back("engineer teleporter build rate multiplier", r);
-			bot_meta.pressure /= ((r - 1.0f) * 0.2f) + 1.0f;
-		}
-	}
-
 	// Doombots will always have a high AutoJump so they can get around obstacles easier.
 	if (rand_chance(0.08f * chance_mult) || bot_meta.is_doom)
 	{
-		bot.attributes.emplace_back("AutoJump");
+		bot.attributes.emplace("AutoJump");
 		bot.auto_jump_min = rand_float(0.1f, 5.0f); // (0.1f, 5.0f);
 		if (rand_chance(0.5f))
 		{
@@ -766,15 +739,15 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				increased_jump_height = rand_float(0.1f, 15.0f);
 			}
-			bot.character_attributes.emplace_back("increased jump height", increased_jump_height);
-			bot.character_attributes.emplace_back("cancel falling damage", 1);
+			bot.character_attributes["increased jump height"] = increased_jump_height;
+			bot.character_attributes["cancel falling damage"] = 1;
 			if (increased_jump_height > 1.0f)
 			{
 				bot_meta.pressure *= 1.2f;
 
 				if (rand_chance(0.5f))
 				{
-					bot.items.emplace_back("The B.A.S.E. Jumper");
+					bot_meta.add_weapon("The B.A.S.E. Jumper", weapon_reader);
 
 					// If necessary, make the bot jump more often. Otherwise, it will take FOREVER to get out of spawn.
 					if (bot.auto_jump_min < 1.0f)
@@ -791,16 +764,7 @@ tfbot_meta bot_generator::generate_bot()
 
 		if (rand_chance(0.5f))
 		{
-			bot.character_attributes.emplace_back("bot custom jump particle", 1);
-		}
-
-		if (item_class == player_class::demoman)
-		{
-			if (demo_can_charge && rand_chance(0.2f * chance_mult))
-			{
-				bot.attributes.emplace_back("AirChargeOnly");
-				bot_meta.pressure *= 0.9f;
-			}
+			bot.character_attributes["bot custom jump particle"] = 1;
 		}
 	}
 	if (
@@ -814,7 +778,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (rand_chance(0.1f * chance_mult))
 	{
 		bot.max_vision_range = 30000.0f;
-		if (bot.weapon_restrictions != "MeleeOnly")
+		if (bot.weapon_restriction != weapon_restrictions::melee)
 		{
 			bot_meta.pressure *= 1.2f;
 		}
@@ -823,8 +787,8 @@ tfbot_meta bot_generator::generate_bot()
 	if (rand_chance(0.1f * chance_mult))
 	{
 		float fire_rate_bonus = rand_float(0.1f, 2.0f);
-		bot.character_attributes.emplace_back("fire rate bonus", fire_rate_bonus);
-		bot.character_attributes.emplace_back("clip size bonus", 100000);
+		bot.character_attributes["fire rate bonus"] = fire_rate_bonus;
+		bot.character_attributes["clip size bonus"] = 100000;
 		if (fire_rate_bonus >= 1.0f)
 		{
 			bot_meta.pressure /= ((fire_rate_bonus - 1.0f) * 0.3f) + 1.0f;
@@ -836,7 +800,7 @@ tfbot_meta bot_generator::generate_bot()
 			switch (bot.cl)
 			{
 			case player_class::soldier:
-				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+				if (bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::primary)
 				{
 					bot_meta.set_base_class_icon("soldier_spammer");
 				}
@@ -860,7 +824,7 @@ tfbot_meta bot_generator::generate_bot()
 			{
 				change *= 3.0f;
 			}
-			bot.character_attributes.emplace_back("faster reload rate", change);
+			bot.character_attributes["faster reload rate"] = change;
 			bot_meta.pressure /= ((change - 1.0f) * 0.3f) + 1.0f;
 
 			if (change < 1.0f)
@@ -868,7 +832,7 @@ tfbot_meta bot_generator::generate_bot()
 				switch (bot.cl)
 				{
 				case player_class::soldier:
-					if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+					if (bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::primary)
 					{
 						bot_meta.set_base_class_icon("soldier_barrage");
 					}
@@ -885,10 +849,10 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		else
 		{
-			bot.character_attributes.emplace_back("faster reload rate", -1);
+			bot.character_attributes["faster reload rate"] = -1;
 			instant_reload = true;
 			if ((bot.cl == player_class::heavyweapons || bot.cl == player_class::sniper) &&
-				(bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly"))
+				(bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::primary))
 			{
 				// No reloading means Heavy's minigun shoots bullets at an insane rate.
 				// Same for Sniper's rifles.
@@ -899,12 +863,12 @@ tfbot_meta bot_generator::generate_bot()
 					constexpr float damage_factor = 0.1f;
 					bot_meta.damage_bonus *= damage_factor;
 					bot_meta.pressure /= damage_factor;
-					projectile_override_crash_risk = true;
+					bot_meta.projectile_override_crash_risk = true;
 				}
 			}
 			else
 			{
-				if (bot.weapon_restrictions != "MeleeOnly")
+				if (bot.weapon_restriction != weapon_restrictions::melee)
 				{
 					bot_meta.pressure *= 1.1f;
 				}
@@ -913,7 +877,7 @@ tfbot_meta bot_generator::generate_bot()
 			switch (bot.cl)
 			{
 			case player_class::soldier:
-				if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
+				if (bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::primary)
 				{
 					bot_meta.set_base_class_icon("soldier_spammer");
 				}
@@ -941,58 +905,11 @@ tfbot_meta bot_generator::generate_bot()
 		}
 		bot_meta.damage_bonus *= damage_bonus_mod;
 	}
-	if (rand_chance(0.1f * chance_mult) && bot.weapon_restrictions != "MeleeOnly")
+	if (secondary.is_a("tf_weapon_buff_item") && rand_chance(0.1f * chance_mult))
 	{
-		float rad;
-		if (bot_meta.is_giant)
-		{
-			rad = rand_float(0.1f, 3.0f);
-		}
-		else
-		{
-			rad = rand_float(0.1f, 1.0f);
-		}
-		bot.character_attributes.emplace_back("bullets per shot bonus", rad);
-		bot_meta.pressure *= ((rad - 1.0f) * 0.8f) + 1.0f;
+		const float rad = rand_float(0.1f, 20.0f);
+		bot.character_attributes["increase buff duration"] = rad;
 	}
-	if (rand_chance(0.1f * chance_mult) && secondary != "Bonk! Atomic Punch" && secondary != "Festive Bonk 2014")
-	{
-		const float change = rand_float(0.01f, 2.0f);
-		bot.character_attributes.emplace_back("effect bar recharge rate increased", change);
-		if (change < 1.0f)
-		{
-			bot_meta.pressure /= ((change - 1.0f) * 0.1f) + 1.0f;
-		}
-	}
-	//if (bot.weapon_restrictions != "MeleeOnly")
-	//{
-	if (rand_chance(0.1f * chance_mult) && bot.weapon_restrictions != "MeleeOnly")
-	{
-		const float change = rand_float(0.01f, 10.0f);
-		bot.character_attributes.emplace_back("projectile speed increased", change);
-		bot_meta.pressure *= ((change - 1.0f) * 0.2f) + 1.0f;
-	}
-	if (rand_chance(0.1f * chance_mult))
-	{
-		int change = 3;
-		while (rand_chance(0.5f) && change < 360)
-		{
-			change *= 3;
-		}
-		bot.character_attributes.emplace_back("projectile spread angle penalty", change);
-	}
-	if (rand_chance(0.05f * chance_mult))
-	{
-		int change = 3;
-		bot_meta.pressure *= 1.05f;
-		while (rand_chance(0.5f) && change < 360)
-		{
-			change *= 3;
-			bot_meta.pressure *= 1.05f;
-		}
-		bot.character_attributes.emplace_back("weapon spread bonus", change);
-	}
-	//}
 	if (rand_chance(0.05f * chance_mult))
 	{
 		float head_size = 0.001f;
@@ -1008,84 +925,7 @@ tfbot_meta bot_generator::generate_bot()
 		{
 			head_size *= 10.0f;
 		}
-		bot.character_attributes.emplace_back("head scale", head_size);
-	}
-
-	if (item_class == player_class::demoman)
-	{
-		// Having projectile overrides on Demomen that have sticky launchers causes
-		// crashes, even if it's not the weapon that they're restricted to?
-		// For now, all Demomen are blacklisted from getting projectile overrides.
-		projectile_override_crash_risk = true;
-		/*
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
-		{
-			if (primary == "The Loose Cannon")
-			{
-				projectile_override_crash_risk = true;
-			}
-		}
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "SecondaryOnly")
-		{
-			projectile_override_crash_risk = true;
-		}
-		*/
-	}
-	if (item_class == player_class::heavyweapons)
-	{
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
-		{
-			//if (instant_reload)
-			//{
-				projectile_override_crash_risk = true;
-			//}
-		}
-	}
-	if (!projectile_override_crash_risk)
-	{
-		if (rand_chance(0.2f * chance_mult))
-		{
-			int proj_type = rand_int(1, 27);
-
-			// Fix invalid values.
-			switch (proj_type)
-			{
-
-			case 2: // Rocket
-			case 9: // Invalid
-			case 10: // Invalid
-			case 15: // Invalid
-			case 16: // Invalid
-			case 20: // Invalid
-			case 21: // Invalid
-				proj_type = 2; // Rocket
-				has_explosives = true;
-				break;
-
-			case 4: // Stickybomb (Stickybomb Launcher)
-			case 6: // Flare
-			case 7: // Invalid
-			case 14: // Stickybomb (Sticky Jumper)
-				proj_type = 6; // Flare
-				break;
-
-			case 26: // Grappling hook
-				break;
-			}
-
-			bot.character_attributes.emplace_back("override projectile type", proj_type);
-
-			/*
-			if (proj_type == 2 && item_class != player_class::soldier)
-			{
-				bot_meta.pressure *= 1.5f;
-			}
-			if (proj_type == 6 && item_class != player_class::pyro)
-			{
-				bot_meta.pressure *= 1.5f;
-			}
-			*/
-		}
+		bot.character_attributes["head scale"] = head_size;
 	}
 	// The TeleportToHint attribute requires the other bots to have progressed a certain distance before this bot spawns.
 	// If this wavespawn is not marked as support, this can lead to potentially unwinnable waves due to this bot never spawning in some conditions.
@@ -1098,61 +938,17 @@ tfbot_meta bot_generator::generate_bot()
 	*/
 	if (rand_chance(0.05f * chance_mult))
 	{
-		bot.character_attributes.emplace_back("bleeding duration", 5.0f);
-		// Knife particles.
-		bot.character_attributes.emplace_back("attach particle effect static", 43);
-		bot_meta.pressure *= 2.0f;
-	}
-	if (!does_fire_damage && rand_chance(0.04f * chance_mult))
-	{
-		bot.character_attributes.emplace_back("Set DamageType Ignite", 1);
-		does_fire_damage = true;
-		// Add some cool fire particles.
-		bot.character_attributes.emplace_back("attach particle effect static", 13);
-		if (item_class != player_class::pyro && bot.cl != player_class::engineer)
-		{
-			bot_meta.pressure *= 2.0f;
-		}
-		if (rand_chance(0.1f * chance_mult))
-		{
-			// Burn pretty much forever.
-			bot.character_attributes.emplace_back("weapon burn time increased", 1000.0f);
-			bot_meta.pressure *= 1.3f;
-		}
-		if (rand_chance(0.5f))
-		{
-			const float r = rand_float(0.01f, 4.0f);
-			bot.character_attributes.emplace_back("weapon burn dmg increased", r);
-			bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
-			/*
-			if (r > 1.0f)
-			{
-			bot.pressure *= r;
-			}
-			else
-			{
-			bot.pressure *= 0.7f;
-			}
-			*/
-		}
-	}
-	if (rand_chance(0.05f * chance_mult))
-	{
 		if (rand_chance(0.5f))
 		{
 			float slow_chance = rand_float(0.1f, 1.0f);
-			bot.character_attributes.emplace_back("slow enemy on hit", slow_chance);
+			bot.character_attributes["slow enemy on hit"] = slow_chance;
 			bot_meta.pressure *= 1.0f + slow_chance;
 		}
 		else
 		{
-			bot.character_attributes.emplace_back("slow enemy on hit major", 1);
+			bot.character_attributes["slow enemy on hit major"] = 1;
 			bot_meta.pressure *= 1.2f;
 		}
-	}
-	if (rand_chance(0.1f * chance_mult) && has_explosives)
-	{
-		bot.character_attributes.emplace_back("no self blast dmg", 1);
 	}
 	/*
 	if (rand_chance(0.01f))
@@ -1165,114 +961,6 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= 50.0f;
 	}
 	*/
-	if (rand_chance(0.05f * chance_mult))
-	{
-		if (has_explosives)
-		{
-			float rad = rand_float(0.1f, 5.0f);
-			bot.character_attributes.emplace_back("Blast radius increased", rad);
-			bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
-			if (rad > 4.0f)
-			{
-				bot.character_attributes.emplace_back("use large smoke explosion", 1);
-			}
-		}
-	}
-	if (item_class == player_class::soldier || item_class == player_class::sniper || item_class == player_class::pyro)
-	{
-		if (rand_chance(0.1f))
-		{
-			const float rad = rand_float(0.1f, 20.0f);
-			bot.character_attributes.emplace_back("increase buff duration", rad);
-			//bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
-		}
-	}
-	if (item_class == player_class::spy)
-	{
-		// Wacky sapper-specific stuff.
-		if (rand_chance(0.2f))
-		{
-			float change = rand_float(0.1f, 1.0f);
-			if (rand_chance(0.1f))
-			{
-				change *= rand_float(0.1f, 10.0f);
-			}
-			if (rand_chance(0.02f))
-			{
-				change *= -1.0f;
-			}
-			bot.character_attributes.emplace_back("sapper damage bonus", change);
-		}
-		if (rand_chance(0.2f))
-		{
-			float change = rand_float(0.01f, 2.0f);
-			if (rand_chance(0.1f))
-			{
-				change *= 5.0f;
-			}
-			bot.character_attributes.emplace_back("sapper health bonus", change);
-		}
-		if (rand_chance(0.5f))
-		{
-			bot.character_attributes.emplace_back("sapper degenerates buildings", 1);
-		}
-	}
-	if (item_class == player_class::heavyweapons)
-	{
-		// If the Heavy is inclined to use its minigun...
-		if (bot.weapon_restrictions == "" || bot.weapon_restrictions == "PrimaryOnly")
-		{
-			if (rand_chance(0.1f))
-			{
-				bot.character_attributes.emplace_back("attack projectiles", 1);
-				bot_meta.set_base_class_icon("heavy_deflector");
-				bot_meta.pressure *= 1.5f;
-			}
-		}
-	}
-	if (bot.weapon_restrictions == "MeleeOnly")
-	{
-		if (!bot_meta.is_always_fire_weapon && rand_chance(0.1f))
-		{
-			bot.character_attributes.emplace_back("hit self on miss", 1);
-			bot_meta.pressure *= 0.9f;
-		}
-	}
-	if (!does_fire_damage)
-	{
-		if (rand_chance(0.03f * chance_mult))
-		{
-			if (rand_chance(0.5f))
-			{
-				bot.character_attributes.emplace_back("damage causes airblast", 1);
-			}
-			else
-			{
-				float look_velocity = rand_float(-10.0f, 10.0f);
-				bot.character_attributes.emplace_back("apply look velocity on damage", look_velocity);
-			}
-			if (bot.weapon_restrictions == "MeleeOnly")
-			{
-				bot_meta.pressure *= 1.1f;
-			}
-			else
-			{
-				bot_meta.pressure *= 2.0f;
-			}
-		}
-		if (rand_chance(0.02f * chance_mult))
-		{
-			float r = rand_float(-10000.0f, 10000.0f);
-			bot.character_attributes.emplace_back("apply z velocity on damage", r);
-			// Cauldron Bubbles particle effect.
-			bot.character_attributes.emplace_back("attach particle effect static", 39);
-			bot_meta.pressure *= 1.5f;
-			if (r < -100.0f)
-			{
-				bot_meta.pressure *= 1.5f;
-			}
-		}
-	}
 	/*
 	if (rand_chance(0.05f * chance_mult))
 	{
@@ -1282,7 +970,7 @@ tfbot_meta bot_generator::generate_bot()
 	*/
 	if (rand_chance(0.01f * chance_mult))
 	{
-		bot.character_attributes.emplace_back("attach particle effect static", rand_int(1, 48));
+		bot.character_attributes["attach particle effect static"] = rand_int(1, 48);
 		bot.health *= 2;
 	}
 
@@ -1303,7 +991,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= ((bot_meta.damage_bonus - 1.0f) * 0.2f) + 1.0f;
 	}
 
-	bot.character_attributes.emplace_back("damage bonus", bot_meta.damage_bonus);
+	bot.character_attributes["damage bonus"] = bot_meta.damage_bonus;
 
 	if (bot_meta.is_doom)
 	{
@@ -1324,7 +1012,7 @@ tfbot_meta bot_generator::generate_bot()
 		bot_meta.pressure *= bot_meta.move_speed_bonus;
 	}
 
-	bot.character_attributes.emplace_back("move speed bonus", bot_meta.move_speed_bonus);
+	bot.character_attributes["move speed bonus"] = bot_meta.move_speed_bonus;
 
 	if (bot.scale < 0.0f)
 	{
@@ -1378,8 +1066,8 @@ void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 	bot_meta.is_giant = true;
 	bot.scale = -1.0f;
 	// Add some giant-related attributes.
-	bot.character_attributes.emplace_back("airblast vulnerability multiplier", rand_float(0.3f, 0.7f));
-	bot.character_attributes.emplace_back("damage force reduction", rand_float(0.3f, 0.7f));
+	bot.character_attributes["airblast vulnerability multiplier"] = rand_float(0.3f, 0.7f);
+	bot.character_attributes["damage force reduction"] = rand_float(0.3f, 0.7f);
 
 	// Since giants can't be knocked around as easily, let's up the pressure a bit.
 	bot_meta.pressure *= 1.5f;
@@ -1416,29 +1104,29 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 		bot_meta.is_boss = true;
 		bot.health *= 5;
 		bot_meta.move_speed_bonus *= 0.5;
-		bot.attributes.emplace_back("UseBossHealthBar");
+		bot.attributes.emplace("UseBossHealthBar");
 		chance_mult *= 4.0f;
 
 		bot.scale = scale_mega;
 
-		bot.character_attributes.emplace_back("attach particle effect static", rand_int(1, 48));
+		bot.character_attributes["attach particle effect static"] = rand_int(1, 48);
 
 		// Now that you're a boss, choose a special class icon.
 		switch (bot.cl)
 		{
 		case player_class::demoman:
-			if (bot.weapon_restrictions == "PrimaryOnly")
+			if (bot.weapon_restriction == weapon_restrictions::primary)
 			{
 				bot_meta.set_base_class_icon("demo_bomber");
-				bot.items.emplace_back("Prince Tavish's Crown");
+				bot.items.emplace("Prince Tavish's Crown");
 			}
 			break;
 
 		case player_class::heavyweapons:
-			if (bot.weapon_restrictions == "PrimaryOnly")
+			if (bot.weapon_restriction == weapon_restrictions::primary)
 			{
 				bot_meta.set_base_class_icon("heavy_chief");
-				bot.items.emplace_back("War Head");
+				bot.items.emplace("War Head");
 			}
 			else if (bot_meta.get_base_class_icon() == "heavy_gru")
 			{
@@ -1456,15 +1144,15 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 			break;
 
 		case player_class::soldier:
-			if (bot.weapon_restrictions == "MeleeOnly")
+			if (bot.weapon_restriction == weapon_restrictions::melee)
 			{
 				bot_meta.set_base_class_icon("soldier_major_crits");
-				bot.items.emplace_back("Full Metal Drill Hat");
+				bot.items.emplace("Full Metal Drill Hat");
 			}
-			else if (bot.weapon_restrictions == "SecondaryOnly")
+			else if (bot.weapon_restriction == weapon_restrictions::secondary)
 			{
 				bot_meta.set_base_class_icon("soldier_sergeant_crits");
-				bot.items.emplace_back("Tyrant's Helm");
+				bot.items.emplace("Tyrant's Helm");
 			}
 			break;
 		}
@@ -1475,4 +1163,335 @@ void bot_generator::wave_ended()
 {
 	giant_chance += giant_chance_increase;
 	boss_chance += boss_chance_increase;
+}
+
+void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
+{
+	tfbot& bot = bot_meta.get_bot();
+
+#if BOT_GENERATOR_DEBUG
+	std::cout << "Inside randomize_weapon now. get_bot called successfully." << std::endl;
+	std::cout << "Number of names owned by the weapon: " << wep.names.size() << std::endl;
+#endif
+
+	// Get a reference to the bot's item attributes
+	std::map<std::string, float>& item_attributes = bot.item_attributes[wep.first_name()];
+
+#if BOT_GENERATOR_DEBUG
+	std::cout << "item_attributes references successfully." << std::endl;
+#endif
+
+	const bool is_main_weapon = wep.matches_restriction(bot.weapon_restriction);
+
+	if (rand_chance(0.01f * chance_mult))
+	{
+		item_attributes["attach particle effect static"] = rand_int(1, 48);
+		bot.health *= 2;
+	}
+
+	if (!wep.can_be_switched_to)
+	{
+		return;
+	}
+
+	if (!wep.does_damage)
+	{
+		if (is_main_weapon)
+		{
+			bot_meta.pressure *= 0.7f;
+		}
+	}
+
+	if (wep.can_be_charged && !bot_meta.is_always_fire_weapon && rand_chance(0.5f * chance_mult))
+	{
+		bot.attributes.emplace("SpawnWithFullCharge");
+
+		if (bot.cl == player_class::medic)
+		{
+			if (bot.weapon_restriction == weapon_restrictions::none || bot.weapon_restriction == weapon_restrictions::secondary)
+			{
+				bot_meta.pressure *= 2.5f;
+			}
+		}
+		else if (bot.cl == player_class::soldier)
+		{
+			bot_meta.pressure *= 1.2f;
+		}
+	}
+
+	if (wep.has_projectiles)
+	{
+		// Stickybomb launchers and a few other weapons aren't happy when it comes to projectile overrides.
+		if (wep.is_a("tf_weapon_pipebomblauncher") ||
+			wep.is_a("The Loose Cannon") ||
+			wep.is_a("tf_weapon_minigun"))
+		{
+			bot_meta.projectile_override_crash_risk = true;
+		}
+		if (rand_chance(0.1f * chance_mult))
+		{
+			int change = 3;
+			while (rand_chance(0.5f) && change < 360)
+			{
+				change *= 3;
+			}
+			item_attributes["projectile spread angle penalty"] = change;
+		}
+		if (rand_chance(0.05f * chance_mult))
+		{
+			int change = 3;
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= 1.05f;
+			}
+			while (rand_chance(0.5f) && change < 360)
+			{
+				change *= 3;
+				if (is_main_weapon)
+				{
+					bot_meta.pressure *= 1.05f;
+				}
+			}
+			item_attributes["weapon spread bonus"] = change;
+		}
+		if (rand_chance(0.1f * chance_mult))
+		{
+			float rad;
+			if (bot_meta.is_giant)
+			{
+				rad = rand_float(0.1f, 3.0f);
+			}
+			else
+			{
+				rad = rand_float(0.1f, 1.0f);
+			}
+			item_attributes["bullets per shot bonus"] = rad;
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= ((rad - 1.0f) * 0.8f) + 1.0f;
+			}
+		}
+		if (rand_chance(0.1f * chance_mult))
+		{
+			const float change = rand_float(0.01f, 10.0f);
+			item_attributes["projectile speed increased"] = change;
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= ((change - 1.0f) * 0.2f) + 1.0f;
+			}
+		}
+		if (!bot_meta.projectile_override_crash_risk)
+		{
+			if (rand_chance(0.2f * chance_mult))
+			{
+				//int proj_type; // = rand_int(1, 27);
+
+				std::vector<int> possibilities{
+					1, // Bullet
+					2, // Rocket
+					5, // Syringe
+					6, // Flare
+				};
+
+				if (wep.arc_fire)
+				{
+					// Some projectiles require arcs to fire properly.
+
+					possibilities.emplace_back(3); // Pipebomb
+					possibilities.emplace_back(8); // Huntsman Arrow
+					possibilities.emplace_back(11); // Crusader's Crossbow Bolt
+					possibilities.emplace_back(12); // Cow Mangler 5000 Projectile
+					possibilities.emplace_back(13); // Righteous Bison Projectile
+					possibilities.emplace_back(18); // Rescue Ranger Arrow
+					possibilities.emplace_back(19); // Festive Huntsman Arrow
+					possibilities.emplace_back(22); // Festive Jarate
+					possibilities.emplace_back(23); // Festive Crusader's Crossbow Bolt
+					possibilities.emplace_back(24); // Self Aware Beauty Mark
+					possibilities.emplace_back(25); // Mutated Milk
+				}
+
+				//possibilities.emplace_back(26); // Grappling Hook
+
+				int proj_type = possibilities.at(rand_int(0, possibilities.size()));;
+				item_attributes["override projectile type"] = proj_type;
+
+				/*
+				// Fix invalid values.
+				switch (proj_type)
+				{
+
+				case 2: // Rocket
+				case 9: // Invalid
+				case 10: // Invalid
+				case 15: // Invalid
+				case 16: // Invalid
+				case 20: // Invalid
+				case 21: // Invalid
+					proj_type = 2; // Rocket
+					break;
+
+				case 4: // Stickybomb (Stickybomb Launcher)
+				case 6: // Flare
+				case 7: // Invalid
+				case 14: // Stickybomb (Sticky Jumper)
+					proj_type = 6; // Flare
+					break;
+
+				case 26: // Grappling hook
+					break;
+				}
+				*/
+
+				item_attributes["override projectile type"] = proj_type;
+
+				/*
+				if (proj_type == 2 && item_class != player_class::soldier)
+				{
+				bot_meta.pressure *= 1.5f;
+				}
+				if (proj_type == 6 && item_class != player_class::pyro)
+				{
+				bot_meta.pressure *= 1.5f;
+				}
+				*/
+			}
+		}
+	}
+
+	if (wep.has_effect_charge_bar)
+	{
+		if ((rand_chance(0.5f * chance_mult) || wep.is_a("tf_weapon_jar")))
+		{
+			float lower_range = 0.0001f;
+			float upper_range = 2.0f;
+			if (wep.is_a("Bonk! Atomic Punch"))
+			{
+				lower_range = 0.2f;
+			}
+			if (wep.is_a("tf_weapon_jar"))
+			{
+				upper_range = 0.12f;
+			}
+			const float change = rand_float(0.01f, upper_range);
+			item_attributes["effect bar recharge rate increased"] = change;
+			if (change < 1.0f)
+			{
+				if (is_main_weapon)
+				{
+					bot_meta.pressure /= ((change - 1.0f) * 0.1f) + 1.0f;
+				}
+			}
+		}
+	}
+
+	if (rand_chance(0.05f * chance_mult))
+	{
+		// Enable bleeding.
+		item_attributes["bleeding duration"] = 5.0f;
+		wep.bleeds = true;
+
+		// Knife particles.
+		item_attributes["attach particle effect static"] = 43;
+
+		bot_meta.pressure *= 2.0f;
+	}
+	if (rand_chance(0.04f * chance_mult))
+	{
+		// Enable burning.
+		item_attributes["Set DamageType Ignite"] = 1;
+		wep.burns = true;
+
+		// Add some cool fire particles.
+		item_attributes["attach particle effect static"] = 13;
+		if (bot.cl != player_class::pyro && bot.cl != player_class::engineer)
+		{
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= 2.0f;
+			}
+		}
+		if (rand_chance(0.1f * chance_mult))
+		{
+			// Burn pretty much forever.
+			item_attributes["weapon burn time increased"] = 1000.0f;
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= 1.3f;
+			}
+		}
+		if (rand_chance(0.5f))
+		{
+			const float r = rand_float(0.01f, 4.0f);
+			item_attributes["weapon burn dmg increased"] = r;
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= ((r - 1.0f) * 0.3f) + 1.0f;
+			}
+		}
+	}
+
+	if (wep.explodes)
+	{
+		if (rand_chance(0.1f * chance_mult))
+		{
+			bot.character_attributes["no self blast dmg"] = 1;
+		}
+
+		if (rand_chance(0.05f * chance_mult))
+		{
+			float rad = rand_float(0.1f, 5.0f);
+			item_attributes["Blast radius increased"] = rad;
+			if (rad > 4.0f)
+			{
+				item_attributes["use large smoke explosion"] = 1;
+			}
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= ((rad - 1.0f) * 0.3f) + 1.0f;
+			}
+		}
+	}
+
+	if (!wep.burns && !wep.bleeds)
+	{
+		if (rand_chance(0.03f * chance_mult))
+		{
+			if (rand_chance(0.5f))
+			{
+				item_attributes["damage causes airblast"] = 1;
+			}
+			else
+			{
+				float look_velocity = rand_float(-10.0f, 10.0f);
+				item_attributes["apply look velocity on damage"] = look_velocity;
+			}
+			if (is_main_weapon)
+			{
+				if (bot.weapon_restriction == weapon_restrictions::melee)
+				{
+					bot_meta.pressure *= 1.1f;
+				}
+				else
+				{
+					bot_meta.pressure *= 2.0f;
+				}
+			}
+		}
+		if (rand_chance(0.02f * chance_mult))
+		{
+			float r = rand_float(-10000.0f, 10000.0f);
+			item_attributes["apply z velocity on damage"] = r;
+			// Cauldron Bubbles particle effect.
+			item_attributes["attach particle effect static"] = 39;
+
+			if (is_main_weapon)
+			{
+				bot_meta.pressure *= 1.5f;
+				if (r < -100.0f)
+				{
+					bot_meta.pressure *= 1.5f;
+				}
+			}
+		}
+	}
 }

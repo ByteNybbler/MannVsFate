@@ -127,9 +127,9 @@ void popfile_writer::write_tfbot(const tfbot& bot, const std::vector<std::string
 	}
 	write("Skill", bot.skill);
 
-	if (bot.weapon_restrictions != "")
+	if (bot.weapon_restriction != weapon_restrictions::none)
 	{
-		write("WeaponRestrictions", bot.weapon_restrictions);
+		write("WeaponRestrictions", weapon_restriction_to_string(bot.weapon_restriction));
 	}
 	if (bot.max_vision_range > 0.0f)
 	{
@@ -145,9 +145,9 @@ void popfile_writer::write_tfbot(const tfbot& bot, const std::vector<std::string
 
 	// Write all Attributes.
 	int attributes_count = bot.attributes.size();
-	for (int i = 0; i < attributes_count; ++i)
+	for (auto itr = bot.attributes.begin(); itr != bot.attributes.end(); ++itr)
 	{
-		write("Attributes", bot.attributes.at(i));
+		write("Attributes", *itr);
 	}
 
 	if (bot.auto_jump_min != 0.0f)
@@ -157,22 +157,42 @@ void popfile_writer::write_tfbot(const tfbot& bot, const std::vector<std::string
 	}
 
 	// Write Items.
-	int items_count = bot.items.size();
-	for (int i = 0; i < items_count; ++i)
+	for (auto itr = bot.items.begin(); itr != bot.items.end(); ++itr)
 	{
-		write("Item", '\"' + bot.items.at(i) + '\"');
+		write("Item", '\"' + *itr + '\"');
 	}
 
 	// Write CharacterAttributes.
-	int character_attributes_count = bot.character_attributes.size();
-	if (character_attributes_count != 0)
+	//int character_attributes_count = bot.character_attributes.size();
+	//if (character_attributes_count != 0)
+	//{
+	block_start("CharacterAttributes");
+	/*
+	for (int i = 0; i < character_attributes_count; ++i)
 	{
-		block_start("CharacterAttributes");
-		for (int i = 0; i < character_attributes_count; ++i)
+		write('\"' + bot.character_attributes.at(i).first + '\"', bot.character_attributes.at(i).second);
+	}
+	*/
+	for (const std::pair<std::string, float>& p : bot.character_attributes)
+	{
+		write('\"' + p.first + '\"', p.second);
+	}
+	block_end(); // CharacterAttributes
+	//}
+
+	// Write ItemAttributes.
+	for (const auto& item : bot.item_attributes)
+	{
+		if (item.second.size() != 0)
 		{
-			write('\"' + bot.character_attributes.at(i).first + '\"', bot.character_attributes.at(i).second);
+			block_start("ItemAttributes");
+			write("ItemName", '\"' + item.first + '\"');
+			for (const auto& p : item.second)
+			{
+				write('\"' + p.first + '\"', p.second);
+			}
+			block_end(); // ItemAttributes
 		}
-		block_end(); // CharacterAttributes
 	}
 
 	block_end(); // TFBot

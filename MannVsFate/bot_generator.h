@@ -6,6 +6,7 @@
 #include "random_name_generator.h"
 #include "tfbot.h"
 #include "tfbot_meta.h"
+#include "json_reader_weapon.h"
 
 class pressure_manager;
 
@@ -40,9 +41,15 @@ public:
 	// Called whenever a wave ends.
 	void wave_ended();
 
+	// Add a bunch of weapon-specific attributes to a weapon.
+	void randomize_weapon(weapon& wep, tfbot_meta& bot_meta);
+
 private:
 	// Injected dependencies.
 	const pressure_manager& wave_pressure;
+
+	// The weapon JSON reader is contained by this class so it only has to read the JSON data once.
+	json_reader_weapon weapon_reader;
 
 	// The random name generator.
 	const random_name_generator random_names;

@@ -1,4 +1,4 @@
-TF_WEAPON_SCATTERGUN
+tf_weapon_scattergun
 The Force-a-Nature
 The Soda Popper
 Festive Scattergun 2011

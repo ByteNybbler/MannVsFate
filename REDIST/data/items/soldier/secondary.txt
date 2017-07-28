@@ -1,4 +1,4 @@
-TF_WEAPON_SHOTGUN_PRIMARY
+tf_weapon_shotgun_soldier
 The Buff Banner
 The Battalion's Backup
 The Concheror

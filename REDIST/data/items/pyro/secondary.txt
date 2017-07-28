@@ -1,4 +1,4 @@
-TF_WEAPON_SHOTGUN_PRIMARY
+tf_weapon_shotgun_pyro
 The Flare Gun
 The Detonator
 The Reserve Shooter

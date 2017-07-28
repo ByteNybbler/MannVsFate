@@ -1,16 +1,18 @@
 #include "currency_manager.h"
 #include "rand_util.h"
 
-// Comment out the following line to prevent debug messages about currency pressure.
-//#define CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+// Set to 0 to prevent debug messages about currency pressure.
+#define CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG 0
+// Set to 0 to prevent debug messages about wavespawn currency.
+#define CURRENCY_MANAGER_DEBUG_WAVESPAWN_CURRENCY 0
 
-#ifdef CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+#if CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG || CURRENCY_MANAGER_DEBUG_WAVESPAWN_CURRENCY
 #include <iostream>
 #endif
 
 currency_manager::currency_manager()
 	: current_currency(2000),
-	currency_pressure_multiplier(0.3f),
+	currency_pressure_multiplier(0.175f),
 	approximated_additional_currency(0),
 	wavespawn_currency_so_far(0),
 	currency_per_wave(1500),
@@ -18,7 +20,7 @@ currency_manager::currency_manager()
 	currency_per_wavespawn(0),
 	currency_per_wavespawn_spread(0),
 	currency_per_wavespawn_limit(0),
-	currency_exponent(1.1f)
+	currency_exponent(1.2f)
 {}
 
 void currency_manager::set_currency(int amount)
@@ -84,7 +86,22 @@ void currency_manager::prepare_for_new_wave()
 
 bool currency_manager::has_currency_per_wavespawn_hit_limit()
 {
-	return wavespawn_currency_so_far > currency_per_wavespawn_limit && currency_per_wavespawn_limit != 0;
+	const bool return_value = wavespawn_currency_so_far >= currency_per_wavespawn_limit && currency_per_wavespawn_limit != 0;
+#if CURRENCY_MANAGER_DEBUG_WAVESPAWN_CURRENCY
+	std::cout << "currency_manager wavespawn_currency_so_far: " << wavespawn_currency_so_far << std::endl;
+	std::cout << "currency_manager has_currency_per_wavespawn_hit_limit: ";
+	if (return_value)
+	{
+		std::cout << "true";
+		std::getchar();
+	}
+	else
+	{
+		std::cout << "false";
+	}
+	std::cout << std::endl;
+#endif
+	return return_value;
 }
 
 int currency_manager::calculate_additional_currency_from_wavespawn()
@@ -152,13 +169,13 @@ void currency_manager::add_currency_from_wave(std::vector<wavespawn>& wavespawns
 
 int currency_manager::get_multiplied_currency() const
 {
-	return current_currency * currency_pressure_multiplier;
+	return static_cast<int>(current_currency * currency_pressure_multiplier);
 }
 
 float currency_manager::get_currency_pressure() const
 {
-	const float return_value = powf(get_multiplied_currency(), currency_exponent);
-#ifdef CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
+	const float return_value = powf(static_cast<float>(get_multiplied_currency()), currency_exponent);
+#if CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
 	std::cout << "currency_manager current_currency: " << current_currency << std::endl;
 	std::cout << "currency_manager get_multiplied_currency: " << get_multiplied_currency() << std::endl;
 	std::cout << "currency_manager get_currency_pressure return_value: " << return_value << std::endl;

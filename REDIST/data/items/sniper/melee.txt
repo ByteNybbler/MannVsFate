@@ -1,4 +1,4 @@
-TF_WEAPON_CLUB
+tf_weapon_club
 The Tribalman's Shiv
 The Bushwacka
 Frying Pan

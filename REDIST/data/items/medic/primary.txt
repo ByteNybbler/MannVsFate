@@ -1,4 +1,4 @@
-TF_WEAPON_SYRINGEGUN_MEDIC
+tf_weapon_syringegun_medic
 The Crusader's Crossbow
 The Blutsauger
 The Overdose

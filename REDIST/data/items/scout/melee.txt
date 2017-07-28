@@ -1,4 +1,4 @@
-TF_WEAPON_BAT
+tf_weapon_bat
 The Holy Mackerel
 The Sandman
 Frying Pan

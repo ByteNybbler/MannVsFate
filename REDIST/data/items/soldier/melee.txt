@@ -1,4 +1,4 @@
-TF_WEAPON_SHOVEL
+tf_weapon_shovel
 The Equalizer
 The Pain Train
 Frying Pan

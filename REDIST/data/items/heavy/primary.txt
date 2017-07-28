@@ -1,4 +1,4 @@
-TF_WEAPON_MINIGUN
+tf_weapon_minigun
 The Huo Long Heatmaker
 Natascha
 Iron Curtain

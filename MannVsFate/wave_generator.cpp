@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.2";
+const std::string wave_generator::version = "0.4.3";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen),
@@ -154,7 +154,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 	std::ifstream maps_file("data/maps.json");
 	if (!maps_file)
 	{
-		const std::string exstr = "wave_generator::generate_mission exception: Couldn't find maps file \"data/" + map_name + ".json\".";
+		const std::string exstr = "wave_generator::generate_mission exception: Couldn't find maps file \"data/maps.json\".";
 		throw std::exception(exstr.c_str());
 	}
 
@@ -752,6 +752,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 				int additional_currency = mission_currency.calculate_additional_currency_from_wavespawn();
 				ws.total_currency += additional_currency;
 				vws.currency_per_spawn = additional_currency / ws.total_count;
+				//std::cout << "wave_generator: Calculated additional currency from WaveSpawn: " << additional_currency << std::endl;
+				//std::getchar();
 			}
 
 			if (doombot_enabled)
