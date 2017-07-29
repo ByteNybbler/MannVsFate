@@ -61,8 +61,12 @@ public:
 	bool is_giant;
 	// Whether the bot is a boss (i.e. unusually strong giant).
 	bool is_boss;
-	// Whether the bot is a doombot (i.e. enormous giant).
+	// Whether the bot is a doombot (i.e. enormous giant that is likely too big to reach the bomb hatch).
 	bool is_doom;
+	// Whether the bot might soon be made into a giant.
+	bool shall_be_giant;
+	// Whether the bot might soon be made into a boss.
+	bool shall_be_boss;
 	// Whether the bot cannot become a boss.
 	bool perma_small;
 	// Whether the bot has the AlwaysCrit attribute.

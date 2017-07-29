@@ -12,7 +12,9 @@ tfbot_meta::tfbot_meta()
 	is_always_crit(false),
 	is_always_fire_weapon(false),
 	base_class_icon(""),
-	projectile_override_crash_risk(false)
+	projectile_override_crash_risk(false),
+	shall_be_giant(false),
+	shall_be_boss(false)
 {
 	// Since we're keeping references to elements in the vector, we don't want the vector to move around.
 	// Let's reserve as much space as we need.

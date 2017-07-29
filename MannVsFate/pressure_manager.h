@@ -17,7 +17,7 @@ public:
 	float get_pressure() const;
 	float get_pressure_decay_rate() const;
 	void set_players(int in);
-	int get_players();
+	int get_players() const;
 	void multiply_pressure_decay_rate_multiplier(float multiplier);
 	void set_pressure_decay_rate_multiplier_in_time(float in);
 	void set_bot_path_length(float in);
@@ -32,6 +32,8 @@ public:
 	void add_virtual_wavespawn(const virtual_wavespawn& ws);
 	// Calculate the pressure decay rate.
 	void calculate_pressure_decay_rate();
+	// Returns the pressure decay rate per player.
+	float get_pressure_decay_rate_per_player() const;
 
 private:
 	// Add a virtual spawn to the virtual spawns vector based on a virtual WaveSpawn.

@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.3";
+const std::string wave_generator::version = "0.4.4";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen),
@@ -354,7 +354,8 @@ void wave_generator::generate_mission(int argc, char** argv)
 		wave_pressure.reset_pressure();
 		wave_pressure.calculate_pressure_decay_rate();
 
-		//std::cout << "The pressure decay rate is " << pressure_decay_rate << '.' << std::endl;
+		std::cout << "The pressure decay rate is " << wave_pressure.get_pressure_decay_rate() << '.' << std::endl;
+		//std::getchar();
 
 		// Cache the recipricol of the pressure decay rate for use in various calculations.
 		float recip_pressure_decay_rate = 1 / wave_pressure.get_pressure_decay_rate();
@@ -573,7 +574,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				{
 					effective_pressure = bot_meta.calculate_effective_pressure();
 					time_to_kill = effective_pressure * recip_pressure_decay_rate;
-					wait_between_spawns = time_to_kill * rand_float(1.0f, 5.0f); // * pressure_compensation;
+					wait_between_spawns = time_to_kill;
 					max_count = static_cast<int>(floor(time_left / wait_between_spawns));
 
 					//effective_time_to_kill = effective_pressure / effective_pressure_decay_rate;
@@ -628,6 +629,12 @@ void wave_generator::generate_mission(int argc, char** argv)
 						max_count = 1;
 					}
 				}
+
+				// Add some variation to the wait between spawns.
+				float wbs_multiplier = rand_float(1.0f, 5.0f);
+				wait_between_spawns *= wbs_multiplier;
+				// Change the max count too.
+				max_count = ceil(static_cast<float>(max_count) / wbs_multiplier);
 
 				// Formerly small bots with high health should potentially be made into giants without the additional bonuses.
 				if (!bot_meta.is_giant && !bot_meta.perma_small && bot.health >= 1000 && rand_chance(0.7f))

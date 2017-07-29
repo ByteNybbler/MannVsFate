@@ -44,6 +44,9 @@ public:
 	// Add a bunch of weapon-specific attributes to a weapon.
 	void randomize_weapon(weapon& wep, tfbot_meta& bot_meta);
 
+	// Returns a muted pressure per player and mutes it more as the players gain more currency.
+	float get_muted_damage_pressure(const float base) const;
+
 private:
 	// Injected dependencies.
 	const pressure_manager& wave_pressure;
