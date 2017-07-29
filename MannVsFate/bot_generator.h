@@ -47,6 +47,9 @@ public:
 	// Returns a muted pressure per player and mutes it more as the players gain more currency.
 	float get_muted_damage_pressure(const float base) const;
 
+	// Add cosmetics (hats etc) to a robot.
+	void add_cosmetics(tfbot_meta& bot_meta);
+
 private:
 	// Injected dependencies.
 	const pressure_manager& wave_pressure;

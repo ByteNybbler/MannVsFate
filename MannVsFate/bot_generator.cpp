@@ -137,10 +137,6 @@ tfbot_meta bot_generator::generate_bot()
 	// Set the bot's health based on its class.
 	bot.health = get_class_default_health(bot.cl);
 
-	// Get the bot's class icon.
-	bot_meta.set_base_class_icon(get_class_icon(bot.cl));
-	const std::string item_class_icon = get_class_icon(item_class);
-
 	// Decide whether the bot will be a giant and/or a boss.
 	if (rand_chance(giant_chance) || bot_meta.is_doom)
 	{
@@ -152,6 +148,10 @@ tfbot_meta bot_generator::generate_bot()
 			chance_mult *= 4.0f;
 		}
 	}
+
+	// Get the bot's class icon.
+	bot_meta.set_base_class_icon(get_class_icon(bot.cl));
+	const std::string item_class_icon = get_class_icon(item_class);
 
 	// Give the bot items!
 	list_reader item_reader;
@@ -432,7 +432,7 @@ tfbot_meta bot_generator::generate_bot()
 	if (secondary.is_a("Bonk! Atomic Punch"))
 	{
 		bot_meta.set_base_class_icon("scout_bonk");
-		bot.items.emplace("Bonk Helm");
+		//bot.items.emplace("Bonk Helm");
 		bot_meta.pressure *= 4.0f;
 		// Make sure that we can never have giant Bonk Scouts...
 		bot_meta.perma_small = true;
@@ -477,6 +477,8 @@ tfbot_meta bot_generator::generate_bot()
 #if BOT_GENERATOR_DEBUG
 	std::cout << "Done choosing first class icons." << std::endl;
 #endif
+
+	add_cosmetics(bot_meta);
 
 	// A bot has a chance to be a giant.
 	if ((bot_meta.shall_be_giant && !bot_meta.is_giant && !bot_meta.perma_small) || bot_meta.is_doom)
@@ -1153,6 +1155,7 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 
 		bot.character_attributes["attach particle effect static"] = rand_int(1, 48);
 
+		/*
 		// Now that you're a boss, choose a special class icon.
 		switch (bot.cl)
 		{
@@ -1176,15 +1179,6 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 			}
 			break;
 
-		case player_class::scout:
-			/*
-			if (bot_meta.get_base_class_icon() == "scout_stun")
-			{
-				bot.class_icon = "scout_stun_giant_armored";
-			}
-			*/
-			break;
-
 		case player_class::soldier:
 			if (bot.weapon_restriction == weapon_restrictions::melee)
 			{
@@ -1198,6 +1192,7 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 			}
 			break;
 		}
+		*/
 	}
 }
 
@@ -1568,4 +1563,379 @@ float bot_generator::get_muted_damage_pressure(const float base) const
 	const float change_factor = wave_pressure.get_pressure_decay_rate_per_player() * 0.024f;
 	const float change = ((base - 1.0f) / change_factor) + 1.0f;
 	return change;
+}
+
+void bot_generator::add_cosmetics(tfbot_meta& bot_meta)
+{
+	tfbot& bot = bot_meta.get_bot();
+
+	const std::string item_class_icon = get_class_icon(bot.cl);
+
+	list_reader item_reader;
+	const std::string root_path = "data/items/";
+	const std::string initial_path = root_path + item_class_icon + '/';
+	
+	constexpr float cosmetic_chance = 0.8f;
+
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::scout ||
+			bot.cl == player_class::heavyweapons ||
+			bot.cl == player_class::engineer ||
+			bot.cl == player_class::sniper)
+		{
+			const std::string file = initial_path + "arm_tattoos.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::heavyweapons ||
+			bot.cl == player_class::medic ||
+			bot.cl == player_class::scout ||
+			bot.cl == player_class::soldier ||
+			bot.cl == player_class::pyro ||
+			bot.cl == player_class::demoman ||
+			bot.cl == player_class::engineer ||
+			bot.cl == player_class::sniper)
+		{
+			const std::string file = initial_path + "arms.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl != player_class::soldier &&
+			bot.cl != player_class::sniper &&
+			bot.cl != player_class::heavyweapons &&
+			bot.cl != player_class::spy)
+		{
+			const std::string file = initial_path + "back.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.95f))
+		{
+			if (bot.cl == player_class::soldier ||
+				bot.cl == player_class::demoman ||
+				bot.cl == player_class::heavyweapons ||
+				bot.cl == player_class::engineer ||
+				bot.cl == player_class::medic ||
+				bot.cl == player_class::sniper ||
+				bot.cl == player_class::spy)
+			{
+				const std::string file = initial_path + "beard.txt";
+				item_reader.load(file);
+				const std::string item_name = item_reader.get_random(file);
+				bot.items.emplace(item_name);
+			}
+		}
+		else
+		{
+			const std::string file = root_path + "beard.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::demoman ||
+			bot.cl == player_class::engineer)
+		{
+			const std::string file = initial_path + "belt.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::soldier ||
+			bot.cl == player_class::medic)
+		{
+			const std::string file = initial_path + "cigar.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(0.01f))
+	{
+		const std::string file = root_path + "ears.txt";
+		item_reader.load(file);
+		const std::string item_name = item_reader.get_random(file);
+		bot.items.emplace(item_name);
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::soldier ||
+			bot.cl == player_class::pyro ||
+			bot.cl == player_class::medic ||
+			bot.cl == player_class::spy)
+		{
+			const std::string file = initial_path + "face.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.95f))
+		{
+			if (bot.cl == player_class::scout ||
+				bot.cl == player_class::soldier ||
+				bot.cl == player_class::demoman ||
+				bot.cl == player_class::heavyweapons ||
+				bot.cl == player_class::engineer ||
+				bot.cl == player_class::medic ||
+				bot.cl == player_class::sniper ||
+				bot.cl == player_class::spy)
+			{
+				const std::string file = initial_path + "feet.txt";
+				item_reader.load(file);
+				const std::string item_name = item_reader.get_random(file);
+				bot.items.emplace(item_name);
+			}
+		}
+		else
+		{
+			const std::string file = root_path + "feet.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(0.01f))
+	{
+		const std::string file = root_path + "flair.txt";
+		item_reader.load(file);
+		const std::string item_name = item_reader.get_random(file);
+		bot.items.emplace(item_name);
+	}
+	if (rand_chance(0.01f))
+	{
+		const std::string file = root_path + "floater.txt";
+		item_reader.load(file);
+		const std::string item_name = item_reader.get_random(file);
+		bot.items.emplace(item_name);
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.5f))
+		{
+			const std::string file = initial_path + "glasses.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+		else
+		{
+			const std::string file = root_path + "glasses.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::soldier ||
+			bot.cl == player_class::pyro ||
+			bot.cl == player_class::demoman ||
+			bot.cl == player_class::heavyweapons)
+		{
+			const std::string file = initial_path + "grenades.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::scout ||
+			bot.cl == player_class::medic)
+		{
+			const std::string file = initial_path + "hands.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.5f))
+		{
+			const std::string file = initial_path + "hat.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+		else
+		{
+			const std::string file = root_path + "hat.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::pyro)
+		{
+			const std::string file = initial_path + "head_replacement.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.3f))
+		{
+			if (bot.cl == player_class::soldier ||
+				bot.cl == player_class::medic ||
+				bot.cl == player_class::spy)
+			{
+				const std::string file = initial_path + "medal.txt";
+				item_reader.load(file);
+				const std::string item_name = item_reader.get_random(file);
+				bot.items.emplace(item_name);
+			}
+		}
+		else
+		{
+			const std::string file = root_path + "medal.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.8f))
+		{
+			if (bot.cl == player_class::scout ||
+				bot.cl == player_class::pyro ||
+				bot.cl == player_class::heavyweapons ||
+				bot.cl == player_class::engineer ||
+				bot.cl == player_class::medic ||
+				bot.cl == player_class::sniper ||
+				bot.cl == player_class::spy)
+			{
+				const std::string file = initial_path + "necklace.txt";
+				item_reader.load(file);
+				const std::string item_name = item_reader.get_random(file);
+				bot.items.emplace(item_name);
+			}
+		}
+		else
+		{
+			const std::string file = root_path + "necklace.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::scout ||
+			bot.cl == player_class::soldier ||
+			bot.cl == player_class::demoman ||
+			bot.cl == player_class::heavyweapons ||
+			bot.cl == player_class::engineer ||
+			bot.cl == player_class::sniper)
+		{
+			const std::string file = initial_path + "pants.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.8f))
+		{
+			if (bot.cl == player_class::soldier ||
+				bot.cl == player_class::heavyweapons ||
+				bot.cl == player_class::engineer ||
+				bot.cl == player_class::medic ||
+				bot.cl == player_class::sniper)
+			{
+				const std::string file = initial_path + "pocket.txt";
+				item_reader.load(file);
+				const std::string item_name = item_reader.get_random(file);
+				bot.items.emplace(item_name);
+			}
+		}
+		else
+		{
+			const std::string file = root_path + "pocket.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::sniper)
+		{
+			const std::string file = initial_path + "quiver.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (rand_chance(0.8f))
+		{
+			const std::string file = initial_path + "shirt.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+		else
+		{
+			const std::string file = root_path + "shirt.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::scout ||
+			bot.cl == player_class::soldier ||
+			bot.cl == player_class::demoman ||
+			bot.cl == player_class::heavyweapons ||
+			bot.cl == player_class::engineer ||
+			bot.cl == player_class::medic ||
+			bot.cl == player_class::sniper ||
+			bot.cl == player_class::spy)
+		{
+			const std::string file = initial_path + "shoulder.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
+	if (rand_chance(cosmetic_chance))
+	{
+		if (bot.cl == player_class::pyro)
+		{
+			const std::string file = initial_path + "spikes.txt";
+			item_reader.load(file);
+			const std::string item_name = item_reader.get_random(file);
+			bot.items.emplace(item_name);
+		}
+	}
 }
