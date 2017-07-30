@@ -14,27 +14,32 @@
 
 void list_reader::load(const std::string& source_filename)
 {
-	std::ifstream file(source_filename);
-	if (file)
+	// Check if there's already an entry for the file in the lists map.
+	// If there already is an entry, this function does nothing, thus saving computation power.
+	if (lists.find(source_filename) == lists.end())
 	{
-		// Instantiate a vector for the corresponding filename within the lists map.
-		// This vector will contain the list of items read from the file.
-		lists.emplace(source_filename, std::vector<std::string>());
-		std::string phrase;
-		while (std::getline(file, phrase))
+		std::ifstream file(source_filename);
+		if (file)
 		{
-			lists.at(source_filename).emplace_back(phrase);
+			// Instantiate a vector for the corresponding filename within the lists map.
+			// This vector will contain the list of items read from the file.
+			lists.emplace(source_filename, std::vector<std::string>());
+			std::string phrase;
+			while (std::getline(file, phrase))
+			{
+				lists.at(source_filename).emplace_back(phrase);
 
 #if LIST_READER_DEBUG == 1
-			std::cout << "Appended phrase " << phrase << " to vector " << source_filename << '.' << std::endl;
+				std::cout << "Appended phrase " << phrase << " to vector " << source_filename << '.' << std::endl;
 #endif
+			}
+			file.close();
 		}
-		file.close();
-	}
-	else
-	{
-		const std::string exstr = "list_reader::load exception: File \"" + source_filename + "\" not found!";
-		throw std::exception(exstr.c_str());
+		else
+		{
+			const std::string exstr = "list_reader::load exception: File \"" + source_filename + "\" not found!";
+			throw std::exception(exstr.c_str());
+		}
 	}
 }
 

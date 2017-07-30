@@ -28,6 +28,7 @@ public:
 	void set_scale_doom(float in);
 	float get_scale_doom();
 	void set_generating_doombot(bool in);
+	void set_give_bots_cosmetics(bool in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -56,7 +57,8 @@ private:
 
 	// The weapon JSON reader is contained by this class so it only has to read the JSON data once.
 	json_reader_weapon weapon_reader;
-
+	// The item reader.
+	list_reader item_reader;
 	// The random name generator.
 	const random_name_generator random_names;
 	// The possible classes that the bot generator can choose from.
@@ -81,6 +83,8 @@ private:
 	// The scale of a doombot (doom robot). This is often too big to navigate all the way through a map.
 	// This is fine though, since the doombots can't pick up flags.
 	float scale_doom;
+	// Whether to give the robots cosmetics.
+	bool give_bots_cosmetics;
 };
 
 #endif

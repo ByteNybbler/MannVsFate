@@ -34,6 +34,9 @@ public:
 	void calculate_pressure_decay_rate();
 	// Returns the pressure decay rate per player.
 	float get_pressure_decay_rate_per_player() const;
+	// Gets the effective number of players.
+	// Each player makes the team exponentially more capable, and this function accounts for that.
+	float get_effective_players() const;
 
 private:
 	// Add a virtual spawn to the virtual spawns vector based on a virtual WaveSpawn.
@@ -90,6 +93,9 @@ private:
 
 	// This is the multiplier for the initial pressure per second of a Tank.
 	float pps_factor_tank;
+
+	// The exponent by which the number of players is raised to when calculating the effective players.
+	float player_exponent;
 };
 
 #endif PRESSURE_MANAGER_H

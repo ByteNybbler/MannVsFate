@@ -27,7 +27,8 @@ bot_generator::bot_generator(const pressure_manager& pm)
 	player_class::engineer,
 	player_class::medic,
 	player_class::sniper,
-	player_class::spy}
+	player_class::spy},
+	give_bots_cosmetics(false)
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
@@ -83,6 +84,11 @@ float bot_generator::get_scale_doom()
 void bot_generator::set_generating_doombot(bool in)
 {
 	generating_doombot = in;
+}
+
+void bot_generator::set_give_bots_cosmetics(bool in)
+{
+	give_bots_cosmetics = in;
 }
 
 tfbot_meta bot_generator::generate_bot()
@@ -154,7 +160,6 @@ tfbot_meta bot_generator::generate_bot()
 	const std::string item_class_icon = get_class_icon(item_class);
 
 	// Give the bot items!
-	list_reader item_reader;
 	const std::string initial_path = "data/items/" + item_class_icon + '/';
 	//const std::string initial_path_bot = "data/items/" + bot.class_icon + '/';
 
@@ -478,7 +483,10 @@ tfbot_meta bot_generator::generate_bot()
 	std::cout << "Done choosing first class icons." << std::endl;
 #endif
 
-	add_cosmetics(bot_meta);
+	if (give_bots_cosmetics)
+	{
+		add_cosmetics(bot_meta);
+	}
 
 	// A bot has a chance to be a giant.
 	if ((bot_meta.shall_be_giant && !bot_meta.is_giant && !bot_meta.perma_small) || bot_meta.is_doom)
@@ -1422,7 +1430,7 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 		}
 	}
 
-	if (rand_chance(0.05f * chance_mult))
+	if (!wep.burns && (0.05f * chance_mult))
 	{
 		// Enable bleeding.
 		item_attributes["bleeding duration"] = 5.0f;
@@ -1443,7 +1451,7 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 			}
 		}
 	}
-	if (rand_chance(0.04f * chance_mult))
+	if (!wep.bleeds && (0.04f * chance_mult))
 	{
 		// Enable burning.
 		item_attributes["Set DamageType Ignite"] = 1;
@@ -1562,7 +1570,15 @@ float bot_generator::get_muted_damage_pressure(const float base) const
 {
 	const float change_factor = wave_pressure.get_pressure_decay_rate_per_player() * 0.024f;
 	const float change = ((base - 1.0f) / change_factor) + 1.0f;
-	return change;
+	// Make sure the muting doesn't actually make the number bigger.
+	if (change > base)
+	{
+		return base;
+	}
+	else
+	{
+		return change;
+	}
 }
 
 void bot_generator::add_cosmetics(tfbot_meta& bot_meta)
@@ -1571,7 +1587,6 @@ void bot_generator::add_cosmetics(tfbot_meta& bot_meta)
 
 	const std::string item_class_icon = get_class_icon(bot.cl);
 
-	list_reader item_reader;
 	const std::string root_path = "data/items/";
 	const std::string initial_path = root_path + item_class_icon + '/';
 	

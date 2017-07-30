@@ -12,15 +12,15 @@
 
 currency_manager::currency_manager()
 	: current_currency(2000),
-	currency_pressure_multiplier(0.175f),
+	currency_pressure_multiplier(0.04f),
+	currency_exponent(1.5f),
 	approximated_additional_currency(0),
 	wavespawn_currency_so_far(0),
 	currency_per_wave(1500),
 	currency_per_wave_spread(0),
 	currency_per_wavespawn(0),
 	currency_per_wavespawn_spread(0),
-	currency_per_wavespawn_limit(0),
-	currency_exponent(1.2f)
+	currency_per_wavespawn_limit(0)
 {}
 
 void currency_manager::set_currency(int amount)

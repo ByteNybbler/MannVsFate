@@ -10,7 +10,8 @@ pressure_manager::pressure_manager(currency_manager& cm)
 	pressure_decay_rate_multiplier_in_time(3.0f),
 	bot_path_length(1.0f),
 	pps_factor_tfbot(1.0f),
-	pps_factor_tank(0.1f)
+	pps_factor_tank(0.1f),
+	player_exponent(1.175f)
 {}
 
 float pressure_manager::get_pressure() const
@@ -204,11 +205,16 @@ void pressure_manager::add_virtual_spawn(const virtual_wavespawn& ws)
 void pressure_manager::calculate_pressure_decay_rate()
 {
 	pressure_decay_rate = (mission_currency.get_currency_pressure() + base_pressure_decay_rate)
-		* players * pressure_decay_rate_multiplier * bot_path_length;
+		* get_effective_players() * pressure_decay_rate_multiplier * bot_path_length;
 }
 
 float pressure_manager::get_pressure_decay_rate_per_player() const
 {
-	const float return_value = pressure_decay_rate / players;
+	const float return_value = pressure_decay_rate / get_effective_players();
 	return return_value;
+}
+
+float pressure_manager::get_effective_players() const
+{
+	return pow(static_cast<float>(players), player_exponent);
 }

@@ -7,7 +7,7 @@
 class list_reader
 {
 public:
-	// Load a list from a file.
+	// Load a list from a file. If the file is already loaded, this function does nothing.
 	void load(const std::string& source_filename);
 
 	// Get a random element of a certain list.

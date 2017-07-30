@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_mannhattan -name onesie -fixedrespawnwavetime -players 3 -startingcurrency 15000 -waves 1 -time 600 -wavespawncurrency 1000

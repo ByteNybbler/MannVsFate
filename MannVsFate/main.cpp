@@ -259,6 +259,11 @@ int main(int argc, char** argv)
 					gen.set_doombot_enabled(true);
 					continue;
 				}
+				if (std::strcmp(argv[i], "-cosmetics") == 0)
+				{
+					botgen.set_give_bots_cosmetics(true);
+					continue;
+				}
 			}
 		}
 

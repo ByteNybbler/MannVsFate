@@ -31,3 +31,4 @@ Open the example.bat file in a text editor to see how command line arguments are
 -wackysounds [bitfield; 1 enables randomized sounds for all wavespawns; 2 enables randomized sounds every second]
 -wackyvoratio [the ratio of voiceover sounds to standard sounds for the randomized sounds]
 -doombot <no arguments; enables doombot mode for the mission>
+-cosmetics <no arguments; enables cosmetics for robots; note that some cosmetics may crash the game>
