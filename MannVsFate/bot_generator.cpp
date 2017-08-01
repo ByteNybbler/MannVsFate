@@ -1481,7 +1481,7 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 
 	if (bot_meta.is_boss)
 	{
-		if (!wep.burns && (0.2f * chance_mult)) // 0.01f
+		if (!wep.burns && rand_chance(0.2f * chance_mult)) // 0.01f
 		{
 			// Enable bleeding.
 			item_attributes["bleeding duration"] = 5.0f;
@@ -1507,7 +1507,7 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 		}
 	}
 
-	if (!wep.bleeds && (0.025f * chance_mult))
+	if (!wep.bleeds && rand_chance(0.025f * chance_mult))
 	{
 		// Enable burning.
 		item_attributes["Set DamageType Ignite"] = 1;
