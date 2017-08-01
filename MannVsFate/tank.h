@@ -6,8 +6,8 @@
 struct tank : public spawnable
 {
 	// Constructor.
-	tank(int health, float speed)
-		: health(health), speed(speed)
+	tank(int health, float speed, int skin = 0)
+		: health(health), speed(speed), skin(skin)
 	{}
 
 	type get_type() const
@@ -17,6 +17,7 @@ struct tank : public spawnable
 
 	int health;
 	float speed;
+	int skin;
 };
 
 #endif

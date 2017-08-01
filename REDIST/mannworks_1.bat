@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_mannworks -name gen -fixedrespawnwavetime -players 1

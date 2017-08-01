@@ -1,4 +1,5 @@
 #include "bot_generator.h"
+#include "tank_generator.h"
 #include "wave_generator.h"
 #include "currency_manager.h"
 #include "pressure_manager.h"
@@ -23,7 +24,8 @@ int main(int argc, char** argv)
 		currency_manager cm;
 		pressure_manager pm(cm);
 		bot_generator botgen(pm);
-		wave_generator gen(cm, pm, botgen);
+		tank_generator tankgen(pm);
+		wave_generator gen(cm, pm, botgen, tankgen);
 
 		// Interpret command line arguments.
 		if (argc > 1)
@@ -262,6 +264,24 @@ int main(int argc, char** argv)
 				if (std::strcmp(argv[i], "-cosmetics") == 0)
 				{
 					botgen.set_give_bots_cosmetics(true);
+					continue;
+				}
+				if (std::strcmp(argv[i], "-bothp") == 0)
+				{
+					++i;
+					gen.set_force_tfbot_hp(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-tankhp") == 0)
+				{
+					++i;
+					gen.set_force_tank_hp(toint(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-tankspeed") == 0)
+				{
+					++i;
+					gen.set_force_tank_speed(tofloat(argv[i]));
 					continue;
 				}
 			}

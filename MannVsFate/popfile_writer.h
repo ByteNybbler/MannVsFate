@@ -5,6 +5,8 @@
 #include "mission.h"
 #include <fstream>
 
+class tank;
+
 // A class for writing to a popfile.
 class popfile_writer
 {
@@ -50,6 +52,8 @@ public:
 
 	// Writes data for one TFBot.
 	void write_tfbot(const tfbot& bot, const std::vector<std::string>& spawnbots);
+	// Writes data for one Tank.
+	void write_tank(const tank& tnk, const std::string& starting_node);
 	// Writes data for one WaveSpawn.
 	void write_wavespawn(const wavespawn& ws, const std::vector<std::string>& spawnbots);
 	// Writes data for one Mission.

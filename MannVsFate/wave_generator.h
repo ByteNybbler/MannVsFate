@@ -9,12 +9,13 @@
 class currency_manager;
 class pressure_manager;
 class bot_generator;
+class tank_generator;
 
 class wave_generator
 {
 public:
 	// Constructor.
-	wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen);
+	wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen, tank_generator& tankgen);
 	// Accessors.
 	void set_map_name(const std::string& in);
 	void set_mission_name(const std::string& in);
@@ -35,6 +36,9 @@ public:
 	void set_use_wacky_sounds(int in);
 	void set_wacky_sound_vo_ratio(float in);
 	void set_doombot_enabled(bool in);
+	void set_force_tfbot_hp(int in);
+	void set_force_tank_hp(int in);
+	void set_force_tank_speed(float in);
 
 	// Generate the mission. argc and argv are taken only to be printed in the mission file as debug info.
 	void generate_mission(int argc = 1, char** argv = nullptr);
@@ -47,6 +51,7 @@ private:
 	currency_manager& mission_currency;
 	pressure_manager& wave_pressure;
 	bot_generator& botgen;
+	tank_generator& tankgen;
 
 	// The popfile writer to use.
 	popfile_writer writer;
@@ -97,6 +102,12 @@ private:
 	float wacky_sound_vo_ratio;
 	// Whether this mission is a Doombot mission.
 	bool doombot_enabled;
+	// If the pointed value exists, all TFBots will have this amount of HP.
+	std::unique_ptr<int> force_tfbot_hp;
+	// If the pointed value exists, all Tanks will have this amount of HP.
+	std::unique_ptr<int> force_tank_hp;
+	// If the pointed value exists, all Tanks will have this amount of speed.
+	std::unique_ptr<float> force_tank_speed;
 };
 
 #endif

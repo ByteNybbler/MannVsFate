@@ -198,6 +198,33 @@ void popfile_writer::write_tfbot(const tfbot& bot, const std::vector<std::string
 	block_end(); // TFBot
 }
 
+void popfile_writer::write_tank(const tank& tnk, const std::string& starting_node)
+{
+	block_start("FirstSpawnOutput");
+	write("Target", "boss_spawn_relay");
+	write("Action", "Trigger");
+	block_end(); // FirstSpawnOutput
+	write_blank();
+	block_start("Tank");
+	write("Health", tnk.health);
+	write("Speed", tnk.speed);
+	if (tnk.skin != 0)
+	{
+		write("Skin", tnk.skin);
+	}
+	write("Name", "\"tankboss\"");
+	write("StartingPathTrackNode", starting_node);
+	block_start("OnKilledOutput");
+	write("Target", "boss_dead_relay");
+	write("Action", "Trigger");
+	block_end(); // OnKilledOutput
+	block_start("OnBombDroppedOutput");
+	write("Target", "boss_deploy_relay");
+	write("Action", "Trigger");
+	block_end(); // OnBombDroppedOutput
+	block_end(); // Tank
+}
+
 void popfile_writer::write_wavespawn(const wavespawn& ws, const std::vector<std::string>& spawnbots)
 {
 	block_start("WaveSpawn");
@@ -231,27 +258,8 @@ void popfile_writer::write_wavespawn(const wavespawn& ws, const std::vector<std:
 	}
 	else if (ws.enemy->get_type() == spawnable::type::tank)
 	{
-		tank& enemy = static_cast<tank&>(*ws.enemy);
 		write_blank();
-		block_start("FirstSpawnOutput");
-		write("Target", "boss_spawn_relay");
-		write("Action", "Trigger");
-		block_end(); // FirstSpawnOutput
-		write_blank();
-		block_start("Tank");
-		write("Health", enemy.health);
-		write("Speed", enemy.speed);
-		write("Name", "\"tankboss\"");
-		write("StartingPathTrackNode", ws.location);
-		block_start("OnKilledOutput");
-		write("Target", "boss_dead_relay");
-		write("Action", "Trigger");
-		block_end(); // OnKilledOutput
-		block_start("OnBombDroppedOutput");
-		write("Target", "boss_deploy_relay");
-		write("Action", "Trigger");
-		block_end(); // OnBombDroppedOutput
-		block_end(); // Tank
+		write_tank(static_cast<tank&>(*ws.enemy), ws.location);
 	}
 
 	block_end(); // WaveSpawn

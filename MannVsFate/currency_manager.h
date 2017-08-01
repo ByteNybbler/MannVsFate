@@ -64,6 +64,8 @@ private:
 	int currency_per_wavespawn_limit;
 	// The exponent by which the currency pressure is raised.
 	float currency_exponent;
+	// The amount by which the currency pressure is multiplied after being raised to the exponent.
+	float currency_pressure_multiplier_flat;
 };
 
 #endif

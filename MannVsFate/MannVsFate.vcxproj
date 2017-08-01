@@ -126,6 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player_class.cpp" />
     <ClCompile Include="popfile_writer.cpp" />
+    <ClCompile Include="tank_generator.cpp" />
     <ClCompile Include="virtual_spawn.cpp" />
     <ClCompile Include="pressure_manager.cpp" />
     <ClCompile Include="random_name_generator.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="player_class.h" />
     <ClInclude Include="popfile_writer.h" />
     <ClInclude Include="spawnable.h" />
+    <ClInclude Include="tank_generator.h" />
     <ClInclude Include="virtual_spawn.h" />
     <ClInclude Include="pressure_manager.h" />
     <ClInclude Include="random_name_generator.h" />

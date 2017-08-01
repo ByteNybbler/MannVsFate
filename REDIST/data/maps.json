@@ -3,7 +3,8 @@
 	{
 		"bot_path_length" : 0.5,
 		"spawnbots" : ["spawnbot", "spawnbot_invasion", "spawnbot_left", "spawnbot_right", "spawnbot_single_flag", "spawnbot_mission_sniper"],
-		"spawntanks" : ["boss_path_a1", "boss_path_b1"],
+		"spawntanks" : ["boss_path_a1"],
+		"max_tank_speed" : 350,
 		"scale_mega" : 1.8,
 		"scale_doom" : 3.4,
 		"spawndooms" : ["spawnbot_single_flag"]
@@ -15,6 +16,7 @@
 		"spawnbots" : ["spawnbot", "spawnbot_giant", "spawnbot_invasion", "spawnbot_mission_sniper"],
 		"spawngiants" : ["spawnbot_giant", "spawnbot_mission_spy", "spawnbot_mission_sniper"],
 		"spawntanks" : ["boss_path_a1"],
+		"max_tank_speed" : 1000,
 		"scale_mega" : 1.8,
 		"scale_doom" : 4.4,
 		"spawndooms": ["spawnbot_mission_spy"]
@@ -28,6 +30,7 @@
 		"spawnbots" : ["spawnbot", "spawnbot_left", "spawnbot_right", "spawnbot_lower", "spawnbot_mission_sniper", "spawnbot_mission_spy"],
 		"spawngiants" : ["spawnbot", "spawnbot_left", "spawnbot_right"],
 		"spawntanks" : ["boss_path_1", "boss_path2_1"],
+		"max_tank_speed" : 125,
 		"scale_mega" : 1.75,
 		"scale_doom" : 4.0,
 		"spawndooms" : ["spawnbot_left"]
@@ -37,6 +40,7 @@
 		"bot_path_length" : 1.0,
 		"spawnbots" : ["spawnbot"],
 		"spawntanks" : ["boss_path_1"],
+		"max_tank_speed" : 500,
 		"scale_mega" : 1.9,
 		"scale_doom" : 2.8,
 		"spawndooms" : ["spawnbot_mission_spy"]
@@ -47,8 +51,10 @@
 		"wave_start_relay" : "wave_start_relay_classic",
 		"spawnbots" : ["spawnbot", "flankers", "spawnbot_chief", "spawnbot_mission_sniper", "spawnbot_mission_sentry_buster"],
 		"spawntanks" : ["tank_path_a_10", "tank_path_b_10"],
+		"max_tank_speed" : 150,
 		"scale_mega" : 2.4,
 		"scale_doom" : 4.7,
+		"spawnmegas" : ["spawnbot", "spawnbot_chief"],
 		"spawndooms" : ["spawnbot"]
 	},
 	"mvm_mannhattan" :
@@ -64,6 +70,7 @@
         "bot_path_length" : 0.85,
         "spawnbots" : ["spawnbot"],
         "spawntanks" : ["boss_path_1"],
+		"max_tank_speed" : 500,
         "scale_mega" : 1.5,
         "scale_doom" : 2.0,
         "spawndooms" : ["spawnbot_mission_spy"]

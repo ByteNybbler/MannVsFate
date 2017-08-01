@@ -14,6 +14,7 @@ currency_manager::currency_manager()
 	: current_currency(2000),
 	currency_pressure_multiplier(0.04f),
 	currency_exponent(1.5f),
+	currency_pressure_multiplier_flat(1.0f), // 0.75f
 	approximated_additional_currency(0),
 	wavespawn_currency_so_far(0),
 	currency_per_wave(1500),
@@ -174,7 +175,8 @@ int currency_manager::get_multiplied_currency() const
 
 float currency_manager::get_currency_pressure() const
 {
-	const float return_value = powf(static_cast<float>(get_multiplied_currency()), currency_exponent);
+	const float return_value = powf(static_cast<float>(get_multiplied_currency()), currency_exponent)
+		* currency_pressure_multiplier_flat;
 #if CURRENCY_MANAGER_CURRENCY_PRESSURE_DEBUG
 	std::cout << "currency_manager current_currency: " << current_currency << std::endl;
 	std::cout << "currency_manager get_multiplied_currency: " << get_multiplied_currency() << std::endl;

@@ -3,6 +3,7 @@
 
 tfbot_meta::tfbot_meta()
 	: pressure(1.0f),
+	wait_between_spawns_multiplier(1.0f),
 	move_speed_bonus(1.0f),
 	damage_bonus(1.0f),
 	is_giant(false),
@@ -94,6 +95,8 @@ std::string tfbot_meta::get_base_class_icon() const
 float tfbot_meta::calculate_effective_pressure() const
 {
 	return pressure * bot.health;
+	//return bot.health;
+	//return bot.health * pressure_health;
 }
 
 float tfbot_meta::calculate_muted_pressure() const
