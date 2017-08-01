@@ -28,7 +28,10 @@ bot_generator::bot_generator(const pressure_manager& pm)
 	player_class::medic,
 	player_class::sniper,
 	player_class::spy},
-	give_bots_cosmetics(false)
+	give_bots_cosmetics(false),
+	fire_chance(0.025f),
+	bleed_chance(0.2f),
+	nonbosses_can_get_bleed(false)
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
@@ -89,6 +92,21 @@ void bot_generator::set_generating_doombot(bool in)
 void bot_generator::set_give_bots_cosmetics(bool in)
 {
 	give_bots_cosmetics = in;
+}
+
+void bot_generator::set_fire_chance(float in)
+{
+	fire_chance = in;
+}
+
+void bot_generator::set_bleed_chance(float in)
+{
+	bleed_chance = in;
+}
+
+void bot_generator::set_nonbosses_can_get_bleed(bool in)
+{
+	nonbosses_can_get_bleed = in;
 }
 
 tfbot_meta bot_generator::generate_bot()
@@ -1479,9 +1497,9 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 		}
 	}
 
-	if (bot_meta.is_boss)
+	if (bot_meta.is_boss || nonbosses_can_get_bleed)
 	{
-		if (!wep.burns && rand_chance(0.2f * chance_mult)) // 0.01f
+		if (!wep.burns && rand_chance(bleed_chance * chance_mult)) // 0.01f
 		{
 			// Enable bleeding.
 			item_attributes["bleeding duration"] = 5.0f;
@@ -1507,7 +1525,7 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 		}
 	}
 
-	if (!wep.bleeds && rand_chance(0.025f * chance_mult))
+	if (!wep.bleeds && rand_chance(fire_chance * chance_mult))
 	{
 		// Enable burning.
 		item_attributes["Set DamageType Ignite"] = 1;

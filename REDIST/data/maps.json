@@ -52,7 +52,7 @@
 		"spawnbots" : ["spawnbot", "flankers", "spawnbot_chief", "spawnbot_mission_sniper", "spawnbot_mission_sentry_buster"],
 		"spawntanks" : ["tank_path_a_10", "tank_path_b_10"],
 		"max_tank_speed" : 150,
-		"scale_mega" : 2.4,
+		"scale_mega" : 2.2,
 		"scale_doom" : 4.7,
 		"spawnmegas" : ["spawnbot", "spawnbot_chief"],
 		"spawndooms" : ["spawnbot"]

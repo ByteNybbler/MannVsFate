@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.8";
+const std::string wave_generator::version = "0.4.9";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen, tank_generator& tankgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen), tankgen(tankgen),
@@ -658,7 +658,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 					botgen.make_bot_into_giant_pure(bot_meta);
 				}
 				// If Spies are too large, they'll get stuck in the walls and die when they spawn.
-				float constexpr max_spy_scale = 1.25f;
+				float constexpr max_spy_scale = 1.2f;
 				if (bot.cl == player_class::spy && (bot_meta.is_giant || bot.scale > max_spy_scale))
 				{
 					bot.scale = max_spy_scale;

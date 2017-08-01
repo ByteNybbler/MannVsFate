@@ -35,3 +35,6 @@ Open the example.bat file in a text editor to see how command line arguments are
 -bothp [how much HP each robot will be forced to have; this may make the mission unbalanced]
 -tankhp [how much HP each tank will be forced to have; this may make the mission unbalanced]
 -tankspeed [how much speed each tank will be forced to have; this may make the mission unbalanced]
+-firechance [the chance a robot's weapon has of gaining fire damage; default = 0.025]
+-bleedchance [the chance a robot's weapon has of gaining bleed damage; default = 0.2]
+-bleedforall <no arguments; allows non-boss robots to get bleed buffs>

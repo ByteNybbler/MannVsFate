@@ -29,6 +29,9 @@ public:
 	float get_scale_doom();
 	void set_generating_doombot(bool in);
 	void set_give_bots_cosmetics(bool in);
+	void set_fire_chance(float in);
+	void set_bleed_chance(float in);
+	void set_nonbosses_can_get_bleed(bool in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -85,6 +88,12 @@ private:
 	float scale_doom;
 	// Whether to give the robots cosmetics.
 	bool give_bots_cosmetics;
+	// The chance that a weapon will get a fire buff.
+	float fire_chance;
+	// The chance that a weapon will get a bleed buff.
+	float bleed_chance;
+	// Whether non-boss robots can get bleed buff.
+	bool nonbosses_can_get_bleed;
 };
 
 #endif

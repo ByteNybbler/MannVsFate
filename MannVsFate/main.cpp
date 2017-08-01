@@ -1,3 +1,9 @@
+// Mann vs Fate Wave Generator
+// by MNIK
+//
+// This is a Team Fortress 2 Mann vs Machine random mission generator.
+// Recommended to be played with a bomb respawn plugin setting the bomb respawn to 15 seconds.
+
 #include "bot_generator.h"
 #include "tank_generator.h"
 #include "wave_generator.h"
@@ -282,6 +288,23 @@ int main(int argc, char** argv)
 				{
 					++i;
 					gen.set_force_tank_speed(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-firechance") == 0)
+				{
+					++i;
+					botgen.set_fire_chance(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-bleedchance") == 0)
+				{
+					++i;
+					botgen.set_bleed_chance(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-bleedforall") == 0)
+				{
+					botgen.set_nonbosses_can_get_bleed(true);
 					continue;
 				}
 			}
