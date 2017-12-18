@@ -11,7 +11,7 @@ pressure_manager::pressure_manager(currency_manager& cm)
 	bot_path_length(1.0f),
 	pps_factor_tfbot(1.0f),
 	pps_factor_tank(0.05f),
-	player_exponent(1.175f)
+	player_exponent(1.0f) // 1.175f;
 {}
 
 float pressure_manager::get_pressure() const

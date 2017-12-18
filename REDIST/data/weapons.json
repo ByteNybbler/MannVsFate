@@ -135,6 +135,10 @@
 		"does_damage" : false,
 		"has_effect_charge_bar" : true
 	},
+	"tf_weapon_jar_gas" :
+	{
+		"parent" : "tf_weapon_jar"
+	},
 	"tf_weapon_jar_milk" :
 	{
 		"parent" : "tf_weapon_jar"
@@ -246,6 +250,17 @@
 	{
 		"parent" : "tf_weapon_rocketlauncher"
 	},
+	"tf_weapon_rocketlauncher_fireball" :
+	{
+		"parent" : "tf_weapon_rocketlauncher",
+		"burns" : true
+	},
+	"tf_weapon_rocketpack" :
+	{
+		"type" : "secondary",
+		"has_projectiles" : false,
+		"does_damage" : false
+	},
 	"tf_weapon_sapper" :
 	{
 		"type" : "building"
@@ -297,6 +312,10 @@
 		"parent" : "tf_weapon_shotgun"
 	},
 	"tf_weapon_shovel" :
+	{
+		"type" : "melee"
+	},
+	"tf_weapon_slap" :
 	{
 		"type" : "melee"
 	},
@@ -561,6 +580,10 @@
 	{
 		"parent" : "tf_weapon_shovel"
 	},
+	"The Dragon's Fury" :
+	{
+		"parent" : "tf_weapon_rocketlauncher_fireball"
+	},
 	"The Enforcer" :
 	{
 		"parent" : "tf_weapon_revolver"
@@ -621,6 +644,10 @@
 	{
 		"parent" : "saxxy"
 	},
+	"The Gas Passer" :
+	{
+		"parent" : "tf_weapon_jar_gas"
+	},
 	"Gloves of Running Urgently" :
 	{
 		"parent" : "tf_weapon_fists"
@@ -664,6 +691,10 @@
 	"The Horseless Headless Horseman's Headtaker" :
 	{
 		"parent" : "tf_weapon_sword"
+	},
+	"The Hot Hand" :
+	{
+		"parent" : "tf_weapon_slap"
 	},
 	"The Huntsman" :
 	{
@@ -854,7 +885,7 @@
 	"Rocket Jumper" :
 	{
 		"parent" : "tf_weapon_rocketlauncher",
-		"does_damange" : false
+		"does_damage" : false
 	},
 	"The Sandman" :
 	{
@@ -883,6 +914,10 @@
 	"The Scottish Resistance" :
 	{
 		"parent" : "tf_weapon_pipebomblauncher"
+	},
+	"The Second Banana" :
+	{
+		"parent" : "tf_weapon_lunchbox"
 	},
 	"The Self-Aware Beauty Mark" :
 	{
@@ -949,6 +984,10 @@
 	"The Sydney Sleeper" :
 	{
 		"parent" : "tf_weapon_sniperrifle"
+	},
+	"The Thermal Thruster" :
+	{
+		"parent" : "tf_weapon_rocketpack"
 	},
 	"The Third Degree" :
 	{
