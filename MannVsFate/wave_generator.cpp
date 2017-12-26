@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.10";
+const std::string wave_generator::version = "0.4.11";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen, tank_generator& tankgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen), tankgen(tankgen),

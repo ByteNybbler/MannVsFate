@@ -1,1 +1,1 @@
-MannVsFate.exe -map mvm_bigrock -name two -fixedrespawnwavetime -players 2
+MannVsFate.exe -map mvm_bigrock -name gen -fixedrespawnwavetime -players 2

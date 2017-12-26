@@ -6,7 +6,7 @@ pressure_manager::pressure_manager(currency_manager& cm)
 	pressure(0.0f),
 	players(4),
 	base_pressure_decay_rate(600), // 700
-	pressure_decay_rate_multiplier(0.0225f), // 0.025f
+	pressure_decay_rate_multiplier(0.0175f), // 0.0225f
 	pressure_decay_rate_multiplier_in_time(3.0f),
 	bot_path_length(1.0f),
 	pps_factor_tfbot(1.0f),
