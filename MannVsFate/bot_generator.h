@@ -37,6 +37,9 @@ public:
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
 
+	// Perform a sanity check on the bot's scale.
+	void check_bot_scale(tfbot_meta& bot_meta);
+
 	// Make a bot into a giant without modifying any stats unnecessarily.
 	void make_bot_into_giant_pure(tfbot_meta& bot_meta);
 

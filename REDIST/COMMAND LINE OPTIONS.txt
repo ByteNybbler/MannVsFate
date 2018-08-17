@@ -38,4 +38,4 @@ Open the example.bat file in a text editor to see how command line arguments are
 -firechance [the chance a robot's weapon has of gaining fire damage; default = 0.025]
 -bleedchance [the chance a robot's weapon has of gaining bleed damage; default = 0.2]
 -bleedforall <no arguments; allows non-boss robots to get bleed buffs>
--minimumgiantscale [the minimum scale a giant robot can be; default = 1.25]
+-minimumgiantscale [the minimum scale a giant robot can be; does not apply to giant spies; default = 1.25]

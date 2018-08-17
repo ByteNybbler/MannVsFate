@@ -653,6 +653,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 				if (!bot_meta.is_giant && !bot_meta.perma_small && bot.health >= 1000 && rand_chance(0.7f))
 				{
 					botgen.make_bot_into_giant_pure(bot_meta);
+					botgen.check_bot_scale(bot_meta);
 				}
 				// If Spies are too large, they'll get stuck in the walls and die when they spawn.
 				float constexpr max_spy_scale = 1.2f;

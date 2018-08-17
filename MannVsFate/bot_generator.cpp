@@ -861,10 +861,6 @@ tfbot_meta bot_generator::generate_bot()
 	{
 		// Giants are scale 1.75 by default.
 		bot.scale = rand_float(0.6f, 1.75f);
-		if (bot_meta.is_giant && bot.scale < minimum_giant_scale)
-		{
-			bot.scale = minimum_giant_scale;
-		}
 	}
 
 	if (rand_chance(0.1f * chance_mult))
@@ -1141,6 +1137,7 @@ tfbot_meta bot_generator::generate_bot()
 
 	bot.character_attributes["move speed bonus"] = bot_meta.move_speed_bonus;
 
+	check_bot_scale(bot_meta);
 	if (bot.scale < 0.0f)
 	{
 		// Negative scale implies that the bot is normal-sized.
@@ -1185,6 +1182,16 @@ tfbot_meta bot_generator::generate_bot()
 	return bot_meta;
 }
 
+void bot_generator::check_bot_scale(tfbot_meta& bot_meta)
+{
+	tfbot& bot = bot_meta.get_bot();
+
+	if (bot_meta.is_giant && bot.scale < minimum_giant_scale && bot.scale > 0.0f)
+	{
+		bot.scale = minimum_giant_scale;
+	}
+}
+
 void bot_generator::make_bot_into_giant_pure(tfbot_meta& bot_meta)
 {
 	tfbot& bot = bot_meta.get_bot();
@@ -1224,6 +1231,7 @@ void bot_generator::make_bot_into_giant(tfbot_meta& bot_meta)
 	bot.health *= 15;
 
 	make_bot_into_giant_pure(bot_meta);
+	check_bot_scale(bot_meta);
 
 	if (bot_meta.shall_be_boss)
 	{
