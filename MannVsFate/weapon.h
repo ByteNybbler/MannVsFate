@@ -52,6 +52,8 @@ struct weapon
 	bool bleeds;
 	// Whether the weapon has an effect charge bar.
 	bool has_effect_charge_bar;
+	// Whether there's a potential chance that the game will crash with a projectile override on this weapon.
+	bool projectile_override_crash_risk;
 
 	// Returns true if the weapon or one of its parents has this name.
 	bool is_a(const std::string& name);

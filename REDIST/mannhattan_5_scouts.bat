@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_mannhattan -name scouts -fixedrespawnwavetime -players 5 -classes 1

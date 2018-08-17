@@ -49,13 +49,17 @@ public:
 	// Add a weapon to the bot and return the weapon.
 	weapon& add_weapon(const std::string& weapon_name, const json_reader_weapon& weapon_reader);
 
+	// Calculates the absolute move speed of the bot, factoring in the move speed bonus.
+	// Takes into account the base speed of the class.
+	float calculate_absolute_move_speed();
+
 	// This is the multiplier for calculating the bot's threat level.
 	// The multiplier is adjusted based on a variety of factors.
 	// A higher multiplier means the bot is harder to deal with.
 	float pressure;
 	// How much the robot's WaveSpawn's wait between spawns should be multiplied by.
 	float wait_between_spawns_multiplier;
-	// The move speed bonus of the bot.
+	// The multiplicative move speed bonus of the bot.
 	float move_speed_bonus;
 	// The damage bonus of the bot.
 	float damage_bonus;

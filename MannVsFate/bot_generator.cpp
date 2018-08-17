@@ -19,7 +19,7 @@ bot_generator::bot_generator(const pressure_manager& pm)
 	boss_chance_increase(0.01f),
 	engies_enabled(true),
 	generating_doombot(false),
-	possible_classes{player_class::scout,
+	possible_classes{ player_class::scout,
 	player_class::soldier,
 	player_class::pyro,
 	player_class::demoman,
@@ -27,11 +27,12 @@ bot_generator::bot_generator(const pressure_manager& pm)
 	player_class::engineer,
 	player_class::medic,
 	player_class::sniper,
-	player_class::spy},
+	player_class::spy },
 	give_bots_cosmetics(false),
 	fire_chance(0.025f),
 	bleed_chance(0.2f),
-	nonbosses_can_get_bleed(false)
+	nonbosses_can_get_bleed(false),
+	minimum_giant_scale(1.25f)
 {}
 
 void bot_generator::set_possible_classes(const std::vector<player_class>& classes)
@@ -107,6 +108,11 @@ void bot_generator::set_bleed_chance(float in)
 void bot_generator::set_nonbosses_can_get_bleed(bool in)
 {
 	nonbosses_can_get_bleed = in;
+}
+
+void bot_generator::set_minimum_giant_scale(float in)
+{
+	minimum_giant_scale = in;
 }
 
 tfbot_meta bot_generator::generate_bot()
@@ -851,12 +857,14 @@ tfbot_meta bot_generator::generate_bot()
 			bot.character_attributes["bot custom jump particle"] = 1;
 		}
 	}
-	if (
-		//!is_giant &&
-		rand_chance(0.15f))
+	if (rand_chance(0.15f))
 	{
 		// Giants are scale 1.75 by default.
 		bot.scale = rand_float(0.6f, 1.75f);
+		if (bot_meta.is_giant && bot.scale < minimum_giant_scale)
+		{
+			bot.scale = minimum_giant_scale;
+		}
 	}
 
 	if (rand_chance(0.1f * chance_mult))
@@ -953,10 +961,11 @@ tfbot_meta bot_generator::generate_bot()
 					bot_meta.pressure *= get_muted_damage_pressure(5.0f);
 					if (bot.cl == player_class::sniper)
 					{
-						//bot_meta.pressure *= 5.0f;
 						constexpr float damage_factor = 0.1f;
 						bot_meta.damage_bonus *= damage_factor;
 						bot_meta.pressure /= damage_factor;
+
+						// Having a projectile override on such a rapid-fire weapon can crash the game on some systems.
 						bot_meta.projectile_override_crash_risk = true;
 					}
 
@@ -1113,16 +1122,20 @@ tfbot_meta bot_generator::generate_bot()
 		}
 	}
 
+	// Finalize how the bot's pressure is affected by its movement speed.
 	if (bot.cl != player_class::engineer)
 	{
-		if (bot_meta.move_speed_bonus > 1.0f)
+		// Formerly just bot_meta.move_speed_bonus.
+		float move_speed = bot_meta.calculate_absolute_move_speed();
+		if (move_speed > 1.0f)
 		{
 			// Fast robots will get a higher threat level.
-			bot_meta.pressure *= bot_meta.move_speed_bonus * bot_meta.move_speed_bonus;
+			bot_meta.pressure *= move_speed * move_speed;
 		}
 		else
 		{
-			bot_meta.pressure *= ((bot_meta.move_speed_bonus - 1.0f) * 0.5f) + 1.0f;
+			// Slower robots' threat levels won't be affected as much.
+			bot_meta.pressure *= ((move_speed - 1.0f) * 0.5f) + 1.0f;
 		}
 	}
 
@@ -1334,10 +1347,8 @@ void bot_generator::randomize_weapon(weapon& wep, tfbot_meta& bot_meta)
 
 	if (wep.has_projectiles)
 	{
-		// Stickybomb launchers and a few other weapons aren't happy when it comes to projectile overrides.
-		if (wep.is_a("tf_weapon_pipebomblauncher") ||
-			wep.is_a("The Loose Cannon") ||
-			wep.is_a("tf_weapon_minigun"))
+		// Projectile overrides crash the game on some weapons.
+		if (wep.projectile_override_crash_risk)
 		{
 			bot_meta.projectile_override_crash_risk = true;
 		}

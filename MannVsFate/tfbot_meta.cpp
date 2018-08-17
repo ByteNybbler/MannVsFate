@@ -18,7 +18,7 @@ tfbot_meta::tfbot_meta()
 	shall_be_boss(false)
 {
 	// Since we're keeping references to elements in the vector, we don't want the vector to move around.
-	// Let's reserve as much space as we need.
+	// Let's reserve as much space as we need so that the vector doesn't get displaced by memory reallocation.
 	weapons.reserve(10);
 }
 
@@ -95,8 +95,6 @@ std::string tfbot_meta::get_base_class_icon() const
 float tfbot_meta::calculate_effective_pressure() const
 {
 	return pressure * bot.health;
-	//return bot.health;
-	//return bot.health * pressure_health;
 }
 
 float tfbot_meta::calculate_muted_pressure() const
@@ -138,4 +136,40 @@ weapon& tfbot_meta::add_weapon(const std::string& weapon_name, const json_reader
 	//std::cout << "tfbot_meta::add_weapon: ref names count: " << ref.names.size() << std::endl;
 	return ref;
 	//slot = &weapons.at(weapons.size() - 1);
+}
+
+float tfbot_meta::calculate_absolute_move_speed()
+{
+	float base_move_speed;
+	switch (bot.cl)
+	{
+	case player_class::scout:
+		base_move_speed = 1.33f;
+		break;
+	case player_class::soldier:
+		base_move_speed = 0.80f;
+		break;
+	case player_class::pyro:
+		base_move_speed = 1.0f;
+		break;
+	case player_class::demoman:
+		base_move_speed = 0.93f;
+		break;
+	case player_class::heavyweapons:
+		base_move_speed = 0.77f;
+		break;
+	case player_class::engineer:
+		base_move_speed = 1.0f;
+		break;
+	case player_class::medic:
+		base_move_speed = 1.07f;
+		break;
+	case player_class::sniper:
+		base_move_speed = 1.0f;
+		break;
+	case player_class::spy:
+		base_move_speed = 1.07f;
+		break;
+	}
+	return base_move_speed * move_speed_bonus;
 }

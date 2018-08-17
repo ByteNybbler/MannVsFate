@@ -58,16 +58,8 @@ void pressure_manager::step_through_time(int& t)
 {
 	// This loop will increment time until there's no pressure left.
 	// When there's no pressure left, we can either generate more WaveSpawns or end the wave.
-
-	// In order to prevent multiple WaveSpawns from beginning at the same time, we can let at least one second pass.
-	//bool starting_loop = true;
-
-	while (pressure > 0.0f
-		//|| starting_loop
-		)
+	while (pressure > 0.0f)
 	{
-		//starting_loop = false;
-
 		// Increment time.
 		++t;
 
@@ -77,50 +69,10 @@ void pressure_manager::step_through_time(int& t)
 		// Iterate through the wavespawns to instantiate any new pressure bubbles.
 		for (virtual_wavespawn& ws : wavespawns)
 		{
-			/*
-			// TTKEGTZ: Time To Kill Expires Greater Than 0
-			bool ttkegtz = false;
-			if (ws.time_to_kill_expires > 0.0f)
-			{
-			ttkegtz = true;
-			}
-			ws.time_to_kill_expires -= 1.0f;
-			if (ttkegtz && ws.time_to_kill_expires <= 0.0f)
-			{
-			// A WaveSpawn's theoretical enemy was killed before the next one could spawn.
-			// The WaveSpawn has gone quiet for now.
-			// This does not mean that the WaveSpawn has finished spawning altogether, however!
-			--active_wavespawns;
-			ttkegtz = false;
-			}
-			*/
-
 			ws.time_until_next_spawn -= 1.0f;
 
 			while (ws.spawns_remaining != 0 && ws.time_until_next_spawn <= 0.0f)
 			{
-				/*
-				if (ws.spawns_remaining == ws.total_count)
-				{
-				++active_wavespawns;
-				}
-				if (ws.spawns_remaining == 0)
-				{
-				--active_wavespawns;
-				}
-				else
-				{
-				if (!ttkegtz)
-				{
-				++active_wavespawns;
-				}
-				ws.time_to_kill_expires = ws.time_to_kill;
-				ttkegtz = true;
-				//}
-				*/
-
-				//pressure_increase += ws.effective_pressure;
-
 				ws.spawns_remaining -= 1;
 				ws.time_until_next_spawn += ws.wait_between_spawns;
 

@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.11";
+const std::string wave_generator::version = "0.4.12";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen, tank_generator& tankgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen), tankgen(tankgen),
@@ -421,7 +421,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 		int spawnbot_index = rand_int(0, spawnbots_mega.size());
 		std::string location = spawnbots_mega.at(spawnbot_index);
 
-		//const float cooldown_time = std::min(120.0f, bot_meta.calculate_muted_time_to_kill(recip_pressure_decay_rate) * sentry_buster_cooldown);
 		const float cooldown_time = std::min(120.0f, bot.health * recip_pressure_decay_rate * 3.5f * sentry_buster_cooldown);
 
 		mission mis;
@@ -510,9 +509,12 @@ void wave_generator::generate_mission(int argc, char** argv)
 				// Generate a new tank WaveSpawn.
 
 				class_icons.emplace("tank");
-
+				
+				// Pass work to the tank generator.
+				// The resulting tank will have its HP and health set appropriately.
 				std::unique_ptr<tank> tnk = tankgen.generate_tank(max_time - t);
 
+				// If the user used certain command line inputs, overwrite the tank's HP and/or speed.
 				if (force_tank_hp != nullptr)
 				{
 					tnk->health = *force_tank_hp;
@@ -555,22 +557,20 @@ void wave_generator::generate_mission(int argc, char** argv)
 				tfbot_meta bot_meta = botgen.generate_bot();
 				tfbot& bot = bot_meta.get_bot();
 
-				//std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;
-				//std::cout << "Pre-TotalCount loop bot pressure (without health): " << bot_meta.pressure << std::endl;
-
-				// Calculate WaveSpawn data for the TFBot.
-				// The following loop makes sure the TFBot doesn't have too much health to handle.
-
-				//std::cout << "Entering TFBot TotalCount calculation loop..." << std::endl;
-
 				// How long it should take to kill the theoretical bot.
 				float time_to_kill;
-				//float effective_time_to_kill;
 
 				float effective_pressure;
 				float wait_between_spawns;
 				int max_count = 0;
 				bool has_problem = false;
+
+				// Calculate WaveSpawn data for the TFBot.
+				// The following loop makes sure the TFBot doesn't have too much health to handle.
+
+				//std::cout << "Pre-TotalCount loop bot health: " << bot.health << std::endl;
+				//std::cout << "Pre-TotalCount loop bot pressure (without health): " << bot_meta.pressure << std::endl;
+				//std::cout << "Entering TFBot TotalCount calculation loop..." << std::endl;
 
 				while (max_count == 0 || has_problem)
 				{
@@ -580,8 +580,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 					time_to_kill = effective_pressure * recip_pressure_decay_rate;
 					wait_between_spawns = time_to_kill;
 					max_count = static_cast<int>(floor(time_left / wait_between_spawns));
-
-					//int metaphorical_max_count = max_count / bot_meta.pressure_health;
 
 					// If the max count is too low, it means the bot may be too strong.
 					if (max_count == 0 && bot.health > 25)
@@ -638,8 +636,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 				}
 
 				float wbs_multiplier;
-				//wbs_multiplier = bot_meta.pressure;
-				//wbs_multiplier = 1.0f;
 				wbs_multiplier = bot_meta.wait_between_spawns_multiplier;
 				// Add some variation to the wait between spawns.
 				wbs_multiplier *= rand_float(1.0f, 5.0f);
@@ -649,6 +645,7 @@ void wave_generator::generate_mission(int argc, char** argv)
 
 				// Have the actual pressure be based on the bot's quantity of health.
 				effective_pressure = bot.health;
+
 				// Add a little bit of influence from the pressure itself.
 				//effective_pressure *= ((bot_meta.pressure - 1.0f) * 0.2f) + 1.0f;
 
@@ -663,16 +660,6 @@ void wave_generator::generate_mission(int argc, char** argv)
 				{
 					bot.scale = max_spy_scale;
 				}
-
-				/*
-				// Increase the doombot's health a lot.
-				if (bot_meta.is_doom)
-				{
-					bot.health *= static_cast<int>(max_time * 0.2f);
-				}
-				*/
-
-				//max_count = ceil(static_cast<float>(max_count) * 0.7f);
 
 				/*
 				std::cout << "TotalCount calculation complete." << std::endl;

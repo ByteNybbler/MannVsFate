@@ -156,6 +156,12 @@ void json_reader_weapon::read_weapon_node(weapon& wep, const std::string& weapon
 
 	try
 	{
+		wep.projectile_override_crash_risk = weapon_node.at("projectile_override_crash_risk").get<bool>();
+	}
+	catch (const std::exception&) {}
+
+	try
+	{
 		// A node containing several different types.
 		nlohmann::json types_node;
 		types_node = weapon_node.at("types");

@@ -43,6 +43,7 @@
 	{
 		"type" : "primary",
 		"has_projectiles" : true,
+		"projectile_override_crash_risk" : true,
 		"arc_fire" : true,
 		"explodes" : true
 	},
@@ -184,6 +185,7 @@
 	{
 		"type" : "primary",
 		"has_projectiles" : true,
+		"projectile_override_crash_risk" : true,
 		"arc_fire" : false
 	},
 	"tf_weapon_parachute" :
@@ -206,6 +208,7 @@
 	{
 		"type" : "secondary",
 		"has_projectiles" : true,
+		"projectile_override_crash_risk" : true,
 		"arc_fire" : true,
 		"explodes" : true
 	},

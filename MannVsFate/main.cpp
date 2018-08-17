@@ -307,6 +307,12 @@ int main(int argc, char** argv)
 					botgen.set_nonbosses_can_get_bleed(true);
 					continue;
 				}
+				if (std::strcmp(argv[i], "-minimumgiantscale") == 0)
+				{
+					++i;
+					botgen.set_minimum_giant_scale(tofloat(argv[i]));
+					continue;
+				}
 			}
 		}
 

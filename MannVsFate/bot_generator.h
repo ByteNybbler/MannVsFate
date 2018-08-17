@@ -32,6 +32,7 @@ public:
 	void set_fire_chance(float in);
 	void set_bleed_chance(float in);
 	void set_nonbosses_can_get_bleed(bool in);
+	void set_minimum_giant_scale(float in);
 
 	// Generate a random TFBot.
 	tfbot_meta generate_bot();
@@ -94,6 +95,8 @@ private:
 	float bleed_chance;
 	// Whether non-boss robots can get bleed buff.
 	bool nonbosses_can_get_bleed;
+	// The minimum scale a giant robot can be.
+	float minimum_giant_scale;
 };
 
 #endif

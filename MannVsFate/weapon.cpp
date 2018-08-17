@@ -17,7 +17,8 @@ weapon::weapon()
 	burns(false),
 	explodes(false),
 	bleeds(false),
-	has_effect_charge_bar(false)
+	has_effect_charge_bar(false),
+	projectile_override_crash_risk(false)
 {}
 
 weapon::~weapon()
