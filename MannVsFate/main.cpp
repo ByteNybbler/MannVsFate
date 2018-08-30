@@ -7,8 +7,10 @@
 #include "bot_generator.h"
 #include "tank_generator.h"
 #include "wave_generator.h"
+#include "cosmetics_generator.h"
 #include "currency_manager.h"
 #include "pressure_manager.h"
+#include "json_reader_item_category.h"
 #include <iostream>
 #include <string>
 
@@ -29,7 +31,9 @@ int main(int argc, char** argv)
 		// Instantiate the popfile generator and all of its dependencies.
 		currency_manager cm;
 		pressure_manager pm(cm);
-		bot_generator botgen(pm);
+		json_reader_item_category jric;
+		cosmetics_generator cosgen(jric.read());
+		bot_generator botgen(pm, cosgen);
 		tank_generator tankgen(pm);
 		wave_generator gen(cm, pm, botgen, tankgen);
 
@@ -307,10 +311,34 @@ int main(int argc, char** argv)
 					botgen.set_nonbosses_can_get_bleed(true);
 					continue;
 				}
+				if (std::strcmp(argv[i], "-botscalechance") == 0)
+				{
+					++i;
+					botgen.set_bot_scale_chance(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-minimumbotscale") == 0)
+				{
+					++i;
+					botgen.set_minimum_bot_scale(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-maximumbotscale") == 0)
+				{
+					++i;
+					botgen.set_maximum_bot_scale(tofloat(argv[i]));
+					continue;
+				}
 				if (std::strcmp(argv[i], "-minimumgiantscale") == 0)
 				{
 					++i;
 					botgen.set_minimum_giant_scale(tofloat(argv[i]));
+					continue;
+				}
+				if (std::strcmp(argv[i], "-forcebotscale") == 0)
+				{
+					++i;
+					botgen.set_force_bot_scale(tofloat(argv[i]));
 					continue;
 				}
 			}

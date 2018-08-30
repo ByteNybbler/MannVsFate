@@ -43,9 +43,21 @@ void list_reader::load(const std::string& source_filename)
 	}
 }
 
-std::string list_reader::get_random(const std::string& source) const
+std::string list_reader::get_random(const std::string& source)
 {
+	load(source);
 	const std::vector<std::string>& vec = lists.at(source);
 	const int index = rand_int(0, vec.size());
 	return vec.at(index);
+}
+
+std::string list_reader::get_random(const std::vector<std::string>& sources)
+{
+	std::vector<std::vector<std::string>*> vec;
+	for (unsigned int i = 0; i < sources.size(); ++i)
+	{
+		load(sources[i]);
+		vec.emplace_back(&lists.at(sources[i]));
+	}
+	return rand_element_from_many_collections(vec);
 }

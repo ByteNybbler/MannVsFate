@@ -63,6 +63,12 @@
     <ClCompile Include="tank_generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cosmetics_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="json_reader_item_category.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="random_name_generator.h">
@@ -129,6 +135,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tank_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cosmetics_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="item_category.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json_reader_item_category.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

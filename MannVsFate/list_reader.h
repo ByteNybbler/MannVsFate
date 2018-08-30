@@ -7,13 +7,16 @@
 class list_reader
 {
 public:
+	// Get a random element from a certain list.
+	std::string get_random(const std::string& source);
+	// Get a random element from several lists.
+	std::string get_random(const std::vector<std::string>& sources);
+
+private:
 	// Load a list from a file. If the file is already loaded, this function does nothing.
 	void load(const std::string& source_filename);
 
-	// Get a random element of a certain list.
-	std::string get_random(const std::string& source) const;
-
-private:
+	// The collection of lists loaded from files.
 	std::map<std::string, std::vector<std::string>> lists;
 };
 

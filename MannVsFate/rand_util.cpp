@@ -16,6 +16,11 @@ int rand_int(const int bottom, const int top)
 	}
 }
 
+int rand_int(const int top)
+{
+	return rand_int(0, top);
+}
+
 float rand_float(const float bottom, const float top)
 {
 	if (top <= bottom)

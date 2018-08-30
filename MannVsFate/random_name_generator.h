@@ -11,7 +11,7 @@ public:
 		const std::string& adjectives, const std::string& nouns);
 
 	// Get a random name.
-	std::string get_random_name() const;
+	std::string get_random_name();
 
 private:
 	list_reader lr;

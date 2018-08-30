@@ -1,0 +1,1 @@
+MannVsFate.exe -map mvm_rottenburg -name gen_tiny -fixedrespawnwavetime -players 3 -forcebotscale 0.2 -difficulty 2

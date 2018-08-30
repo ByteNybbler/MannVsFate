@@ -120,7 +120,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bot_generator.cpp" />
+    <ClCompile Include="cosmetics_generator.cpp" />
     <ClCompile Include="currency_manager.cpp" />
+    <ClCompile Include="json_reader_item_category.cpp" />
     <ClCompile Include="json_reader_weapon.cpp" />
     <ClCompile Include="list_reader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -138,8 +140,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_generator.h" />
+    <ClInclude Include="cosmetics_generator.h" />
     <ClInclude Include="currency_manager.h" />
+    <ClInclude Include="item_category.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="json_reader_item_category.h" />
     <ClInclude Include="json_reader_weapon.h" />
     <ClInclude Include="list_reader.h" />
     <ClInclude Include="mission.h" />

@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <iostream>
 
-const std::string wave_generator::version = "0.4.12";
+const std::string wave_generator::version = "0.4.13";
 
 wave_generator::wave_generator(currency_manager& cm, pressure_manager& pm, bot_generator& botgen, tank_generator& tankgen)
 	: mission_currency(cm), wave_pressure(pm), botgen(botgen), tankgen(tankgen),
@@ -331,11 +331,14 @@ void wave_generator::generate_mission(int argc, char** argv)
 	list_reader random_sound_reader;
 	const std::string file_sounds_standard = "data/sounds.txt";
 	const std::string file_sounds_vo = "data/sounds_vo.txt";
+	/*
+	// Preload the wacky sounds lists.
 	if (use_wacky_sounds != 0)
 	{
 		random_sound_reader.load(file_sounds_standard);
 		random_sound_reader.load(file_sounds_vo);
 	}
+	*/
 
 	std::stringstream filename;
 	filename << map_name << '_' << wave_pressure.get_players() << "p_" << mission_name << ".pop";

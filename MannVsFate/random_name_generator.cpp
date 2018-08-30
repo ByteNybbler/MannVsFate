@@ -15,13 +15,15 @@ random_name_generator::random_name_generator(const std::string& verbs, const std
 	const std::string& adjectives, const std::string& nouns)
 	: verbs(verbs), titles(titles), adjectives(adjectives), nouns(nouns)
 {
+	/*
 	lr.load(verbs);
 	lr.load(titles);
 	lr.load(adjectives);
 	lr.load(nouns);
+	*/
 }
 
-std::string random_name_generator::get_random_name() const
+std::string random_name_generator::get_random_name()
 {
 	std::string verb, title, adjective, noun1, noun2;
 	if (rand_int(0, 2) == 0)
